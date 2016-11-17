@@ -1,5 +1,5 @@
 //
-//  SYHelper.h
+//  SYImageBrowseHelper.h
 //  zhangshaoyu
 //
 //  Created by zhangshaoyu on 15/11/8.
@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "SYImageBrowseView.h"
+#import "SYImageBrowseScrollView.h"
 
 // 使用SDWebImage
 #import "UIImageView+WebCache.h"

@@ -4,7 +4,8 @@
 //
 //  Created by zhangshaoyu on 15/10/23.
 //  Copyright (c) 2015年 zhangshaoyu. All rights reserved.
-//  图片浏览，图片广告功能封装（https://github.com/potato512/CycleScrollView）
+//  图片浏览，图片广告功能封装（https://github.com/potato512/SYImageBrowser）
+
 /*
  1、广告轮播
  1-1 自动播放
@@ -29,6 +30,10 @@
  3-3 页数显示（即1/N样式）
  
  
+ 图片拿捏放大缩小显示
+ 图片双击放大缩小显示
+ 
+ 
  使用示例
  NSArray *images = @[@"01.jpg", @"02.jpg", @"03.jpg", @"04.jpg", @"05.jpg", @"06.jpg"];
  NSArray *titles = @[@"01.jpg", @"02.jpg", @"03.jpg", @"04.jpg", @"05.jpg", @"06.jpg"];
@@ -43,7 +48,7 @@
  imageBrowse.pageIndex = 3;
  imageBrowse.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.3];
  imageBrowse.imageSelected = ^(NSInteger index){
-    NSLog(@"imageSelected %ld", index);
+        NSLog(@"imageSelected %ld", index);
  };
  imageBrowse.browseMode = ImageBrowseAdvertisement;
  imageBrowse.textMode = textAlignmentCenter;
@@ -60,6 +65,7 @@
 */
 
 #import <UIKit/UIKit.h>
+#import "SYImageBrowseViewController.h"
 
 /// 浏览功能模式（广告轮播，或图片浏览）
 typedef NS_ENUM(NSInteger, ImageBrowseMode)

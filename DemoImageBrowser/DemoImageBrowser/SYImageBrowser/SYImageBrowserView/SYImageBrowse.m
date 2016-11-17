@@ -16,6 +16,8 @@ static CGFloat const heightlabel = 30.0;
 static CGFloat const sizePagelabel = 40.0;
 static NSTimeInterval const durationTime = 3.0;
 
+#define widthImage (50.0 * self.frame.size.width / [UIScreen mainScreen].bounds.size.width)
+
 @interface SYImageBrowse () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIView *superView;
@@ -179,12 +181,12 @@ static NSTimeInterval const durationTime = 3.0;
     {
         self.pagelabel.hidden = YES;
         
-        //        self.pageControl.hidden = NO;
+        // self.pageControl.hidden = NO;
         self.pageControl.hidden = !_showPageControl;
     }
     else if (ImagePagelabel == _pageMode)
     {
-        //        self.pagelabel.hidden = NO;
+        // self.pagelabel.hidden = NO;
         self.pagelabel.hidden = !_showPageControl;
         
         self.pageControl.hidden = YES;
@@ -441,7 +443,6 @@ static NSTimeInterval const durationTime = 3.0;
     if (!_deleteButton)
     {
         UIImage *deleteImage = [UIImage imageNamed:@"SYDeleteImage"];
-        CGFloat widthImage = 50.0;
         CGFloat heightImage = deleteImage.size.height * widthImage / deleteImage.size.width;
         _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _deleteButton.frame = CGRectMake((CGRectGetWidth(self.bounds) - widthImage - 10.0), 10.0, widthImage, heightImage);

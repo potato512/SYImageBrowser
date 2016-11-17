@@ -1,5 +1,5 @@
 //
-//  SYHelper.m
+//  SYImageBrowseHelper.m
 //  zhangshaoyu
 //
 //  Created by zhangshaoyu on 15/11/8.
