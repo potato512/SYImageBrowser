@@ -7,7 +7,9 @@
 //
 
 #import "SYImageBrowseViewController.h"
+#import "SYImageBrowseHelper.h"
 
+static NSInteger const tagImageView = 1000;
 #define WidthView (self.mainScrollView.frame.size.width)
 #define HeightView (self.mainScrollView.frame.size.height)
 
@@ -27,7 +29,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-
+    
+    // 初始化
+    _deleteTitle = @"删除";
+    _deleteTitleColor = [UIColor blackColor];
+    _deleteTitleColorHighlight = [UIColor lightGrayColor];
+    _deleteTitleFont = [UIFont systemFontOfSize:14.0];
+    _deleteImage = [UIImage imageNamed:@"SYDeleteImage"];
+    
+    // 视图
     [self setUI];
 }
 
@@ -36,15 +46,46 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - 创建视图
-
-- (void)setUI
+- (void)loadView
 {
+    [super loadView];
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
     {
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
     }
-    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self setDeleteButton];
+}
+
+#pragma mark - 创建视图
+
+- (void)setDeleteButton
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = CGRectMake(0.0, 0.0, 60.0, 35.0);
+    button.backgroundColor = [UIColor clearColor];
+    [button addTarget:self action:@selector(imageDelete) forControlEvents:UIControlEventTouchUpInside];
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    if (_deleteType == SYImageBrowserDeleteTypeText)
+    {
+        [button setTitle:_deleteTitle forState:UIControlStateNormal];
+        button.titleLabel.font = _deleteTitleFont;
+        [button setTitleColor:_deleteTitleColor forState:UIControlStateNormal];
+        [button setTitleColor:_deleteTitleColorHighlight forState:UIControlStateHighlighted];
+    }
+    else if (_deleteType == SYImageBrowserDeleteTypeImage)
+    {
+        [button setImage:_deleteImage forState:UIControlStateNormal];
+    }
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+}
+
+- (void)setUI
+{
     self.mainScrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:self.mainScrollView];
     self.mainScrollView.delegate = self;
@@ -53,25 +94,31 @@
     self.mainScrollView.showsVerticalScrollIndicator = NO;
     self.mainScrollView.showsHorizontalScrollIndicator = NO;
     self.mainScrollView.backgroundColor = [UIColor blackColor];
-    self.mainScrollView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+//    self.mainScrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     
     [self resetUI];
 }
 
 - (void)resetUI
 {
-    RemoveSubViews(self.mainScrollView);
+    SYImageBrowseRemoveSubViews(self.mainScrollView);
     
     for (int i = 0; i < self.currentTotal; i++)
     {
         CGRect rect = CGRectMake((i * WidthView), 0.0, WidthView, HeightView);
-        UIImageView *imageview = [[UIImageView alloc] initWithFrame:rect];
+        SYImageBrowseScrollView *imageview = [[SYImageBrowseScrollView alloc] initWithFrame:rect];
         [self.mainScrollView addSubview:imageview];
-        imageview.contentMode = UIViewContentModeScaleAspectFit;
-        imageview.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
-
+        imageview.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        imageview.imageBrowseView.contentMode = (SYImageBrowseContentFit == _imageContentMode ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill);
+        imageview.tag = i + tagImageView;
+        imageview.imageBrowseView.imageClick = ^(void){
+            if (self.ImageClick)
+            {
+                self.ImageClick(i);
+            }
+        };
         UIImage *image = self.mainArray[i];
-        imageview.image = image;
+        [imageview.imageBrowseView setImage:image defaultImage:nil];
     }
     
     self.mainScrollView.contentSize = CGSizeMake((self.currentTotal * WidthView), HeightView);
@@ -79,20 +126,6 @@
     [self setNavigationTitle];
     
     self.mainScrollView.contentOffset = CGPointMake((self.currentIndex * WidthView), 0.0);
-}
-
-void RemoveSubViews(UIView *view)
-{
-    if (view)
-    {
-        NSInteger count = view.subviews.count;
-        count -= 1;
-        for (NSInteger i = count; i >= 0; i--)
-        {
-            UIView *subview = view.subviews[i];
-            [subview removeFromSuperview];
-        }
-    }
 }
 
 - (void)setNavigationTitle
@@ -160,23 +193,6 @@ void RemoveSubViews(UIView *view)
     [self resetUI];
 }
 
-- (void)setDeleteType:(SYImageBrowserDeleteType)deleteType
-{
-    _deleteType = deleteType;
-    if (_deleteType == SYImageBrowserDeleteTypeText)
-    {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"删除" style:UIBarButtonItemStyleDone target:self action:@selector(imageDelete)];
-    }
-    else if (_deleteType == SYImageBrowserDeleteTypeImage)
-    {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(0.0, 0.0, 35.0, 35.0);
-        button.backgroundColor = [UIColor clearColor];
-        [button setImage:[UIImage imageNamed:@"SYDeleteImage"] forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(imageDelete) forControlEvents:UIControlEventTouchUpInside];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-    }
-}
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -184,8 +200,29 @@ void RemoveSubViews(UIView *view)
     if (scrollView == self.mainScrollView)
     {
         NSInteger currentPage = self.mainScrollView.contentOffset.x / WidthView;
+        
+        // 重置上个视图原始大小
+        if (self.currentIndex != currentPage)
+        {
+            NSInteger previousIndex = 0;
+            if (self.currentIndex > currentPage)
+            {
+                // 向右滑动，变小
+                previousIndex = currentPage + 1;
+            }
+            else
+            {
+                // 向左滑动，变大
+                previousIndex = currentPage - 1;
+            }
+            SYImageBrowseScrollView *previousImageView = self.mainScrollView.subviews[previousIndex];
+            previousImageView.isOriginal = YES;
+        }
+        
+        // 重置当前页码
         self.currentIndex = currentPage;
         
+        // 重置标题
         [self setNavigationTitle];
     }
 }

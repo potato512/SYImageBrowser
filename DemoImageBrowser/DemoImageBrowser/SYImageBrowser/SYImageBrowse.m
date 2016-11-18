@@ -16,7 +16,7 @@ static CGFloat const heightlabel = 30.0;
 static CGFloat const sizePagelabel = 40.0;
 static NSTimeInterval const durationTime = 3.0;
 
-#define widthImage (50.0 * self.frame.size.width / [UIScreen mainScreen].bounds.size.width)
+#define widthImage (50.0 * self.frame.size.width / SYImageBrowseWidth)
 
 @interface SYImageBrowse () <UIScrollViewDelegate>
 
@@ -26,9 +26,9 @@ static NSTimeInterval const durationTime = 3.0;
 @property (nonatomic, strong) NSMutableArray *titles;
 
 @property (nonatomic, strong) UIScrollView *mainScrollView;
-@property (nonatomic, strong) SYImageBrowseView *firstImageView;
-@property (nonatomic, strong) SYImageBrowseView *secondImageView;
-@property (nonatomic, strong) SYImageBrowseView *thirdImageView;
+@property (nonatomic, strong) SYImageBrowseScrollView *firstImageView;
+@property (nonatomic, strong) SYImageBrowseScrollView *secondImageView;
+@property (nonatomic, strong) SYImageBrowseScrollView *thirdImageView;
 
 
 @property (nonatomic, strong) UIPageControl *pageControl;
@@ -56,6 +56,9 @@ static NSTimeInterval const durationTime = 3.0;
     self = [super init];
     if (self)
     {
+        self.layer.masksToBounds = YES;
+        self.clipsToBounds = YES;
+        
         self.superView = [UIApplication sharedApplication].delegate.window;
         self.frame = self.superView.bounds;
     }
@@ -69,6 +72,9 @@ static NSTimeInterval const durationTime = 3.0;
     self = [super init];
     if (self)
     {
+        self.layer.masksToBounds = YES;
+        self.clipsToBounds = YES;
+        
         self.superView = [UIApplication sharedApplication].delegate.window;
         self.frame = self.superView.bounds;
         if (view)
@@ -106,12 +112,15 @@ static NSTimeInterval const durationTime = 3.0;
     
     self.firstImageView.frame = CGRectMake(0.0, 0.0, CGRectGetWidth(self.mainScrollView.bounds), CGRectGetHeight(self.mainScrollView.bounds));
     [self.mainScrollView addSubview:self.firstImageView];
+    self.pageControl.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     
     self.secondImageView.frame = CGRectMake(CGRectGetWidth(self.mainScrollView.bounds), 0.0, CGRectGetWidth(self.mainScrollView.bounds), CGRectGetHeight(self.mainScrollView.bounds));
     [self.mainScrollView addSubview:self.secondImageView];
+    self.secondImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     
     self.thirdImageView.frame = CGRectMake(CGRectGetWidth(self.mainScrollView.bounds) * 2, 0.0, CGRectGetWidth(self.mainScrollView.bounds), CGRectGetHeight(self.mainScrollView.bounds));
     [self.mainScrollView addSubview:self.thirdImageView];
+    self.thirdImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     
     // pageControl
     self.pageControl.frame = CGRectMake(0.0, (CGRectGetHeight(self.bounds) - heightPageControl), CGRectGetWidth(self.bounds), heightPageControl);
@@ -127,7 +136,7 @@ static NSTimeInterval const durationTime = 3.0;
     
     self.textlabel.frame = CGRectMake(originXY, (CGRectGetHeight(self.bounds) - heightlabel), (CGRectGetWidth(self.bounds) - originXY * 2), heightlabel);
     [self addSubview:self.textlabel];
-    self.pageControl.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+    self.textlabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     self.textlabel.hidden = YES;
 }
 
@@ -169,22 +178,22 @@ static NSTimeInterval const durationTime = 3.0;
     self.secondImage = imageObjectSecond;
     self.thirdImage = imageObjectThird;
     // SDWebImage
-    [self.firstImageView setImage:self.firstImage defaultImage:self.defaultImage];
-    [self.secondImageView setImage:self.secondImage defaultImage:self.defaultImage];
-    [self.thirdImageView setImage:self.thirdImage defaultImage:self.defaultImage];
+    [self.firstImageView.imageBrowseView setImage:self.firstImage defaultImage:self.defaultImage];
+    [self.secondImageView.imageBrowseView setImage:self.secondImage defaultImage:self.defaultImage];
+    [self.thirdImageView.imageBrowseView setImage:self.thirdImage defaultImage:self.defaultImage];
 }
 
 // 设置页码控制器隐藏或显示
 - (void)setPageControlHidden
 {
-    if (ImagePageControl == _pageMode)
+    if (SYImageBrowsePageControl == _pageMode)
     {
         self.pagelabel.hidden = YES;
         
         // self.pageControl.hidden = NO;
         self.pageControl.hidden = !_showPageControl;
     }
-    else if (ImagePagelabel == _pageMode)
+    else if (SYImageBrowsePagelabel == _pageMode)
     {
         // self.pagelabel.hidden = NO;
         self.pagelabel.hidden = !_showPageControl;
@@ -209,11 +218,11 @@ static NSTimeInterval const durationTime = 3.0;
     }
     else
     {
-        if (pageControlAlignmentCenter == self.pageAlignmentMode)
+        if (SYImageBrowsePageControlAlignmentCenter == self.pageAlignmentMode)
         {
             originXPageControl = (CGRectGetWidth(self.bounds) - widthPageControl) / 2;
         }
-        else if (pageControlAlignmentRight == self.pageAlignmentMode)
+        else if (SYImageBrowsePageControlAlignmentRight == self.pageAlignmentMode)
         {
             originXPageControl = (CGRectGetWidth(self.bounds) - widthPageControl - originXY);
         }
@@ -258,7 +267,7 @@ static NSTimeInterval const durationTime = 3.0;
 
 #pragma mark - 响应事件
 
-- (void)hiddenClick
+- (void)currentImageClick
 {
     if (self.imageSelected)
     {
@@ -278,11 +287,14 @@ static NSTimeInterval const durationTime = 3.0;
     [self.images removeObjectAtIndex:self.currentPage];
     // 改变标题源
     [self.titles removeObjectAtIndex:self.currentPage];
+    // 总页数
     self.pageCount = self.images.count;
+    // 改变当前页
     if (self.currentPage >= self.pageCount - 1)
     {
         self.currentPage = (1 == self.pageCount ? 0 : (self.pageCount - 1));
     }
+    // 重置视图
     if (1 <= self.pageCount)
     {
         [self resetPageUI];
@@ -293,9 +305,21 @@ static NSTimeInterval const durationTime = 3.0;
     {
         [self removeFromSuperview];
     }
+    // 重置页码
+    self.pageControl.numberOfPages = self.pageCount;
+    self.pageControl.currentPage = self.currentPage;
+    self.pageControl.hidden = (1 == self.pageCount ? YES : NO);
 }
 
 #pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    if (SYImageBrowseViewShow == _browseMode)
+    {
+        self.secondImageView.isOriginal = YES;
+    }
+}
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
@@ -327,7 +351,7 @@ static NSTimeInterval const durationTime = 3.0;
     }
 }
 
-#pragma mark - setter
+#pragma mark - getter
 
 #pragma mark 图片视图
 
@@ -350,48 +374,52 @@ static NSTimeInterval const durationTime = 3.0;
 
 // SDWebImage
 
-- (UIImageView *)firstImageView
+- (SYImageBrowseScrollView *)firstImageView
 {
     if (!_firstImageView)
     {
-        _firstImageView = [[SYImageBrowseView alloc] init];
+        _firstImageView = [[SYImageBrowseScrollView alloc] init];
         _firstImageView.backgroundColor = [UIColor clearColor];
-        _firstImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _firstImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFill;
+        
+        _firstImageView.isDoubleEnable = NO;
     }
     
     return _firstImageView;
 }
 
-- (UIImageView *)secondImageView
+- (SYImageBrowseScrollView *)secondImageView
 {
     if (!_secondImageView)
     {
-        _secondImageView = [[SYImageBrowseView alloc] init];
+        _secondImageView = [[SYImageBrowseScrollView alloc] init];
         _secondImageView.backgroundColor = [UIColor clearColor];
-        _secondImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _secondImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFill;
+        
+        _secondImageView.isDoubleEnable = NO;
         
         SYImageBrowse __weak *weakSelf = self;
-        _secondImageView.imageClick = ^(){
-            [weakSelf hiddenClick];
+        _secondImageView.imageBrowseView.imageClick = ^(){
+            [weakSelf currentImageClick];
         };
     }
     
     return _secondImageView;
 }
 
-- (UIImageView *)thirdImageView
+- (SYImageBrowseScrollView *)thirdImageView
 {
     if (!_thirdImageView)
     {
-        _thirdImageView = [[SYImageBrowseView alloc] init];
+        _thirdImageView = [[SYImageBrowseScrollView alloc] init];
         _thirdImageView.backgroundColor = [UIColor clearColor];
-        _thirdImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _thirdImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFill;
+
+        _thirdImageView.isDoubleEnable = NO;
     }
     
     return _thirdImageView;
 }
-
-
 
 - (UIPageControl *)pageControl
 {
@@ -466,8 +494,6 @@ static NSTimeInterval const durationTime = 3.0;
     return _scrollTimer;
 }
 
-#pragma mark getter
-
 - (CGFloat)currentOffX
 {
     return CGRectGetWidth(self.mainScrollView.bounds);
@@ -528,13 +554,13 @@ static NSTimeInterval const durationTime = 3.0;
             }
             
             // SDWebImage
-            [self.firstImageView setImage:self.firstImage defaultImage:self.defaultImage];
-            [self.secondImageView setImage:self.secondImage defaultImage:self.defaultImage];
-            [self.thirdImageView setImage:self.thirdImage defaultImage:self.defaultImage];
+            [self.firstImageView.imageBrowseView setImage:self.firstImage defaultImage:self.defaultImage];
+            [self.secondImageView.imageBrowseView setImage:self.secondImage defaultImage:self.defaultImage];
+            [self.thirdImageView.imageBrowseView setImage:self.thirdImage defaultImage:self.defaultImage];
             
             if (self.isAutoPlay)
             {
-                //                [self startTimer];
+                // [self startTimer];
                 [self performSelector:@selector(startTimer) withObject:nil afterDelay:durationTime];
             }
         }
@@ -552,29 +578,36 @@ static NSTimeInterval const durationTime = 3.0;
     }
 }
 
-- (void)setBrowseMode:(ImageBrowseMode)browseMode
+- (void)setBrowseMode:(SYImageBrowseMode)browseMode
 {
     _browseMode = browseMode;
-    if (ImageBrowseAdvertisement == _browseMode)
+    if (SYImageBrowseAdvertisement == _browseMode)
     {
         // 可以点击跳转其他视图，可以设置自动播放，可以循环播放
         // 不能点击退出浏览，不能有删除按钮，不能定位第N张图片
     }
-    else if (ImageBrowseView == _browseMode)
+    else if (SYImageBrowseViewShow == _browseMode)
     {
         // 不可以点击跳转其他视图，不可以自动播
         // 可以点击退出浏览，可以有删除按钮，可以定位第N张图片，可以循环播放
+        
+        if (!_isAutoPlay)
+        {
+            self.firstImageView.isDoubleEnable = YES;
+            self.secondImageView.isDoubleEnable = YES;
+            self.thirdImageView.isDoubleEnable = YES;
+        }
     }
 }
 
-- (void)setPageMode:(ImagePageMode)pageMode
+- (void)setPageMode:(SYImageBrowsePageMode)pageMode
 {
     _pageMode = pageMode;
     
     [self setPageControlHidden];
 }
 
-- (void)setPageAlignmentMode:(PageControlAlignmentMode)pageAlignmentMode
+- (void)setPageAlignmentMode:(SYImageBrowsePageControlAlignmentMode)pageAlignmentMode
 {
     _pageAlignmentMode = pageAlignmentMode;
     
@@ -603,6 +636,18 @@ static NSTimeInterval const durationTime = 3.0;
     self.textlabel.hidden = !_showText;
 }
 
+- (void)setTextBgroundColor:(UIColor *)textBgroundColor
+{
+    _textBgroundColor = textBgroundColor;
+    self.textlabel.backgroundColor = _textBgroundColor;
+}
+
+- (void)setTextColor:(UIColor *)textColor
+{
+    _textColor = textColor;
+    self.textlabel.textColor = _textColor;
+}
+
 - (void)setShowPageControl:(BOOL)showPageControl
 {
     _showPageControl = showPageControl;
@@ -610,18 +655,18 @@ static NSTimeInterval const durationTime = 3.0;
     [self setPageControlHidden];
 }
 
-- (void)setTextMode:(TextAlignmentMode)textMode
+- (void)setTextMode:(SYImageBrowseTextAlignmentMode)textMode
 {
     _textMode = textMode;
-    if (textAlignmentLeft == _textMode)
+    if (SYImageBrowseTextAlignmentLeft == _textMode)
     {
         self.textlabel.textAlignment = NSTextAlignmentLeft;
     }
-    else if (textAlignmentCenter == _textMode)
+    else if (SYImageBrowseTextAlignmentCenter == _textMode)
     {
         self.textlabel.textAlignment = NSTextAlignmentCenter;
     }
-    else if (textAlignmentLeft == _textMode)
+    else if (SYImageBrowseTextAlignmentLeft == _textMode)
     {
         self.textlabel.textAlignment = NSTextAlignmentRight;
     }
@@ -629,6 +674,13 @@ static NSTimeInterval const durationTime = 3.0;
 
 - (void)setShowDeleteButton:(BOOL)showDeleteButton
 {
+    if (_browseMode == SYImageBrowseAdvertisement)
+    {
+        // 广告轮播图模式时，隐藏
+        self.deleteButton.hidden = YES;
+        return;
+    }
+    
     _showDeleteButton = showDeleteButton;
     
     self.deleteButton.hidden = !_showDeleteButton;
@@ -638,21 +690,21 @@ static NSTimeInterval const durationTime = 3.0;
     }
 }
 
-- (void)setImageContentMode:(ImageContentModeMode)imageContentMode
+- (void)setImageContentMode:(SYImageBrowseContentModeMode)imageContentMode
 {
     _imageContentMode = imageContentMode;
     
-    if (ImageContentFit == _imageContentMode)
+    if (SYImageBrowseContentFit == _imageContentMode)
     {
-        self.firstImageView.contentMode = UIViewContentModeScaleAspectFit;
-        self.secondImageView.contentMode = UIViewContentModeScaleAspectFit;
-        self.thirdImageView.contentMode = UIViewContentModeScaleAspectFit;
+        self.firstImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFit;
+        self.secondImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFit;
+        self.thirdImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFit;
     }
-    else if (ImageContentFill == _imageContentMode)
+    else if (SYImageBrowseContentFill == _imageContentMode)
     {
-        self.firstImageView.contentMode = UIViewContentModeScaleAspectFill;
-        self.secondImageView.contentMode = UIViewContentModeScaleAspectFill;
-        self.thirdImageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.firstImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFill;
+        self.secondImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFill;
+        self.thirdImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFill;
     }
 }
 
@@ -681,7 +733,7 @@ static NSTimeInterval const durationTime = 3.0;
     
     if (_isAutoPlay)
     {
-        //        [self startTimer];
+        // [self startTimer];
         [self performSelector:@selector(startTimer) withObject:nil afterDelay:durationTime];
     }
     else

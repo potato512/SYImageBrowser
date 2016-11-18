@@ -11,27 +11,27 @@
 @implementation SYImageBrowseHelper
 
 /// 获取图片类型
-+ (ImageType)getImageType:(id)object
++ (SYImageType)getImageType:(id)object
 {
-    ImageType type = ImageTypeData;
+    SYImageType type = SYImageTypeData;
     
     if ([object isKindOfClass:[NSString class]])
     {
         if ([object hasPrefix:@"http://"] || [object hasPrefix:@"https://"])
         {
             // 图片网络地址，即http://，或https://
-            type = ImageTypeUrl;
+            type = SYImageTypeUrl;
         }
         else
         {
             // 图片名称，即NSString类型
-            type = ImageTypeName;
+            type = SYImageTypeName;
         }
     }
     else if ([object isKindOfClass:[UIImage class]])
     {
         // 图片，即UIImage类型
-        type = ImageTypeData;
+        type = SYImageTypeData;
     }
     
     return type;
@@ -58,6 +58,21 @@
     [attributedStr addAttribute:(bgColor ? NSBackgroundColorAttributeName : NSForegroundColorAttributeName)
                           value:color
                           range:range];
+}
+
+/// 删除子视图
+void SYImageBrowseRemoveSubViews(UIView *view)
+{
+    if (view)
+    {
+        NSInteger count = view.subviews.count;
+        count -= 1;
+        for (NSInteger i = count; i >= 0; i--)
+        {
+            UIView *subview = view.subviews[i];
+            [subview removeFromSuperview];
+        }
+    }
 }
 
 @end
