@@ -55,7 +55,7 @@
     NSArray *titles = @[@"01.png", @"02.png", @"03.png", @"04.png", @"05.png", @"06.png"];
     
     CGRect rect = self.view.bounds;
-    rect = CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height);
+    rect = CGRectMake(0.0, 0.0, self.view.frame.size.width, 200.0);
     // 实例化
     SYImageBrowse *imageBrowse = [[SYImageBrowse alloc] initWithFrame:rect view:self.view];
     imageBrowse.autoresizingMask = UIViewAutoresizingFlexibleHeight;
@@ -75,7 +75,8 @@
     imageBrowse.textBgroundColor = [UIColor redColor];
     imageBrowse.textColor = [UIColor yellowColor];
     // 自动播放
-    imageBrowse.isAutoPlay = NO;
+    imageBrowse.isAutoPlay = YES;
+    imageBrowse.autoPlayDuration = 5.0;
     // 图片样式
     imageBrowse.imageContentMode = SYImageBrowseContentFit;
     // 数据源

@@ -55,11 +55,23 @@
     
     _isDoubleEnable = YES;
     [self addSubview:self.imageBrowseView];
+    
+    [self doubleRecognizer];
 }
 
 #pragma mark - 响应
 
-- (void)doubleClick:(UITapGestureRecognizer *)recognizer
+- (void)doubleRecognizer
+{
+    // 双击事件放大，或缩小手势
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleClick)];
+    tapRecognizer.numberOfTapsRequired = 2;
+    
+    self.userInteractionEnabled = YES;
+    [self addGestureRecognizer:tapRecognizer];
+}
+
+- (void)doubleClick
 {
     if (!_isDoubleEnable)
     {
@@ -112,12 +124,6 @@
     if (_imageBrowseView == nil)
     {
         _imageBrowseView = [[SYImageBrowseView alloc] init];
-        
-        // 双击事件放大，或缩小手势
-        UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleClick:)];
-        tapRecognizer.numberOfTapsRequired = 2;
-        _imageBrowseView.userInteractionEnabled = YES;
-        [_imageBrowseView addGestureRecognizer:tapRecognizer];
     }
     
     return _imageBrowseView;

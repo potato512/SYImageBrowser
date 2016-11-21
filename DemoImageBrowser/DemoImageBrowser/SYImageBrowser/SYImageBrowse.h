@@ -108,6 +108,8 @@
 
 /// 自动播放（默认未启用，启用自动播放，或停止播放）
 @property (nonatomic, assign) BOOL isAutoPlay;
+/// 自动播放时间长（默认3秒）
+@property (nonatomic, assign) NSTimeInterval autoPlayDuration;
 
 /// 默认图片
 @property (nonatomic, strong) UIImage *defaultImage;

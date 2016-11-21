@@ -14,7 +14,6 @@ static CGFloat const sizePageControl = 15.0;
 static CGFloat const heightPageControl = 30.0;
 static CGFloat const heightlabel = 30.0;
 static CGFloat const sizePagelabel = 40.0;
-static NSTimeInterval const durationTime = 3.0;
 
 #define widthImage (50.0 * self.frame.size.width / SYImageBrowseWidth)
 
@@ -58,6 +57,7 @@ static NSTimeInterval const durationTime = 3.0;
     {
         self.layer.masksToBounds = YES;
         self.clipsToBounds = YES;
+        _autoPlayDuration = 3.0;
         
         self.superView = [UIApplication sharedApplication].delegate.window;
         self.frame = self.superView.bounds;
@@ -74,6 +74,7 @@ static NSTimeInterval const durationTime = 3.0;
     {
         self.layer.masksToBounds = YES;
         self.clipsToBounds = YES;
+        _autoPlayDuration = 3.0;
         
         self.superView = [UIApplication sharedApplication].delegate.window;
         self.frame = self.superView.bounds;
@@ -102,6 +103,8 @@ static NSTimeInterval const durationTime = 3.0;
     [super removeFromSuperview];
 }
 
+#pragma mark - 视图
+
 // 图片视图
 - (void)setUI
 {
@@ -112,7 +115,7 @@ static NSTimeInterval const durationTime = 3.0;
     
     self.firstImageView.frame = CGRectMake(0.0, 0.0, CGRectGetWidth(self.mainScrollView.bounds), CGRectGetHeight(self.mainScrollView.bounds));
     [self.mainScrollView addSubview:self.firstImageView];
-    self.pageControl.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    self.firstImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     
     self.secondImageView.frame = CGRectMake(CGRectGetWidth(self.mainScrollView.bounds), 0.0, CGRectGetWidth(self.mainScrollView.bounds), CGRectGetHeight(self.mainScrollView.bounds));
     [self.mainScrollView addSubview:self.secondImageView];
@@ -353,8 +356,6 @@ static NSTimeInterval const durationTime = 3.0;
 
 #pragma mark - getter
 
-#pragma mark 图片视图
-
 - (UIScrollView *)mainScrollView
 {
     if (!_mainScrollView)
@@ -372,7 +373,7 @@ static NSTimeInterval const durationTime = 3.0;
     return _mainScrollView;
 }
 
-// SDWebImage
+// SDWebImage SYImageBrowseScrollView/SYImageBrowseView
 
 - (SYImageBrowseScrollView *)firstImageView
 {
@@ -380,7 +381,7 @@ static NSTimeInterval const durationTime = 3.0;
     {
         _firstImageView = [[SYImageBrowseScrollView alloc] init];
         _firstImageView.backgroundColor = [UIColor clearColor];
-        _firstImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFill;
+        _firstImageView.contentMode = UIViewContentModeScaleAspectFit;
         
         _firstImageView.isDoubleEnable = NO;
     }
@@ -394,7 +395,7 @@ static NSTimeInterval const durationTime = 3.0;
     {
         _secondImageView = [[SYImageBrowseScrollView alloc] init];
         _secondImageView.backgroundColor = [UIColor clearColor];
-        _secondImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFill;
+        _secondImageView.contentMode = UIViewContentModeScaleAspectFit;
         
         _secondImageView.isDoubleEnable = NO;
         
@@ -413,7 +414,7 @@ static NSTimeInterval const durationTime = 3.0;
     {
         _thirdImageView = [[SYImageBrowseScrollView alloc] init];
         _thirdImageView.backgroundColor = [UIColor clearColor];
-        _thirdImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFill;
+        _thirdImageView.contentMode = UIViewContentModeScaleAspectFit;
 
         _thirdImageView.isDoubleEnable = NO;
     }
@@ -482,24 +483,12 @@ static NSTimeInterval const durationTime = 3.0;
     return _deleteButton;
 }
 
-- (NSTimer *)scrollTimer
-{
-    if (!_scrollTimer)
-    {
-        _scrollTimer = [NSTimer scheduledTimerWithTimeInterval:durationTime target:self selector:@selector(autoPlayScroll) userInfo:nil repeats:YES];
-        
-        [self stopTimer];
-    }
-    
-    return _scrollTimer;
-}
-
 - (CGFloat)currentOffX
 {
     return CGRectGetWidth(self.mainScrollView.bounds);
 }
 
-#pragma mark 数据源
+#pragma mark - setter
 
 - (void)setImageSource:(NSArray *)imageSource
 {
@@ -561,7 +550,7 @@ static NSTimeInterval const durationTime = 3.0;
             if (self.isAutoPlay)
             {
                 // [self startTimer];
-                [self performSelector:@selector(startTimer) withObject:nil afterDelay:durationTime];
+                [self performSelector:@selector(startTimer) withObject:nil afterDelay:_autoPlayDuration];
             }
         }
     }
@@ -734,34 +723,11 @@ static NSTimeInterval const durationTime = 3.0;
     if (_isAutoPlay)
     {
         // [self startTimer];
-        [self performSelector:@selector(startTimer) withObject:nil afterDelay:durationTime];
+        [self performSelector:@selector(startTimer) withObject:nil afterDelay:_autoPlayDuration];
     }
     else
     {
         [self stopTimer];
-    }
-}
-
-#pragma mark - 自动播放
-
-- (void)autoPlayScroll
-{
-    if (1 < self.pageCount)
-    {
-        [UIView animateWithDuration:0.3 animations:^{
-            
-            [self.mainScrollView setContentOffset:CGPointMake(CGRectGetWidth(self.mainScrollView.bounds) * 2, 0.0)];
-            
-        } completion:^(BOOL finished) {
-            
-            // 向左翻页
-            self.currentPage++;
-            self.currentPage = (self.currentPage >= self.pageCount ? 0 : self.currentPage);
-            [self resetPageUI];
-            
-            // 改变offset
-            [self.mainScrollView setContentOffset:CGPointMake(CGRectGetWidth(self.mainScrollView.bounds), 0.0) animated:NO];
-        }];
     }
 }
 
@@ -787,6 +753,40 @@ static NSTimeInterval const durationTime = 3.0;
             return ;
         }
         [self.scrollTimer setFireDate:[NSDate date]];
+    }
+}
+
+- (NSTimer *)scrollTimer
+{
+    if (!_scrollTimer)
+    {
+        _scrollTimer = [NSTimer scheduledTimerWithTimeInterval:_autoPlayDuration target:self selector:@selector(autoPlayScroll) userInfo:nil repeats:YES];
+        
+        [self stopTimer];
+    }
+    
+    return _scrollTimer;
+}
+
+// 自动播放
+- (void)autoPlayScroll
+{
+    if (1 < self.pageCount)
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            [self.mainScrollView setContentOffset:CGPointMake(CGRectGetWidth(self.mainScrollView.bounds) * 2, 0.0)];
+            
+        } completion:^(BOOL finished) {
+            
+            // 向左翻页
+            self.currentPage++;
+            self.currentPage = (self.currentPage >= self.pageCount ? 0 : self.currentPage);
+            [self resetPageUI];
+            
+            // 改变offset
+            [self.mainScrollView setContentOffset:CGPointMake(CGRectGetWidth(self.mainScrollView.bounds), 0.0) animated:NO];
+        }];
     }
 }
 

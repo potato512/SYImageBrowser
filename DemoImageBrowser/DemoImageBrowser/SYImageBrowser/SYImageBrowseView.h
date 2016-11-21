@@ -10,7 +10,7 @@
 
 @interface SYImageBrowseView : UIImageView
 
-/// 点击响应回调
+/// 点击响应回调-单击
 @property (nonatomic, copy) void (^imageClick)(void);
 
 /// 设置图片（网络图片/本地图片+默认图片）

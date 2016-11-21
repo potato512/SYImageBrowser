@@ -36,12 +36,17 @@
     return self;
 }
 
+#pragma mark - 手势
+
 - (void)addTapGesture
 {
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClick)];
+    
     self.userInteractionEnabled = self;
     [self addGestureRecognizer:tapRecognizer];
 }
+
+#pragma mark - 交互
 
 - (void)tapClick
 {
@@ -50,6 +55,8 @@
         self.imageClick();
     }
 }
+
+#pragma mark - 图片设置
 
 /// 设置图片（网络图片/本地图片+默认图片）
 - (void)setImage:(id)object defaultImage:(UIImage *)image
