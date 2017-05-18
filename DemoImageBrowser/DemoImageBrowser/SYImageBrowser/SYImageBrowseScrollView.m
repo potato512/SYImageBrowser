@@ -7,7 +7,6 @@
 //
 
 #import "SYImageBrowseScrollView.h"
-#import "SYImageBrowseHelper.h"
 
 @interface SYImageBrowseScrollView () <UIScrollViewDelegate>
 
@@ -119,11 +118,11 @@
 
 #pragma mark - getter
 
-- (SYImageBrowseView *)imageBrowseView
+- (SYImageBrowseUIImageView *)imageBrowseView
 {
     if (_imageBrowseView == nil)
     {
-        _imageBrowseView = [[SYImageBrowseView alloc] init];
+        _imageBrowseView = [[SYImageBrowseUIImageView alloc] init];
     }
     
     return _imageBrowseView;

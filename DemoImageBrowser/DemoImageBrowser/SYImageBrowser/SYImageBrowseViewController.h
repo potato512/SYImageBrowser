@@ -5,20 +5,10 @@
 //  Created by zhangshaoyu on 15/7/10.
 //  Copyright (c) 2015年 zhangshaoyu. All rights reserved.
 //  图片浏览视图控制器（操作类型：删除图片、双击放大缩小图片、单击图片）
-//  图片浏览（https://github.com/potato512/SYImageBrowser）
+//  github：https://github.com/potato512/SYImageBrowser
 
 #import <UIKit/UIKit.h>
 #import "SYImageBrowseHelper.h"
-
-/// 删除按钮显示类型（不显示，显示文字标题，显示图标）
-typedef NS_ENUM(NSInteger, SYImageBrowserDeleteType)
-{
-    /// 删除按钮显示类型-显示文字标题
-    SYImageBrowserDeleteTypeText = 1,
-    
-    /// 删除按钮显示类型-显示图标
-    SYImageBrowserDeleteTypeImage = 2
-};
 
 @interface SYImageBrowseViewController : UIViewController
 
@@ -29,7 +19,7 @@ typedef NS_ENUM(NSInteger, SYImageBrowserDeleteType)
 @property (nonatomic, assign) NSInteger imageIndex;
 
 /// 图片显示样式（等比例显示，或放大显示，默认放大）
-@property (nonatomic, assign) SYImageBrowseContentModeMode imageContentMode;
+@property (nonatomic, assign) SYImageBrowseContentMode imageContentMode;
 
 /// 删除按钮显示类型（默认显示不显示，显示文字标题，显示图标）
 @property (nonatomic, assign) SYImageBrowserDeleteType deleteType;
@@ -43,6 +33,8 @@ typedef NS_ENUM(NSInteger, SYImageBrowserDeleteType)
 @property (nonatomic, strong) UIFont *deleteTitleFont;
 /// 标题图标（默认垃圾桶）
 @property (nonatomic, strong) UIImage *deleteImage;
+/// 背景颜色
+@property (nonatomic, strong) UIColor *imageBgColor;
 
 /// 图片删除回调
 @property (nonatomic, copy) void (^ImageDelete)(NSArray *array);

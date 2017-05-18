@@ -12,7 +12,7 @@
 @interface SYImageBrowseScrollView : UIScrollView
 
 /// 图片
-@property (nonatomic, strong) SYImageBrowseView *imageBrowseView;
+@property (nonatomic, strong) SYImageBrowseUIImageView *imageBrowseView;
 
 /// 开启或关闭双击事件（默认开启）
 @property (nonatomic, assign) BOOL isDoubleEnable;

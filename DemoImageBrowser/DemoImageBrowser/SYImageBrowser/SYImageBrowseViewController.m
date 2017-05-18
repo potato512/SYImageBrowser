@@ -7,7 +7,6 @@
 //
 
 #import "SYImageBrowseViewController.h"
-#import "SYImageBrowseHelper.h"
 
 static NSInteger const tagImageView = 1000;
 #define WidthView (self.mainScrollView.frame.size.width)
@@ -49,6 +48,7 @@ static NSInteger const tagImageView = 1000;
 - (void)loadView
 {
     [super loadView];
+    self.view.backgroundColor = [UIColor whiteColor];
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
     {
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
@@ -87,6 +87,7 @@ static NSInteger const tagImageView = 1000;
 - (void)setUI
 {
     self.mainScrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    self.mainScrollView.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - 64.0);
     [self.view addSubview:self.mainScrollView];
     self.mainScrollView.delegate = self;
     self.mainScrollView.pagingEnabled = YES;
@@ -94,7 +95,6 @@ static NSInteger const tagImageView = 1000;
     self.mainScrollView.showsVerticalScrollIndicator = NO;
     self.mainScrollView.showsHorizontalScrollIndicator = NO;
     self.mainScrollView.backgroundColor = [UIColor blackColor];
-//    self.mainScrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     
     [self resetUI];
 }
@@ -135,7 +135,7 @@ static NSInteger const tagImageView = 1000;
     {
         title = @"0/0";
     }
-    self.title = title;
+    self.navigationItem.title = title;
 }
 
 #pragma mark - 响应事件
@@ -170,6 +170,8 @@ static NSInteger const tagImageView = 1000;
     }
 }
 
+#pragma mark - getter
+
 #pragma mark - setter
 
 - (void)setImageArray:(NSArray *)imageArray
@@ -191,6 +193,15 @@ static NSInteger const tagImageView = 1000;
     self.currentIndex = _imageIndex;
     
     [self resetUI];
+}
+
+- (void)setImageBgColor:(UIColor *)imageBgColor
+{
+    _imageBgColor = imageBgColor;
+    if (_imageBgColor)
+    {
+        self.mainScrollView.backgroundColor = _imageBgColor;
+    }
 }
 
 #pragma mark - UIScrollViewDelegate
