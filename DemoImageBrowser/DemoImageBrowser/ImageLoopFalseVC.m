@@ -71,12 +71,12 @@
     imageBrowse.pageMode = SYImageBrowsePagelabel;
     imageBrowse.pageLabel.backgroundColor = [UIColor yellowColor];
     imageBrowse.pageLabel.textColor = [UIColor redColor];
-    imageBrowse.pageLabelPoint = CGPointMake(10.0, 10.0);
+    imageBrowse.pageLabelFrame = CGRectMake(10.0, 10.0, 30.0, 30.0);
     //
     imageBrowse.pageIndex = 3;
     // 标题
     imageBrowse.showText = YES;
-    imageBrowse.textLabelPoint = CGPointMake(10.0, 30.0);
+    imageBrowse.textLabelFrame = CGRectMake(10.0, 40.0, 60.0, 30.0);
     //
     imageBrowse.showSwitchButton = YES;
     // 图片样式
@@ -93,12 +93,12 @@
         NSLog(@"imageSelected %ld", index);
     };
     // 删除按钮（浏览模式才有效）
-    imageBrowse.showDeleteButton = YES;
-    imageBrowse.imageDelete = ^(NSInteger index){
-        NSLog(@"imageDelete %ld", index);
+    imageBrowse.showButton = YES;
+    imageBrowse.imageManager = ^(SYImageBrowseButtonType type, NSInteger index){
+        NSLog(@"imageDelete %ld", type);
     };
-    //
-    [imageBrowse reloadUIView];
+    // 刷新数据
+    [imageBrowse reloadData];
 }
 
 @end

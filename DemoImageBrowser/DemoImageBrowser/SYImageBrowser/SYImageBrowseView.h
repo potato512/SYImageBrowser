@@ -36,25 +36,26 @@
 
 /// 页码pageControl（默认左上角显示）
 @property (nonatomic, strong, readonly) UIPageControl *pageControl;
-/// 页码pageControl位置（默认左上角）
-@property (nonatomic, assign) CGPoint pageControlPoint;
+/// 页码pageControl位置（默认右下角）
+@property (nonatomic, assign) CGRect pageControlFrame;
 
-/// 页码pageLabel（默认不显示）
+/// 页码pageLabel（默认不显示，显示时右下角）
 @property (nonatomic, strong, readonly) UILabel *pageLabel;
 /// 页码pageLabel位置（默认右下角）
-@property (nonatomic, assign) CGPoint pageLabelPoint;
+@property (nonatomic, assign) CGRect pageLabelFrame;
 
 /// 是否显示标题（默认不显示）
 @property (nonatomic, assign) BOOL showText;
-/// 标题标签（默认不显示，且字符居中对齐）
+/// 标题标签（默认不显示，显示时在左下角，且字符居中对齐）
 @property (nonatomic, strong, readonly) UILabel *textLabel;
-/// 标题标签textLabel位置（默认居中）
-@property (nonatomic, assign) CGPoint textLabelPoint;
+/// 标题标签textLabel位置（默认左下角）
+@property (nonatomic, assign) CGRect textLabelFrame;
 
-/// 是否显示删除按钮（默认隐藏）
-@property (nonatomic, assign) BOOL showDeleteButton;
-/// 图片删除（删除当前浏览的某一张图片）
-@property (nonatomic, copy) void (^imageDelete)(NSInteger index);
+#warning 待完善
+/// 是否显示图片操作按钮（默认隐藏NO，注意浏览模式下有效）
+@property (nonatomic, assign) BOOL showButton;
+/// 图片操作回调（注意浏览模式下有效）
+@property (nonatomic, copy) void (^imageManager)(SYImageBrowseButtonType type, NSInteger index);
 
 /// 是否显示左右切换按钮（默认隐藏）
 @property (nonatomic, assign) BOOL showSwitchButton;
@@ -79,7 +80,7 @@
 @property (nonatomic, strong) UIImage *defaultImage;
 
 /// 刷新信息（最后调用）
-- (void)reloadUIView;
+- (void)reloadData;
 
 @end
 
@@ -89,41 +90,60 @@
  NSArray *images = @[@"01.png", @"02.png", @"03.png", @"04.png", @"05.png", @"06.png"];
  NSArray *titles = @[@"01.png", @"02.png", @"03.png", @"04.png", @"05.png", @"06.png"];
  
- CGRect rect = self.view.bounds;
- rect = CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height);
  // 实例化
- SYImageBrowse *imageBrowse = [[SYImageBrowse alloc] initWithFrame:rect view:self.view];
- imageBrowse.autoresizingMask = UIViewAutoresizingFlexibleHeight;
- imageBrowse.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.3];
- // 类型
- imageBrowse.browseMode = SYImageBrowseAdvertisement;
- // 页码
- imageBrowse.pageMode = SYImageBrowsePageControl;
- imageBrowse.pageAlignmentMode = SYImageBrowsePageControlAlignmentCenter;
- imageBrowse.pageNormalColor = [UIColor redColor];
- imageBrowse.pageSelectedColor = [UIColor greenColor];
- imageBrowse.showPageControl = YES;
- imageBrowse.pageIndex = 3;
+ SYImageBrowseView *imageView = [[SYImageBrowseView alloc] initWithFrame:self.view.bounds view:self.view];
+ imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+ imageView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.3];
+ // 循环模式
+ imageView.loopType = SYImageBrowseLoopTypeTrue;
+ // 类型 SYImageBrowseViewShow SYImageBrowseAdvertisement
+ imageView.browseMode = SYImageBrowseViewShow;
+ // 页码control
+ imageView.pageMode = SYImageBrowsePageControl;
+ imageView.pageControl.backgroundColor = [UIColor yellowColor];
+ imageView.pageControl.currentPageIndicatorTintColor = [UIColor redColor];
+ imageView.pageControl.pageIndicatorTintColor = [UIColor greenColor];
+ imageView.pageControlFrame = CGRectMake(10.0, 10.0, 30.0, 30.0);
+ // 页码label
+ // imageView.pageMode = SYImageBrowsePagelabel;
+ // imageView.pageLabel.backgroundColor = [UIColor yellowColor];
+ // imageView.pageLabel.textColor = [UIColor redColor];
+ // imageView.pageLabelFrame = CGRectMake(10.0, 10.0, 30.0, 30.0);
+ // 当前页码
+ imageView.pageIndex = 3;
  // 标题
- imageBrowse.showText = YES;
- imageBrowse.textMode = SYImageBrowseTextAlignmentCenter;
- imageBrowse.textBgroundColor = [UIColor redColor];
- imageBrowse.textColor = [UIColor yellowColor];
- // 自动播放
- imageBrowse.isAutoPlay = NO;
- // 图片样式
- imageBrowse.imageContentMode = SYImageBrowseContentFit;
+ imageView.showText = YES;
+ imageView.textLabelFrame = CGRectMake(50.0.0, 10.0, 80.0, 30.0);
+ //
+ imageView.showSwitchButton = YES;
+ // 自动播放 YES,NO
+ imageView.isAutoPlay = NO;
+ imageView.animationTime = 3.0;
+ // 图片样式 SYImageBrowseContentFill,SYImageBrowseContentFit
+ imageView.imageContentMode = SYImageBrowseContentFill;
+ // 默认图片
+ imageView.defaultImage = [UIImage imageNamed:@"DefaultImage"];
  // 数据源
- imageBrowse.imageSource = images;
- imageBrowse.titleSource = titles;
+ imageView.images = self.images;
+ imageView.titles = self.titles;
  // 交互
- imageBrowse.imageSelected = ^(NSInteger index){
- NSLog(@"imageSelected %ld", index);
+ WeakSYImageBrowse;
+ imageView.imageClick = ^(NSInteger index){
+     NSLog(@"imageSelected %ld", index);
+     
+     SYImageBrowseViewController *browseVC = [SYImageBrowseViewController new];
+     browseVC.imageArray = weakSYImageBrowse.images;
+     browseVC.imageIndex = 2;
+     [browseVC reloadData];
+     [weakSYImageBrowse.navigationController pushViewController:browseVC animated:YES];
  };
- imageBrowse.showDeleteButton = YES;
- imageBrowse.imageDelete = ^(NSInteger index){
- NSLog(@"imageDelete %ld", index);
+ // 删除按钮（浏览模式才有效）
+ imageView.showButton = YES;
+ imageView.imageManager = ^(SYImageBrowseButtonType type, NSInteger index){
+     NSLog(@"imageDelete %ld", type);
  };
+ // 刷新数据
+ [imageView reloadData];
  
  */
 

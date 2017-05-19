@@ -1,14 +1,14 @@
 //
-//  SYImageBrowseViewLoopTrue.m
+//  SYImageBrowseViewLoopAuto.m
 //  zhangshaoyu
 //
 //  Created by zhangshaoyu on 17/4/28.
 //  Copyright © 2017年 zhangshaoyu. All rights reserved.
 //
 
-#import "SYImageBrowseViewLoopTrue.h"
+#import "SYImageBrowseViewLoopAuto.h"
 
-@interface SYImageBrowseViewLoopTrue () <UIScrollViewDelegate>
+@interface SYImageBrowseViewLoopAuto () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *imagesTmp;
 
@@ -30,7 +30,7 @@
 
 @end
 
-@implementation SYImageBrowseViewLoopTrue
+@implementation SYImageBrowseViewLoopAuto
 
 #pragma mark - 视图初始化
 
@@ -39,8 +39,6 @@
     self = [super initWithFrame:frame];
     if (self)
     {
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
         [self initializeUI];
         [self setUI];
         [self resetUI];
@@ -53,8 +51,6 @@
     self = [super init];
     if (self)
     {
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
         if (view)
         {
             [view addSubview:self];
@@ -78,6 +74,9 @@
 
 - (void)initializeUI
 {
+    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.autoresizesSubviews = YES;
+    
     self.layer.masksToBounds = YES;
     self.clipsToBounds = YES;
 
@@ -85,9 +84,6 @@
     
     self.isAutoPlay = NO;
     self.animationTime = 3.0;
-    
-//    self.pageIndex = 0;
-//    self.isDirectionRight = YES;
 }
 
 // 图片视图
@@ -143,7 +139,23 @@
     }
 }
 
-- (void)reloadUIView
+- (void)autoPlayStatus:(BOOL)start
+{
+    if (_isAutoPlay)
+    {
+        if (start)
+        {
+            [self performSelector:@selector(startTimer) withObject:nil afterDelay:self.animationTime];
+            // [self startTimer];
+        }
+        else
+        {
+            [self stopTimer];
+        }
+    }
+}
+
+- (void)reloadData
 {
     [self resetUI];
     
@@ -221,7 +233,8 @@
 {
     if (self.isAutoPlay)
     {
-        [self startTimer];
+        [self performSelector:@selector(startTimer) withObject:nil afterDelay:self.animationTime];
+        // [self startTimer];
     }
 }
 
@@ -274,6 +287,7 @@
         _imageScrollView.showsHorizontalScrollIndicator = NO;
         _imageScrollView.showsVerticalScrollIndicator = NO;
         _imageScrollView.scrollEnabled = YES;
+        _imageScrollView.bounces = NO;
         
         _imageScrollView.delegate = self;
     }
@@ -290,6 +304,7 @@
         _firstImageView = [[SYImageBrowseScrollView alloc] init];
         _firstImageView.backgroundColor = [UIColor clearColor];
         _firstImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _firstImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         
         _firstImageView.isDoubleEnable = NO;
     }
@@ -304,6 +319,7 @@
         _secondImageView = [[SYImageBrowseScrollView alloc] init];
         _secondImageView.backgroundColor = [UIColor clearColor];
         _secondImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _secondImageView.autoresizingMask =  UIViewAutoresizingFlexibleHeight;
         
         _secondImageView.isDoubleEnable = NO;
         
@@ -323,6 +339,7 @@
         _thirdImageView = [[SYImageBrowseScrollView alloc] init];
         _thirdImageView.backgroundColor = [UIColor clearColor];
         _thirdImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _thirdImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
         
         _thirdImageView.isDoubleEnable = NO;
     }
@@ -353,135 +370,6 @@
         [self.imageScrollView setContentOffset:CGPointMake(self.imageScrollView.bounds.size.width, 0.0) animated:NO];
     }];
 }
-
-
-/*
-- (void)setIsAutoPlay:(BOOL)isAutoPlay
-{
-    _isAutoPlay = isAutoPlay;
-    
-    if (_isAutoPlay)
-    {
-        [self performSelector:@selector(startTimer) withObject:nil afterDelay:self.animationTime];
-    }
-    else
-    {
-        [self stopTimer];
-    }
-}
-*/
-
-/*
-#pragma mark - setter
-
-- (void)setImages:(NSArray *)images
-{
-    _images = images;
-    if (_images && 0 < _images.count)
-    {
-        self.imagesTmp = [[NSMutableArray alloc] initWithArray:_images];
-        self.pageCount = self.imagesTmp.count;
-        self.currentPage = 0;
-        
-        if (0 != self.pageIndex)
-        {
-            NSInteger index = self.pageIndex - 1;
-            self.currentPage = (index < 0 ? 0 : (index >= self.pageCount ? (self.pageCount - 1) : index));
-            
-            // 设置滚动响应
-            self.imageScrollView.scrollEnabled = (1 >= self.pageCount ? NO : YES);
-            
-            // 改变图片视图，标题
-            [self resetPageUI];
-        }
-        else
-        {
-            // 设置滚动响应
-            self.imageScrollView.scrollEnabled = (1 >= self.pageCount ? NO : YES);
-            
-            if (1 >= self.pageCount)
-            {
-                id imageObject = self.imagesTmp.firstObject;
-                
-                self.secondImage = imageObject;
-            }
-            else
-            {
-                id imageObjectFirst = self.imagesTmp.lastObject;
-                id imageObjectSecond = self.imagesTmp.firstObject;
-                id imageObjectThird = self.imagesTmp[1];
-                
-                self.firstImage = imageObjectFirst;
-                self.secondImage = imageObjectSecond;
-                self.thirdImage = imageObjectThird;
-            }
-            
-            // SDWebImage
-            [self.firstImageView.imageBrowseView setImage:self.firstImage defaultImage:self.defaultImage];
-            [self.secondImageView.imageBrowseView setImage:self.secondImage defaultImage:self.defaultImage];
-            [self.thirdImageView.imageBrowseView setImage:self.thirdImage defaultImage:self.defaultImage];
-        }
-
-        if (_isAutoPlay)
-        {
-            [self performSelector:@selector(startTimer) withObject:nil afterDelay:_animationTime];
-            // [self startTimer];
-        }
-    }
-}
-
-- (void)setImageContentMode:(SYImageBrowseContentMode)imageContentMode
-{
-    _imageContentMode = imageContentMode;
-    
-    if (SYImageBrowseContentFit == _imageContentMode)
-    {
-        self.firstImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFit;
-        self.secondImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFit;
-        self.thirdImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFit;
-    }
-    else if (SYImageBrowseContentFill == _imageContentMode)
-    {
-        self.firstImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFill;
-        self.secondImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFill;
-        self.thirdImageView.imageBrowseView.contentMode = UIViewContentModeScaleAspectFill;
-    }
-}
-
-- (void)setIsAutoPlay:(BOOL)isAutoPlay
-{
-    _isAutoPlay = isAutoPlay;
-    
-    if (_isAutoPlay)
-    {
-        [self performSelector:@selector(startTimer) withObject:nil afterDelay:_animationTime];
-        // [self startTimer];
-    }
-    else
-    {
-        [self stopTimer];
-    }
-}
-
-- (void)setPageIndex:(NSInteger)pageIndex
-{
-    _pageIndex = pageIndex;
-    
-    if (0 == self.pageCount)
-    {
-        return;
-    }
-    
-    NSInteger index = _pageIndex;
-    self.currentPage = (index < 0 ? 0 : (index >= self.pageCount ? (self.pageCount - 1) : index));
-    
-    // 设置滚动响应
-    self.imageScrollView.scrollEnabled = (1 >= self.pageCount ? NO : YES);
-    
-    // 改变图片视图，标题
-    [self resetPageUI];
-}
-*/
 
 #pragma mark - 定时器
 
@@ -526,6 +414,11 @@
             self.currentPage++;
             self.currentPage = (self.currentPage >= self.pageCount ? 0 : self.currentPage);
             [self resetPageUI];
+            
+            if (self.imageAutoScroll)
+            {
+                self.imageAutoScroll(self.currentPage);
+            }
             
             // 改变offset
             [self.imageScrollView setContentOffset:CGPointMake(self.imageScrollView.bounds.size.width, 0.0) animated:NO];

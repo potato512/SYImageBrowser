@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A70209591EB2E65E00EC769D /* SYImageBrowseViewLoopTrue.m in Sources */ = {isa = PBXBuildFile; fileRef = A70209581EB2E65E00EC769D /* SYImageBrowseViewLoopTrue.m */; };
-		A702095C1EB2E67800EC769D /* SYImageBrowseViewLoopFalse.m in Sources */ = {isa = PBXBuildFile; fileRef = A702095B1EB2E67800EC769D /* SYImageBrowseViewLoopFalse.m */; };
+		A70209591EB2E65E00EC769D /* SYImageBrowseViewLoopAuto.m in Sources */ = {isa = PBXBuildFile; fileRef = A70209581EB2E65E00EC769D /* SYImageBrowseViewLoopAuto.m */; };
+		A702095C1EB2E67800EC769D /* SYImageBrowseViewLoopHand.m in Sources */ = {isa = PBXBuildFile; fileRef = A702095B1EB2E67800EC769D /* SYImageBrowseViewLoopHand.m */; };
 		A73FA7591E89010B008259A0 /* DefaultImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A73FA7571E89010B008259A0 /* DefaultImage@2x.png */; };
 		A73FA75A1E89010B008259A0 /* DefaultImage_failure@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A73FA7581E89010B008259A0 /* DefaultImage_failure@2x.jpg */; };
 		A7642D411DDEE60600A73CA7 /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7642D401DDEE60600A73CA7 /* ImageViewController.m */; };
@@ -73,10 +73,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A70209571EB2E65E00EC769D /* SYImageBrowseViewLoopTrue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYImageBrowseViewLoopTrue.h; sourceTree = "<group>"; };
-		A70209581EB2E65E00EC769D /* SYImageBrowseViewLoopTrue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYImageBrowseViewLoopTrue.m; sourceTree = "<group>"; };
-		A702095A1EB2E67800EC769D /* SYImageBrowseViewLoopFalse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYImageBrowseViewLoopFalse.h; sourceTree = "<group>"; };
-		A702095B1EB2E67800EC769D /* SYImageBrowseViewLoopFalse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYImageBrowseViewLoopFalse.m; sourceTree = "<group>"; };
+		A70209571EB2E65E00EC769D /* SYImageBrowseViewLoopAuto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYImageBrowseViewLoopAuto.h; sourceTree = "<group>"; };
+		A70209581EB2E65E00EC769D /* SYImageBrowseViewLoopAuto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYImageBrowseViewLoopAuto.m; sourceTree = "<group>"; };
+		A702095A1EB2E67800EC769D /* SYImageBrowseViewLoopHand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYImageBrowseViewLoopHand.h; sourceTree = "<group>"; };
+		A702095B1EB2E67800EC769D /* SYImageBrowseViewLoopHand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYImageBrowseViewLoopHand.m; sourceTree = "<group>"; };
 		A73FA7571E89010B008259A0 /* DefaultImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DefaultImage@2x.png"; sourceTree = "<group>"; };
 		A73FA7581E89010B008259A0 /* DefaultImage_failure@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "DefaultImage_failure@2x.jpg"; sourceTree = "<group>"; };
 		A7642D3F1DDEE60600A73CA7 /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
@@ -265,10 +265,10 @@
 				A7642D521DDEF8E700A73CA7 /* SYDeleteImage@3x.png */,
 				A7642D421DDEF85200A73CA7 /* SYImageBrowseView.h */,
 				A7642D431DDEF85200A73CA7 /* SYImageBrowseView.m */,
-				A70209571EB2E65E00EC769D /* SYImageBrowseViewLoopTrue.h */,
-				A70209581EB2E65E00EC769D /* SYImageBrowseViewLoopTrue.m */,
-				A702095A1EB2E67800EC769D /* SYImageBrowseViewLoopFalse.h */,
-				A702095B1EB2E67800EC769D /* SYImageBrowseViewLoopFalse.m */,
+				A70209571EB2E65E00EC769D /* SYImageBrowseViewLoopAuto.h */,
+				A70209581EB2E65E00EC769D /* SYImageBrowseViewLoopAuto.m */,
+				A702095A1EB2E67800EC769D /* SYImageBrowseViewLoopHand.h */,
+				A702095B1EB2E67800EC769D /* SYImageBrowseViewLoopHand.m */,
 				A7642D4E1DDEF85A00A73CA7 /* SYImageBrowseViewController.h */,
 				A7642D4F1DDEF85A00A73CA7 /* SYImageBrowseViewController.m */,
 				A7642D441DDEF85200A73CA7 /* SYImageBrowseHelper.h */,
@@ -496,7 +496,7 @@
 				A7C296191DDDAF62004C5457 /* UIImage+MultiFormat.m in Sources */,
 				A7C2961B1DDDAF62004C5457 /* UIImageView+WebCache.m in Sources */,
 				A7C295661DDDA16C004C5457 /* main.m in Sources */,
-				A70209591EB2E65E00EC769D /* SYImageBrowseViewLoopTrue.m in Sources */,
+				A70209591EB2E65E00EC769D /* SYImageBrowseViewLoopAuto.m in Sources */,
 				A7C2961C1DDDAF62004C5457 /* UIView+WebCacheOperation.m in Sources */,
 				A7642D501DDEF85A00A73CA7 /* SYImageBrowseViewController.m in Sources */,
 				A7C296141DDDAF62004C5457 /* SDWebImageDownloaderOperation.m in Sources */,
@@ -505,7 +505,7 @@
 				A7C296181DDDAF62004C5457 /* UIImage+GIF.m in Sources */,
 				A7C296111DDDAF62004C5457 /* SDWebImageCompat.m in Sources */,
 				A7C2960F1DDDAF62004C5457 /* NSData+ImageContentType.m in Sources */,
-				A702095C1EB2E67800EC769D /* SYImageBrowseViewLoopFalse.m in Sources */,
+				A702095C1EB2E67800EC769D /* SYImageBrowseViewLoopHand.m in Sources */,
 				A7C296101DDDAF62004C5457 /* SDImageCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

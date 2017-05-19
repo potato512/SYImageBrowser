@@ -34,6 +34,15 @@ static CGFloat const SYImageBrowseScaleMin = 0.5;
 /// 图片放大比例
 static CGFloat const SYImageBrowseScaleMax = 2.0;
 
+/// 浏览模式下按钮响应类型（保存、删除）
+typedef NS_ENUM(NSInteger, SYImageBrowseButtonType)
+{
+    /// 浏览模式下按钮响应类型-保存
+    SYImageBrowseButtonTypeSave = 1,
+    
+    /// 浏览模式下按钮响应类型-删除
+    SYImageBrowseButtonTypeDelete = 2,
+};
 
 /// 图片类型（图片UIImage，图片名称NSString，图片地址http://...或https://....）
 typedef NS_ENUM(NSInteger, SYImageType)

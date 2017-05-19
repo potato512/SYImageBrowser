@@ -41,13 +41,19 @@
 /// 图片点击回调
 @property (nonatomic, copy) void (^ImageClick)(NSInteger index);
 
+/// 刷新信息（最后调用）
+- (void)reloadData;
+
 @end
 
 /*
- 使用说明
-
+ 使用示例：
  // 初始化图片浏览器
  SYImageBrowseViewController *browseVC = [[SYImageBrowseViewController alloc] init];
+ // 背景颜色
+ browseVC.imageBgColor = [UIColor orangeColor];
+ // 图片显示模式
+ browseVC.imageContentMode = SYImageBrowseContentFit;
  // 删除按钮类型
  browseVC.deleteType = SYImageBrowserDeleteTypeText;
  browseVC.deleteTitle = @"Delete";
@@ -55,23 +61,23 @@
  browseVC.deleteTitleColor = [UIColor blackColor];
  browseVC.deleteTitleColorHighlight = [UIColor redColor];
  // 图片浏览器图片数组
- NSArray *images = @[[UIImage imageNamed:@"01"], [UIImage imageNamed:@"02"], [UIImage imageNamed:@"03"], [UIImage imageNamed:@"04"], [UIImage imageNamed:@"05"], [UIImage imageNamed:@"06"]];
- browseVC.imageArray = images;
+ browseVC.imageArray = @[...];
  // 图片浏览器当前显示第几张图片
- browseVC.imageIndex = 2;
+ browseVC.imageIndex = 3;
  // 图片浏览器浏览回调（删除图片后图片数组）
  browseVC.ImageDelete = ^(NSArray *array){
      NSLog(@"array %@", array);
-     
      // 如果有引用其他属性，注意弱引用（避免循环引用，导致内存未释放）
  };
  // 图片点击回调
  browseVC.ImageClick = ^(NSInteger index){
      NSLog(@"点击了第 %@ 张图片", @(index));
  };
+ // 刷新数据
+ [browseVC reloadData];
  // 图片浏览器跳转
  [self.navigationController pushViewController:browseVC animated:YES];
-
+ 
  */
 
 

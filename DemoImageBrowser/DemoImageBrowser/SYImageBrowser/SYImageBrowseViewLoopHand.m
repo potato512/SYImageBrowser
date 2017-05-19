@@ -1,12 +1,12 @@
 //
-//  SYImageBrowseViewLoopFalse.m
+//  SYImageBrowseViewLoopHand.m
 //  zhangshaoyu
 //
 //  Created by zhangshaoyu on 17/4/28.
 //  Copyright © 2017年 zhangshaoyu. All rights reserved.
 //
 
-#import "SYImageBrowseViewLoopFalse.h"
+#import "SYImageBrowseViewLoopHand.h"
 
 #pragma mark - UICollectionViewCell
 
@@ -59,13 +59,13 @@ static NSString *const identifierSYAdvertisingCell = @"SYAdvertisingCell";
 
 #pragma mark - UICollectionView
 
-@interface SYImageBrowseViewLoopFalse () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
+@interface SYImageBrowseViewLoopHand () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 
 @end
 
-@implementation SYImageBrowseViewLoopFalse
+@implementation SYImageBrowseViewLoopHand
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -107,7 +107,7 @@ static NSString *const identifierSYAdvertisingCell = @"SYAdvertisingCell";
 
 #pragma mark - 响应
 
-- (void)reloadUIView
+- (void)reloadData
 {
     // 重新刷新信息
     if (self.images && 0 < self.images.count)

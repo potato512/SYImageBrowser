@@ -108,7 +108,7 @@
         // 图片浏览器图片数组
         browseVC.imageArray = images;
         // 图片浏览器当前显示第几张图片
-        browseVC.imageIndex = 2;
+        browseVC.imageIndex = 10;
         // 图片浏览器浏览回调（删除图片后图片数组）
         browseVC.ImageDelete = ^(NSArray *array){
             NSLog(@"array %@", array);
@@ -119,6 +119,8 @@
         browseVC.ImageClick = ^(NSInteger index){
             NSLog(@"点击了第 %@ 张图片", @(index));
         };
+        // 刷新数据
+        [browseVC reloadData];
         // 图片浏览器跳转
         [self.navigationController pushViewController:browseVC animated:YES];
     }

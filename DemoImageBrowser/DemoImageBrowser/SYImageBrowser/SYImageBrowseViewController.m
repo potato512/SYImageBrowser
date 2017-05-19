@@ -174,27 +174,6 @@ static NSInteger const tagImageView = 1000;
 
 #pragma mark - setter
 
-- (void)setImageArray:(NSArray *)imageArray
-{
-    _imageArray = imageArray;
-    
-    self.mainArray = [[NSMutableArray alloc] initWithArray:_imageArray];
-    
-    self.currentTotal = self.mainArray.count;
-    self.defaultTotal = self.currentTotal;
-    
-    [self resetUI];
-}
-
-- (void)setImageIndex:(NSInteger)imageIndex
-{
-    _imageIndex = imageIndex;
-    
-    self.currentIndex = _imageIndex;
-    
-    [self resetUI];
-}
-
 - (void)setImageBgColor:(UIColor *)imageBgColor
 {
     _imageBgColor = imageBgColor;
@@ -237,5 +216,34 @@ static NSInteger const tagImageView = 1000;
         [self setNavigationTitle];
     }
 }
+
+#pragma mark - 
+
+/// 刷新信息（最后调用）
+- (void)reloadData
+{
+    self.mainArray = [[NSMutableArray alloc] initWithArray:_imageArray];
+    
+    self.currentTotal = self.mainArray.count;
+    self.defaultTotal = self.currentTotal;
+    
+    // 防止数组越界，造成显示异常
+    if (self.currentTotal == 1)
+    {
+        self.imageIndex = 0;
+    }
+    else
+    {
+        if (self.currentTotal <= self.imageIndex)
+        {
+            self.imageIndex = self.currentTotal - 1;
+        }
+    }
+    
+    self.currentIndex = self.imageIndex;
+    
+    [self resetUI];
+}
+
 
 @end
