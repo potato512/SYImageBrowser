@@ -7,7 +7,7 @@
 //
 
 #import "ImageViewController.h"
-#import "SYImageBrowser/SYImageBrowseView.h"
+#import "SYImageBrowseView.h"
 
 @interface ImageViewController ()
 
