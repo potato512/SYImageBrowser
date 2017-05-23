@@ -13,8 +13,8 @@
 #import "SYImageBrowseScrollView.h"
 #import "NSTimer+SYImageBrowse.h"
 
-// 使用SDWebImage
-#import "UIImageView+WebCache.h"
+/// 使用SDWebImage
+//#import "UIImageView+WebCache.h"
 
 /// 弱引用
 #define WeakSYImageBrowse __weak typeof(self) weakSYImageBrowse = self

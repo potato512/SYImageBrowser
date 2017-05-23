@@ -8,6 +8,8 @@
 
 #import "SYImageBrowseUIImageView.h"
 #import "SYImageBrowseHelper.h"
+/// 使用SDWebImage
+#import "UIImageView+WebCache.h"
 
 @interface SYImageBrowseUIImageView ()
 
