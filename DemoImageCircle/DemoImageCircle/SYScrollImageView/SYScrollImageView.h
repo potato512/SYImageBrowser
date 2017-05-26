@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-
+/// 页码控制器样式
 typedef NS_ENUM(NSInteger, PageControlType)
 {
     UIPageControlType = 1,
@@ -16,6 +16,7 @@ typedef NS_ENUM(NSInteger, PageControlType)
     UILabelControlType = 2,
 };
 
+/// 图片自动播放，或手势拖动切换
 typedef NS_ENUM(NSInteger, ImageShowType)
 {
     ImageShowRunloopType = 1,
@@ -23,6 +24,7 @@ typedef NS_ENUM(NSInteger, ImageShowType)
     ImageShowNormalType = 2,
 };
 
+/// 图片内容显示模式
 typedef NS_ENUM(NSInteger, ImageContentType)
 {
     ImageContentAspectFitType = 1,
@@ -48,7 +50,7 @@ typedef NS_ENUM(NSInteger, ImageContentType)
 /// 默认显示底端居右
 @property (nonatomic, strong) UILabel *pageLabel;
 
-/// 自动播放
+/// 自动播放（默认非自动播放；自动播放时在ImageShowRunloopType模式下有效；默认3.0秒）
 @property (nonatomic, assign) BOOL isAutoPlay;
 @property (nonatomic, assign) NSTimeInterval animationTime;
 

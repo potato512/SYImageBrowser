@@ -7,9 +7,10 @@
 //
 
 #import "ViewController.h"
-#import "SYScrollImageView.h"
+#import "RunloopVC.h"
+#import "NormalVC.h"
 
-@interface ViewController ()
+@interface ViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @end
 
@@ -21,43 +22,12 @@
     
     self.title = @"广告轮播";
     
-    
-    NSMutableArray *imageUrls = [NSMutableArray array];
-    [imageUrls addObject:@"http://p1.pstatp.com/origin/22b30006a5279d1af209"];
-    [imageUrls addObject:@"http://p1.pstatp.com/origin/22b200115aeeabef239e"];
-    [imageUrls addObject:@"http://p1.pstatp.com/origin/22b400067be6dd23c320"];
-    [imageUrls addObject:@"http://p3.pstatp.com/origin/20860011923bcc23df58"];
-    [imageUrls addObject:@"http://p3.pstatp.com/origin/22b400067be51ab3b853"];
-    [imageUrls addObject:@"http://p3.pstatp.com/origin/208300119aa46be8a80b"];
-    
-    NSArray *imageNames = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
-    
-    SYScrollImageView *imageView = [[SYScrollImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 160.0)];
-    [self.view addSubview:imageView];
-    imageView.backgroundColor = [UIColor whiteColor];
-    // 图片源
-    imageView.images = imageNames;
-    // 图片显示模式 ImageContentAspectFitType ImageContentAspectFitType
-    imageView.contentMode = ImageContentAspectFitType;
-    // 标题标签
-    imageView.titles = imageNames;
-    imageView.showTitle = YES;
-    imageView.titleLabel.textColor = [UIColor redColor];
-    // 页签-pageControl
-    imageView.pageControl.pageIndicatorTintColor = [UIColor redColor];
-    imageView.pageControl.currentPageIndicatorTintColor = [UIColor orangeColor];
-    // 页签-label UILabelControlType
-    imageView.pageType = UIPageControlType;
-    imageView.pageLabel.backgroundColor = [UIColor yellowColor];
-    imageView.pageLabel.textColor = [UIColor redColor];
-    // 切换按钮
-    imageView.showSwitch = YES;
-    // 图片点击
-    imageView.imageClick = ^(NSInteger index){
-        [[[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"你点击了第 %@ 张图片", @(index)] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil] show];
-    };
-    // 数据刷新
-    [imageView reloadData];
+    UITableView *tableview = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    [self.view addSubview:tableview];
+    tableview.backgroundColor = [UIColor whiteColor];
+    tableview.tableFooterView = [[UIView alloc] init];
+    tableview.delegate = self;
+    tableview.dataSource = self;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -72,6 +42,40 @@
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
     {
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 2;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"UITableViewCell"];
+    }
+    
+    NSString *text = (0 == indexPath.row ? @"非循环广告轮播图" : @"循环广告轮播图");
+    cell.textLabel.text = text;
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (0 == indexPath.row)
+    {
+        NormalVC *nextVC = [NormalVC new];
+        [self.navigationController pushViewController:nextVC animated:YES];
+    }
+    else if (1 == indexPath.row)
+    {
+        RunloopVC *nextVC = [RunloopVC new];
+        [self.navigationController pushViewController:nextVC animated:YES];
     }
 }
 

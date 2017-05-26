@@ -7,6 +7,7 @@
 //
 
 #import "SYScrollImageView.h"
+#import "NSTimer+SYScrollImageView.h"
 
 #define widthSelf self.frame.size.width
 #define heightSelf self.frame.size.height
@@ -45,8 +46,9 @@ static CGFloat const pageLabel = 30.0;
 
 - (void)dealloc
 {
-//    [self.timer invalidate];
-//    self.timer = nil;
+    [self stopTimer];
+    
+    NSLog(@"%@ 被释放了...", self);
 }
 
 #pragma mark - 视图
@@ -58,6 +60,8 @@ static CGFloat const pageLabel = 30.0;
     _contentMode = ImageContentAspectFillType;
     _showTitle = NO;
     _showSwitch = NO;
+    _isAutoPlay = NO;
+    _animationTime = 3.0;
     
     _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
     _scrollView.backgroundColor = [UIColor clearColor];
@@ -227,47 +231,43 @@ static CGFloat const pageLabel = 30.0;
 
 #pragma mark - UIScrollViewDelegate
 
-// 调用系统方法动画停止时执行
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    if (ImageShowRunloopType == _showType)
-    {
-        if ((self.frame.size.width * 2) == scrollView.contentOffset.x)
-        {
-            // 向左滑动
-            if ((self.totalIndex - 1) == self.currentIndex)
-            {
-                self.currentIndex = 0;
-            }
-            else
-            {
-                self.currentIndex++;
-            }
-        }
-        else if (0.0 == scrollView.contentOffset.x)
-        {
-            // 向右滑动
-            if (0 == self.currentIndex)
-            {
-                self.currentIndex = self.totalIndex - 1;
-            }
-            else
-            {
-                self.currentIndex--;
-            }
-        }
-        
-        [self showImagePageLabel];
-    }
-    else if (ImageShowNormalType == _showType)
-    {
-        self.currentIndex = scrollView.contentOffset.x / scrollView.frame.size.width;
-        
-        [self showImagePageLabel];
-    }
+    // 即将手势拖动时，如果是自动播放，则停止自动播放
+    [self stopTimer];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    // 手势拖动结束时，如果是自动播放，则恢复自动播放
+    [self startTimer];
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+//    self.currentIndex = scrollView.contentOffset.x / scrollView.frame.size.width;
+//    [self showImagePageLabel];
 }
 
 // 手动拖动动画停止时执行
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+//    if (ImageShowRunloopType == _showType)
+//    {
+//        self.currentIndex = scrollView.contentOffset.x / scrollView.frame.size.width;
+//        [self showImagePageLabel];
+//    }
+//    else if (ImageShowNormalType == _showType)
+//    {
+//        self.currentIndex = scrollView.contentOffset.x / scrollView.frame.size.width;
+//        [self showImagePageLabel];
+//    }
+    
+    self.currentIndex = scrollView.contentOffset.x / scrollView.frame.size.width;
+    [self showImagePageLabel];
+}
+
+// 调用系统方法动画停止时执行
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
     [self showImagePageLabel];
@@ -275,17 +275,46 @@ static CGFloat const pageLabel = 30.0;
 
 #pragma mark - timer
 
-- (void)createTimer
+- (void)stopTimer
 {
-//    self.timer = [NSTimer scheduledTimerWithTimeInterval:_animationTime repeats:YES block:^(NSTimer *timer){
-//        
-//    }];
-//    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    if (self.images && 2 <= self.images.count && self.isAutoPlay && ImageShowRunloopType == self.showType)
+    {
+        [NSThread cancelPreviousPerformRequestsWithTarget:self];
+        if (self.timer)
+        {
+            [self.timer timerStop];
+            self.timer = nil;
+        }
+    }
 }
 
-- (void)autoScroll
+- (void)startTimer
 {
-    [self.scrollView scrollRectToVisible:CGRectMake((self.frame.size.width * 2), 0.0, self.frame.size.width, self.frame.size.height) animated:YES];
+    // 有2张以上图片，自动播放模式，循环显示模式
+    if (self.images && 2 <= self.images.count && self.isAutoPlay && ImageShowRunloopType == self.showType)
+    {
+        [self performSelector:@selector(startTimerScroll) withObject:nil afterDelay:_animationTime];
+    }
+}
+
+- (void)startTimerScroll
+{
+    if (self.timer == nil)
+    {
+        __weak typeof(self) weakSelf = self;
+        self.timer = [NSTimer timerWithTimeInterval:_animationTime userInfo:nil repeats:YES handle:^(NSTimer *timer) {
+            [weakSelf autoPlayScroll];
+        }];
+    }
+    [self.timer timerStart];
+}
+
+// 自动播放
+- (void)autoPlayScroll
+{
+    self.currentIndex++;
+    self.currentIndex = (self.currentIndex >= self.totalIndex ? 0 : self.currentIndex);
+    [self.scrollView setContentOffset:CGPointMake((widthSelf * 2), 0.0) animated:YES];
 }
 
 #pragma mark - setter
@@ -339,9 +368,8 @@ static CGFloat const pageLabel = 30.0;
         _previousButton = [[UIButton alloc] initWithFrame:CGRectMake(origin, (heightSelf - sizeLabel) / 2, sizeLabel, sizeLabel)];
         _previousButton.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.5];
         _previousButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
-        [_previousButton setTitle:@"<" forState:UIControlStateNormal];
-        [_previousButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_previousButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+        [_previousButton setImage:[UIImage imageNamed:@"previous_normal"] forState:UIControlStateNormal];
+        [_previousButton setImage:[UIImage imageNamed:@"previous_highlight"] forState:UIControlStateHighlighted];
         [_previousButton addTarget:self action:@selector(previousClick) forControlEvents:UIControlEventTouchUpInside];
         
         _previousButton.layer.cornerRadius = sizeLabel / 2;
@@ -358,9 +386,8 @@ static CGFloat const pageLabel = 30.0;
         _nextButton = [[UIButton alloc] initWithFrame:CGRectMake((widthSelf - sizeLabel - origin), (heightSelf - sizeLabel) / 2, sizeLabel, sizeLabel)];
         _nextButton.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.5];
         _nextButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
-        [_nextButton setTitle:@">" forState:UIControlStateNormal];
-        [_nextButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_nextButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+        [_nextButton setImage:[UIImage imageNamed:@"next_normal"] forState:UIControlStateNormal];
+        [_nextButton setImage:[UIImage imageNamed:@"next_highlight"] forState:UIControlStateHighlighted];
         [_nextButton addTarget:self action:@selector(nextClick) forControlEvents:UIControlEventTouchUpInside];
         
         _nextButton.layer.cornerRadius = sizeLabel / 2;
@@ -370,45 +397,53 @@ static CGFloat const pageLabel = 30.0;
     return _nextButton;
 }
 
-
-
 #pragma mark - methord
 
 - (void)showImagePageLabel
 {
     if (ImageShowRunloopType == _showType)
     {
+        NSLog(@"currentIndex = %ld", self.currentIndex);
         // 循环时
-        NSString *leftImage = self.images[(self.currentIndex - 1) % self.totalIndex];
+        NSInteger leftIndex = self.currentIndex - 1;
+        leftIndex = (leftIndex < 0 ? (self.totalIndex - 1) : leftIndex);
+        NSString *leftImage = self.images[leftIndex];
         self.leftImageView.image = [UIImage imageNamed:leftImage];
         
-        NSString *centerImage = self.images[self.currentIndex % self.totalIndex];
+        NSString *centerImage = self.images[self.currentIndex];
         self.centerImageView.image = [UIImage imageNamed:centerImage];
         
-        NSString *rightImage = self.images[(self.currentIndex + 1) % self.totalIndex];
+        NSInteger rightIndex = self.currentIndex + 1;
+        rightIndex = (rightIndex >= self.totalIndex ? 0 : rightIndex);
+        NSString *rightImage = self.images[rightIndex];
         self.rightImageView.image = [UIImage imageNamed:rightImage];
+        
+        [self.scrollView setContentOffset:CGPointMake(widthSelf, 0.0) animated:NO];
     }
     else if (ImageShowNormalType == _showType)
     {
         // 非循环时
-        // 标题
-        if (self.showTitle)
+        
+    }
+    
+    // 标题
+    if (self.showTitle)
+    {
+        if (self.currentIndex <= self.titles.count - 1)
         {
-            if (self.currentIndex <= self.titles.count - 1)
-            {
-                NSString *title = self.titles[self.currentIndex];
-                self.titleLabel.text = title;
-            }
+            NSString *title = self.titles[self.currentIndex];
+            self.titleLabel.text = title;
         }
-        // 页码
-        if (UIPageControlType == self.pageType)
-        {
-            self.pageControl.currentPage = self.currentIndex;
-        }
-        else if (UILabelControlType == self.pageType)
-        {
-            self.pageLabel.text = [NSString stringWithFormat:@"%@/%@", @(self.currentIndex + 1), @(self.totalIndex)];
-        }
+    }
+    
+    // 页码
+    if (UIPageControlType == self.pageType)
+    {
+        self.pageControl.currentPage = self.currentIndex;
+    }
+    else if (UILabelControlType == self.pageType)
+    {
+        self.pageLabel.text = [NSString stringWithFormat:@"%@/%@", @(self.currentIndex + 1), @(self.totalIndex)];
     }
 }
 
@@ -423,6 +458,8 @@ static CGFloat const pageLabel = 30.0;
     [self setSwitchUI];
     
     [self showImagePageLabel];
+    
+    [self startTimer];
 }
 
 @end
