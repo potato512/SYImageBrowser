@@ -29,7 +29,7 @@
 - (void)loadView
 {
     [super loadView];
-    self.view.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3];
+    self.view.backgroundColor = [UIColor whiteColor];
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
     {
         [self setEdgesForExtendedLayout:UIRectEdgeNone];

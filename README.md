@@ -9,8 +9,6 @@
  * 网络图片，或本地图以广告轮播形式显示，也可以浏览形式显示（或视图控制器浏览显示形式）
   * 自动轮播显示
   * 左右滑动显示
-  * 双击放大，或缩小显示
-  * 双指拿捏放大，或缩小显示
   * 浏览形式时，可以进行删除操作
 
 # 广告图片轮播
@@ -40,41 +38,45 @@ NSArray *titles = @[@"01.png", @"02.png", @"03.png", @"04.png", @"05.png", @"06.
 
 ~~~ javascript
 
-CGRect rect = self.view.bounds;
-rect = CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height);
 // 实例化
-SYImageBrowse *imageBrowse = [[SYImageBrowse alloc] initWithFrame:rect view:self.view];
-imageBrowse.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-imageBrowse.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.3];
-// 类型
-imageBrowse.browseMode = SYImageBrowseAdvertisement;
-// 页码
-imageBrowse.pageMode = SYImageBrowsePageControl;
-imageBrowse.pageAlignmentMode = SYImageBrowsePageControlAlignmentCenter;
-imageBrowse.pageNormalColor = [UIColor redColor];
-imageBrowse.pageSelectedColor = [UIColor greenColor];
-imageBrowse.showPageControl = YES;
-imageBrowse.pageIndex = 3;
-// 标题
-imageBrowse.showText = YES;
-imageBrowse.textMode = SYImageBrowseTextAlignmentCenter;
-imageBrowse.textBgroundColor = [UIColor redColor];
-imageBrowse.textColor = [UIColor yellowColor];
+SYImageBrowser *imageView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 160.0)];
+[self.view addSubview:imageView];
+imageView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3];
+// 图片源
+imageView.images = images;
+// 图片浏览模式 ImageShowRunloopType ImageShowNormalType
+imageView.showType = ImageShowNormalType;
+// 图片显示模式 ImageContentAspectFillType ImageContentAspectFitType
+imageView.contentMode = ImageContentAspectFitType;
+// 标题标签
+imageView.titles = titles;
+imageView.showTitle = YES;
+imageView.titleLabel.textColor = [UIColor redColor];
+// 页签-pageControl
+imageView.pageControl.pageIndicatorTintColor = [UIColor redColor];
+imageView.pageControl.currentPageIndicatorTintColor = [UIColor orangeColor];
+// 页签-label UILabelControlType
+imageView.pageType = UIPageControlType;
+imageView.pageLabel.backgroundColor = [UIColor yellowColor];
+imageView.pageLabel.textColor = [UIColor redColor];
+// 切换按钮
+imageView.showSwitch = YES;
 // 自动播放
-imageBrowse.isAutoPlay = NO;
-// 图片样式
-imageBrowse.imageContentMode = SYImageBrowseContentFit;
-// 数据源
-imageBrowse.imageSource = images;
-imageBrowse.titleSource = titles;
-// 交互
-imageBrowse.imageSelected = ^(NSInteger index){
-    NSLog(@"imageSelected %ld", index);
+imageView.isAutoPlay = NO;
+imageView.animationTime = 1.2;
+// 图片浏览时才使用
+imageView.show = NO;
+imageView.hidden = NO;
+// 滚动回调
+imageView.imageScroll = ^(NSInteger index){
+    NSLog(@"scroll = %@", @(index + 1));
 };
-imageBrowse.showDeleteButton = YES;
-imageBrowse.imageDelete = ^(NSInteger index){
-    NSLog(@"imageDelete %ld", index);
+// 图片点击
+imageView.imageClick = ^(NSInteger index){
+    [[[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"你点击了第 %@ 张图片", @(index + 1)] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil] show];
 };
+// 数据刷新
+[imageView reloadData];
 
 ~~~
 
@@ -83,31 +85,34 @@ imageBrowse.imageDelete = ^(NSInteger index){
 ~~~ javascript
 
 // 初始化图片浏览器
-SYImageBrowseViewController *browseVC = [[SYImageBrowseViewController alloc] init];
-// 图片显示模式
-browseVC.imageContentMode = SYImageBrowseContentFit;
-// 删除按钮类型
-browseVC.deleteType = SYImageBrowserDeleteTypeImage;
-browseVC.deleteTitle = @"Delete";
-browseVC.deleteTitleFont = [UIFont boldSystemFontOfSize:13.0];
-browseVC.deleteTitleColor = [UIColor blackColor];
-browseVC.deleteTitleColorHighlight = [UIColor redColor];
+SYImageBrowserController *nextVC = [[SYImageBrowserController alloc] init];
+// 背景颜色
+nextVC.imageBgColor = [UIColor orangeColor];
+// 图片显示模式 ImageContentAspectFillType ImageContentAspectFitType
+nextVC.contentMode = ImageContentAspectFitType;
+// 删除按钮类型 ImageBrowserDeleteTypeText ImageBrowserDeleteTypeImage
+nextVC.deleteType = ImageBrowserDeleteTypeImage;
+nextVC.deleteTitle = @"Delete";
+nextVC.deleteTitleFont = [UIFont boldSystemFontOfSize:13.0];
+nextVC.deleteTitleColor = [UIColor blackColor];
+nextVC.deleteTitleColorHighlight = [UIColor redColor];
 // 图片浏览器图片数组
-browseVC.imageArray = images;
+nextVC.images = images;
 // 图片浏览器当前显示第几张图片
-browseVC.imageIndex = 2;
+nextVC.imageIndex = 10;
 // 图片浏览器浏览回调（删除图片后图片数组）
-browseVC.ImageDelete = ^(NSArray *array){
+nextVC.ImageDelete = ^(NSArray *array){
     NSLog(@"array %@", array);
 
     // 如果有引用其他属性，注意弱引用（避免循环引用，导致内存未释放）
 };
 // 图片点击回调
-browseVC.ImageClick = ^(NSInteger index){
-    NSLog(@"点击了第 %@ 张图片", @(index));
+nextVC.ImageClick = ^(NSInteger index){
+    [[[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"你点击了第 %@ 张图片", @(index + 1)] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil] show];
 };
-// 图片浏览器跳转
-[self.navigationController pushViewController:browseVC animated:YES];
+// 刷新数据
+[nextVC reloadData];
+[self.navigationController pushViewController:nextVC animated:YES];
 
 ~~~ 
 

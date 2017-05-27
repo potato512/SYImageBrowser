@@ -7,15 +7,15 @@
 //
 
 #import "ViewController.h"
-#import "ImageLoopTrueVC.h"
-#import "ImageLoopTrueTableVC.h"
-#import "ImageLoopFalseVC.h"
-#import "ImageViewController.h"
-#import "SYImageBrowseHeader.h"
+#import "ImageRunloopVC.h"
+#import "ImageNormalVC.h"
+#import "ImageRunloopTableVC.h"
+#import "ImageBrowserVC.h"
+#import "SYImageBrowser.h"
+#import "SYImageBrowserController.h"
+#import "AppDelegate.h"
 
 @interface ViewController () <UITableViewDataSource, UITableViewDelegate>
-
-@property (nonatomic, strong) NSArray *array;
 
 @end
 
@@ -49,12 +49,12 @@
 {
     UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     [self.view addSubview:tableView];
+    tableView.backgroundColor = [UIColor clearColor];
     tableView.tableFooterView = [[UIView alloc] init];
     [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"UITableViewCell"];
     tableView.delegate = self;
     tableView.dataSource = self;
-    
-    self.array = @[[ImageLoopTrueVC class], [ImageLoopTrueTableVC class], [ImageLoopFalseVC class], [ImageViewController class], [SYImageBrowseViewController class]];
+
     [tableView reloadData];
 }
 
@@ -62,15 +62,25 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.array.count;
+    return 6;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
     
-    Class class = self.array[indexPath.row];
-    NSString *text = NSStringFromClass(class);
+    NSString *text = nil;
+    switch (indexPath.row)
+    {
+        case 0: text = @"非循环广告轮播"; break;
+        case 1: text = @"循环广告轮播"; break;
+        case 2: text = @"循环广告轮播结合table使用"; break;
+        case 3: text = @"图片浏览控制器"; break;
+        case 4: text = @"图片浏览"; break;
+        case 5: text = @"图片浏览弹窗"; break;
+            
+        default: break;
+    }
     cell.textLabel.text = text;
     
     return cell;
@@ -80,55 +90,74 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.row == self.array.count - 1)
+    if (0 == indexPath.row)
     {
-        // 网络图片
-        //        NSMutableArray *images = [[NSMutableArray alloc] initWithCapacity:7];
-        //        [images addObject:@"http://img0.bdstatic.com/img/image/6946388bef89760a5a2316f888602a721440491660.jpg"];
-        //        [images addObject:@"http://img0.bdstatic.com/img/image/6446027056db8afa73b23eaf953dadde1410240902.jpg"];
-        //        [images addObject:@"http://img0.bdstatic.com/img/image/379ee5880ae642e12c24b731501d01d91409804208.jpg"];
-        //        [images addObject:@"http://img0.bdstatic.com/img/image/c9e2596284f50ce95cbed0d756fdd22b1409207983.jpg"];
-        //        [images addObject:@"http://img0.bdstatic.com/img/image/5bb565bd8c11b67a46bcfb36cc506f6c1409130294.jpg"];
-        //        [images addObject:@"http://d.hiphotos.baidu.com/image/w%3D230/sign=3941c09f0ef431adbcd2443a7b37ac0f/bd315c6034a85edf0647db2e4b540923dc5475f7.jpg"];
-        // 本地图片
-        NSArray *images = @[[UIImage imageNamed:@"01"], [UIImage imageNamed:@"02"], [UIImage imageNamed:@"03"], [UIImage imageNamed:@"04"], [UIImage imageNamed:@"05"], [UIImage imageNamed:@"06"]];
+        ImageNormalVC *nextVC = [[ImageNormalVC alloc] init];
+        [self.navigationController pushViewController:nextVC animated:YES];
+    }
+    else if (1 == indexPath.row)
+    {
+        ImageRunloopVC *nextVC = [[ImageRunloopVC alloc] init];
+        [self.navigationController pushViewController:nextVC animated:YES];
+    }
+    else if (2 == indexPath.row)
+    {
+        ImageRunloopTableVC *nextVC = [[ImageRunloopTableVC alloc] init];
+        [self.navigationController pushViewController:nextVC animated:YES];
+    }
+    else if (3 == indexPath.row)
+    {
+        NSArray *images = @[[UIImage imageNamed:@"01.jpeg"], [UIImage imageNamed:@"02.jpeg"], [UIImage imageNamed:@"03.jpeg"], [UIImage imageNamed:@"04.jpeg"], [UIImage imageNamed:@"05.jpeg"], [UIImage imageNamed:@"06.jpeg"]];
         
-        // 初始化图片浏览器
-        SYImageBrowseViewController *browseVC = [[SYImageBrowseViewController alloc] init];
+        SYImageBrowserController *nextVC = [[SYImageBrowserController alloc] init];
         // 背景颜色
-        browseVC.imageBgColor = [UIColor orangeColor];
-        // 图片显示模式
-        browseVC.imageContentMode = SYImageBrowseContentFit;
-        // 删除按钮类型
-        browseVC.deleteType = SYImageBrowserDeleteTypeText;
-        browseVC.deleteTitle = @"Delete";
-        browseVC.deleteTitleFont = [UIFont boldSystemFontOfSize:13.0];
-        browseVC.deleteTitleColor = [UIColor blackColor];
-        browseVC.deleteTitleColorHighlight = [UIColor redColor];
+        nextVC.imageBgColor = [UIColor orangeColor];
+        // 图片显示模式 ImageContentAspectFillType ImageContentAspectFitType
+        nextVC.contentMode = ImageContentAspectFitType;
+        // 删除按钮类型 ImageBrowserDeleteTypeText ImageBrowserDeleteTypeImage
+        nextVC.deleteType = ImageBrowserDeleteTypeImage;
+        nextVC.deleteTitle = @"Delete";
+        nextVC.deleteTitleFont = [UIFont boldSystemFontOfSize:13.0];
+        nextVC.deleteTitleColor = [UIColor blackColor];
+        nextVC.deleteTitleColorHighlight = [UIColor redColor];
         // 图片浏览器图片数组
-        browseVC.imageArray = images;
+        nextVC.images = images;
         // 图片浏览器当前显示第几张图片
-        browseVC.imageIndex = 10;
+        nextVC.imageIndex = 10;
         // 图片浏览器浏览回调（删除图片后图片数组）
-        browseVC.ImageDelete = ^(NSArray *array){
+        nextVC.ImageDelete = ^(NSArray *array){
             NSLog(@"array %@", array);
             
             // 如果有引用其他属性，注意弱引用（避免循环引用，导致内存未释放）
         };
         // 图片点击回调
-        browseVC.ImageClick = ^(NSInteger index){
-            NSLog(@"点击了第 %@ 张图片", @(index));
+        nextVC.ImageClick = ^(NSInteger index){
+            [[[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"你点击了第 %@ 张图片", @(index + 1)] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil] show];
         };
         // 刷新数据
-        [browseVC reloadData];
-        // 图片浏览器跳转
-        [self.navigationController pushViewController:browseVC animated:YES];
-    }
-    else
-    {
-        Class class = self.array[indexPath.row];
-        UIViewController *nextVC = [class new];
+        [nextVC reloadData];
         [self.navigationController pushViewController:nextVC animated:YES];
+    }
+    else if (4 == indexPath.row)
+    {
+        ImageBrowserVC *nextVC = [[ImageBrowserVC alloc] init];
+        [self.navigationController pushViewController:nextVC animated:YES];
+    }
+    else if (5 == indexPath.row)
+    {
+        NSArray *images = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
+        
+        UIWindow *window = ((AppDelegate *)[UIApplication sharedApplication].delegate).window;
+        SYImageBrowser *imageView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 0.0, window.frame.size.width, window.frame.size.height)];
+        [window addSubview:imageView];
+        imageView.backgroundColor = [UIColor whiteColor];
+        imageView.images = images;
+        imageView.contentMode = ImageContentAspectFillType;
+        imageView.pageType = UILabelControlType;
+        imageView.pageIndex = 3;
+        imageView.show = YES;
+        imageView.hidden = YES;
+        [imageView reloadData];
     }
 }
 
