@@ -12,7 +12,6 @@
 #import "ImageRunloopTableVC.h"
 #import "ImageBrowserVC.h"
 #import "SYImageBrowser.h"
-#import "SYImageBrowserController.h"
 #import "AppDelegate.h"
 
 @interface ViewController () <UITableViewDataSource, UITableViewDelegate>
@@ -62,7 +61,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 6;
+    return 5;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -75,9 +74,8 @@
         case 0: text = @"非循环广告轮播"; break;
         case 1: text = @"循环广告轮播"; break;
         case 2: text = @"循环广告轮播结合table使用"; break;
-        case 3: text = @"图片浏览控制器"; break;
-        case 4: text = @"图片浏览"; break;
-        case 5: text = @"图片浏览弹窗"; break;
+        case 3: text = @"图片浏览"; break;
+        case 4: text = @"图片浏览弹窗"; break;
             
         default: break;
     }
@@ -107,43 +105,10 @@
     }
     else if (3 == indexPath.row)
     {
-        NSArray *images = @[[UIImage imageNamed:@"01.jpeg"], [UIImage imageNamed:@"02.jpeg"], [UIImage imageNamed:@"03.jpeg"], [UIImage imageNamed:@"04.jpeg"], [UIImage imageNamed:@"05.jpeg"], [UIImage imageNamed:@"06.jpeg"]];
-        
-        SYImageBrowserController *nextVC = [[SYImageBrowserController alloc] init];
-        // 背景颜色
-        nextVC.imageBgColor = [UIColor orangeColor];
-        // 图片显示模式 ImageContentAspectFillType ImageContentAspectFitType
-        nextVC.contentMode = ImageContentAspectFitType;
-        // 删除按钮类型 ImageBrowserDeleteTypeText ImageBrowserDeleteTypeImage
-        nextVC.deleteType = ImageBrowserDeleteTypeImage;
-        nextVC.deleteTitle = @"Delete";
-        nextVC.deleteTitleFont = [UIFont boldSystemFontOfSize:13.0];
-        nextVC.deleteTitleColor = [UIColor blackColor];
-        nextVC.deleteTitleColorHighlight = [UIColor redColor];
-        // 图片浏览器图片数组
-        nextVC.images = images;
-        // 图片浏览器当前显示第几张图片
-        nextVC.imageIndex = 10;
-        // 图片浏览器浏览回调（删除图片后图片数组）
-        nextVC.ImageDelete = ^(NSArray *array){
-            NSLog(@"array %@", array);
-            
-            // 如果有引用其他属性，注意弱引用（避免循环引用，导致内存未释放）
-        };
-        // 图片点击回调
-        nextVC.ImageClick = ^(NSInteger index){
-            [[[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"你点击了第 %@ 张图片", @(index + 1)] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil] show];
-        };
-        // 刷新数据
-        [nextVC reloadData];
-        [self.navigationController pushViewController:nextVC animated:YES];
-    }
-    else if (4 == indexPath.row)
-    {
         ImageBrowserVC *nextVC = [[ImageBrowserVC alloc] init];
         [self.navigationController pushViewController:nextVC animated:YES];
     }
-    else if (5 == indexPath.row)
+    else if (4 == indexPath.row)
     {
         NSArray *images = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
         

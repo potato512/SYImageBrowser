@@ -32,11 +32,7 @@
 		A7C8CEF91ED3D9CA001C2FD8 /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8CEE91ED3D9CA001C2FD8 /* UIImageView+HighlightedWebCache.m */; };
 		A7C8CEFA1ED3D9CA001C2FD8 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8CEEB1ED3D9CA001C2FD8 /* UIImageView+WebCache.m */; };
 		A7C8CEFB1ED3D9CA001C2FD8 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8CEED1ED3D9CA001C2FD8 /* UIView+WebCacheOperation.m */; };
-		A7C8CF121ED3DA0C001C2FD8 /* SYDeleteImage.png in Resources */ = {isa = PBXBuildFile; fileRef = A7C8CEFE1ED3DA0C001C2FD8 /* SYDeleteImage.png */; };
-		A7C8CF131ED3DA0C001C2FD8 /* SYDeleteImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7C8CEFF1ED3DA0C001C2FD8 /* SYDeleteImage@2x.png */; };
-		A7C8CF141ED3DA0C001C2FD8 /* SYDeleteImage@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7C8CF001ED3DA0C001C2FD8 /* SYDeleteImage@3x.png */; };
 		A7C8CF191ED3DA0C001C2FD8 /* SYImageBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8CF0B1ED3DA0C001C2FD8 /* SYImageBrowser.m */; };
-		A7C8CF1A1ED3DA0C001C2FD8 /* SYImageBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8CF0D1ED3DA0C001C2FD8 /* SYImageBrowserController.m */; };
 		A7ED64F71ED96DC300CD0AC9 /* SYNext_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = A7ED64EA1ED96DC300CD0AC9 /* SYNext_highlight.png */; };
 		A7ED64F81ED96DC300CD0AC9 /* SYNext_highlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7ED64EB1ED96DC300CD0AC9 /* SYNext_highlight@2x.png */; };
 		A7ED64F91ED96DC300CD0AC9 /* SYNext_highlight@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7ED64EC1ED96DC300CD0AC9 /* SYNext_highlight@3x.png */; };
@@ -130,13 +126,8 @@
 		A7C8CEEB1ED3D9CA001C2FD8 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		A7C8CEEC1ED3D9CA001C2FD8 /* UIView+WebCacheOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WebCacheOperation.h"; sourceTree = "<group>"; };
 		A7C8CEED1ED3D9CA001C2FD8 /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
-		A7C8CEFE1ED3DA0C001C2FD8 /* SYDeleteImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SYDeleteImage.png; sourceTree = "<group>"; };
-		A7C8CEFF1ED3DA0C001C2FD8 /* SYDeleteImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SYDeleteImage@2x.png"; sourceTree = "<group>"; };
-		A7C8CF001ED3DA0C001C2FD8 /* SYDeleteImage@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SYDeleteImage@3x.png"; sourceTree = "<group>"; };
 		A7C8CF0A1ED3DA0C001C2FD8 /* SYImageBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYImageBrowser.h; sourceTree = "<group>"; };
 		A7C8CF0B1ED3DA0C001C2FD8 /* SYImageBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYImageBrowser.m; sourceTree = "<group>"; };
-		A7C8CF0C1ED3DA0C001C2FD8 /* SYImageBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYImageBrowserController.h; sourceTree = "<group>"; };
-		A7C8CF0D1ED3DA0C001C2FD8 /* SYImageBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYImageBrowserController.m; sourceTree = "<group>"; };
 		A7ED64EA1ED96DC300CD0AC9 /* SYNext_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SYNext_highlight.png; sourceTree = "<group>"; };
 		A7ED64EB1ED96DC300CD0AC9 /* SYNext_highlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SYNext_highlight@2x.png"; sourceTree = "<group>"; };
 		A7ED64EC1ED96DC300CD0AC9 /* SYNext_highlight@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SYNext_highlight@3x.png"; sourceTree = "<group>"; };
@@ -330,8 +321,6 @@
 				A7ED65071ED96F1800CD0AC9 /* NSTimer+SYImageBrowser.m */,
 				A7C8CF0A1ED3DA0C001C2FD8 /* SYImageBrowser.h */,
 				A7C8CF0B1ED3DA0C001C2FD8 /* SYImageBrowser.m */,
-				A7C8CF0C1ED3DA0C001C2FD8 /* SYImageBrowserController.h */,
-				A7C8CF0D1ED3DA0C001C2FD8 /* SYImageBrowserController.m */,
 			);
 			name = SYImageBrowser;
 			path = ../../SYImageBrowser;
@@ -340,9 +329,6 @@
 		A7C8CEFD1ED3DA0C001C2FD8 /* ImageSources */ = {
 			isa = PBXGroup;
 			children = (
-				A7C8CEFE1ED3DA0C001C2FD8 /* SYDeleteImage.png */,
-				A7C8CEFF1ED3DA0C001C2FD8 /* SYDeleteImage@2x.png */,
-				A7C8CF001ED3DA0C001C2FD8 /* SYDeleteImage@3x.png */,
 				A7ED64EA1ED96DC300CD0AC9 /* SYNext_highlight.png */,
 				A7ED64EB1ED96DC300CD0AC9 /* SYNext_highlight@2x.png */,
 				A7ED64EC1ED96DC300CD0AC9 /* SYNext_highlight@3x.png */,
@@ -465,14 +451,12 @@
 				A7ED64FE1ED96DC300CD0AC9 /* SYPrevious_highlight@2x.png in Resources */,
 				A7ED65141ED974B700CD0AC9 /* 06.jpeg in Resources */,
 				A7ED65131ED974B700CD0AC9 /* 05.jpeg in Resources */,
-				A7C8CF121ED3DA0C001C2FD8 /* SYDeleteImage.png in Resources */,
 				A73FA7591E89010B008259A0 /* DefaultImage@2x.png in Resources */,
 				A7ED64FA1ED96DC300CD0AC9 /* SYNext_normal.png in Resources */,
 				A7ED64F91ED96DC300CD0AC9 /* SYNext_highlight@3x.png in Resources */,
 				A7C295741DDDA16C004C5457 /* LaunchScreen.storyboard in Resources */,
 				A7ED64FF1ED96DC300CD0AC9 /* SYPrevious_highlight@3x.png in Resources */,
 				A7C295711DDDA16C004C5457 /* Assets.xcassets in Resources */,
-				A7C8CF141ED3DA0C001C2FD8 /* SYDeleteImage@3x.png in Resources */,
 				A7C2956F1DDDA16C004C5457 /* Main.storyboard in Resources */,
 				A7ED65111ED974B700CD0AC9 /* 03.jpeg in Resources */,
 				A7ED64F71ED96DC300CD0AC9 /* SYNext_highlight.png in Resources */,
@@ -483,7 +467,6 @@
 				A7ED65011ED96DC300CD0AC9 /* SYPrevious_normal@2x.png in Resources */,
 				A7ED64FD1ED96DC300CD0AC9 /* SYPrevious_highlight.png in Resources */,
 				A7ED64FB1ED96DC300CD0AC9 /* SYNext_normal@2x.png in Resources */,
-				A7C8CF131ED3DA0C001C2FD8 /* SYDeleteImage@2x.png in Resources */,
 				A7ED650F1ED974B700CD0AC9 /* 01.jpeg in Resources */,
 				A7ED65121ED974B700CD0AC9 /* 04.jpeg in Resources */,
 				A7ED65021ED96DC300CD0AC9 /* SYPrevious_normal@3x.png in Resources */,
@@ -512,7 +495,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7C8CF1A1ED3DA0C001C2FD8 /* SYImageBrowserController.m in Sources */,
 				A7C8CEF71ED3D9CA001C2FD8 /* UIImage+GIF.m in Sources */,
 				A7C8CEF01ED3D9CA001C2FD8 /* SDWebImageCompat.m in Sources */,
 				A7C8CEF61ED3D9CA001C2FD8 /* UIButton+WebCache.m in Sources */,
