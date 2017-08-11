@@ -47,7 +47,7 @@
     [self.view addSubview:imageView];
     imageView.backgroundColor = [UIColor whiteColor];
     imageView.images = images;
-    imageView.contentMode = ImageContentAspectFitType;
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.pageType = UILabelControlType;
     imageView.pageIndex = 3;
     imageView.pageType = UILabelControlType;

@@ -50,10 +50,10 @@
     imageView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3];
     // 图片源
     imageView.images = images;
-    // 图片浏览模式 ImageShowRunloopType ImageShowNormalType
-    imageView.showType = ImageShowNormalType;
-    // 图片显示模式 ImageContentAspectFillType ImageContentAspectFitType
-    imageView.contentMode = ImageContentAspectFitType;
+    // 图片轮播模式
+    imageView.scrollMode = ImageScrollNormal;
+    // 图片显示模式
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
     // 标题标签
     imageView.titles = titles;
     imageView.showTitle = YES;

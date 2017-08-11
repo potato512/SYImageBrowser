@@ -57,8 +57,8 @@ static NSTimeInterval const durationTime = 0.3;
 - (void)setUI
 {
     _pageType = UIPageControlType;
-    _showType = ImageShowNormalType;
-    _contentMode = ImageContentAspectFillType;
+    _scrollMode = ImageScrollNormal;
+    _contentMode = UIViewContentModeScaleAspectFill;
     _showTitle = NO;
     _showSwitch = NO;
     _isAutoPlay = NO;
@@ -79,23 +79,23 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)setImageUI
 {
-    if (ImageShowRunloopType == _showType)
+    if (ImageScrollLoop == _scrollMode)
     {
         [self setImageRunloop];
     }
-    else if (ImageShowNormalType == _showType)
+    else if (ImageScrollNormal == _scrollMode)
     {
         [self setImageNormal];
     }
     
-    if (ImageContentAspectFitType == _contentMode)
+    if (UIViewContentModeScaleAspectFit == _contentMode)
     {
         for (UIImageView *imageview in self.scrollView.subviews)
         {
             imageview.contentMode = UIViewContentModeScaleAspectFit;
         }
     }
-    else if (ImageContentAspectFillType == _contentMode)
+    else if (UIViewContentModeScaleAspectFill == _contentMode)
     {
         for (UIImageView *imageview in self.scrollView.subviews)
         {
@@ -213,11 +213,11 @@ static NSTimeInterval const durationTime = 0.3;
     _pageIndex = (_pageIndex > 0 ? _pageIndex - 1 : 0);
     _currentIndex = _pageIndex;
     
-    if (ImageShowRunloopType == self.showType)
+    if (ImageScrollLoop == self.scrollMode)
     {
         
     }
-    else if (ImageShowNormalType == self.showType)
+    else if (ImageScrollNormal == self.scrollMode)
     {
         [self.scrollView setContentOffset:CGPointMake((widthSelf * self.currentIndex), 0.0) animated:NO];
     }
@@ -271,12 +271,12 @@ static NSTimeInterval const durationTime = 0.3;
 {
     self.currentIndex--;
     
-    if (ImageShowRunloopType == self.showType)
+    if (ImageScrollLoop == self.scrollMode)
     {
         self.currentIndex = (self.currentIndex < 0 ? (self.totalIndex - 1) : self.currentIndex);
         [self.scrollView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
     }
-    else if (ImageShowNormalType == self.showType)
+    else if (ImageScrollNormal == self.scrollMode)
     {
         self.currentIndex = ((self.currentIndex < 0) ? 0 : self.currentIndex);
         [self.scrollView setContentOffset:CGPointMake((widthSelf * self.currentIndex), 0.0) animated:YES];
@@ -287,12 +287,12 @@ static NSTimeInterval const durationTime = 0.3;
 {
     self.currentIndex++;
     
-    if (ImageShowRunloopType == self.showType)
+    if (ImageScrollLoop == self.scrollMode)
     {
         self.currentIndex = (self.currentIndex >= self.totalIndex ? 0 : self.currentIndex);
         [self.scrollView setContentOffset:CGPointMake((widthSelf * 2), 0.0) animated:YES];
     }
-    else if (ImageShowNormalType == self.showType)
+    else if (ImageScrollNormal == self.scrollMode)
     {
         self.currentIndex = ((self.currentIndex >= self.totalIndex) ? self.totalIndex - 1 : self.currentIndex);
         [self.scrollView setContentOffset:CGPointMake((widthSelf * self.currentIndex), 0.0) animated:YES];
@@ -331,7 +331,7 @@ static NSTimeInterval const durationTime = 0.3;
 // 手动拖动动画停止时执行
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    if (ImageShowRunloopType == _showType)
+    if (ImageScrollLoop == _scrollMode)
     {
         CGFloat offX = scrollView.contentOffset.x;
         if (offX == widthSelf)
@@ -352,7 +352,7 @@ static NSTimeInterval const durationTime = 0.3;
             self.currentIndex = (self.currentIndex < 0 ? (self.totalIndex - 1) : self.currentIndex);
         }
     }
-    else if (ImageShowNormalType == _showType)
+    else if (ImageScrollNormal == _scrollMode)
     {
         self.currentIndex = scrollView.contentOffset.x / scrollView.frame.size.width;
     }
@@ -375,7 +375,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)stopTimer
 {
-    if (self.images && 2 <= self.images.count && self.isAutoPlay && ImageShowRunloopType == self.showType)
+    if (self.images && 2 <= self.images.count && self.isAutoPlay && ImageScrollLoop == self.scrollMode)
     {
         [NSThread cancelPreviousPerformRequestsWithTarget:self];
         if (self.timer)
@@ -389,7 +389,7 @@ static NSTimeInterval const durationTime = 0.3;
 - (void)startTimer
 {
     // 有2张以上图片，自动播放模式，循环显示模式
-    if (self.images && 2 <= self.images.count && self.isAutoPlay && ImageShowRunloopType == self.showType)
+    if (self.images && 2 <= self.images.count && self.isAutoPlay && ImageScrollLoop == self.scrollMode)
     {
         [self performSelector:@selector(startTimerScroll) withObject:nil afterDelay:_animationTime];
     }
@@ -503,7 +503,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)showImagePageLabel
 {
-    if (ImageShowRunloopType == _showType)
+    if (ImageScrollLoop == _scrollMode)
     {
         // 循环时
         NSInteger leftIndex = self.currentIndex - 1;
@@ -521,7 +521,7 @@ static NSTimeInterval const durationTime = 0.3;
         
         [self.scrollView setContentOffset:CGPointMake(widthSelf, 0.0) animated:NO];
     }
-    else if (ImageShowNormalType == _showType)
+    else if (ImageScrollNormal == _scrollMode)
     {
         // 非循环时
         

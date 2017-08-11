@@ -19,20 +19,14 @@ typedef NS_ENUM(NSInteger, PageControlType)
     UILabelControlType = 2,
 };
 
-/// 图片自动播放，或手势拖动切换，默认ImageShowNormalType
-typedef NS_ENUM(NSInteger, ImageShowType)
+/// 图片轮播方式，默认ImageScrollNormal
+typedef NS_ENUM(NSInteger, ImageScrollMode)
 {
-    ImageShowRunloopType = 1,
+    /// 循环
+    ImageScrollLoop = 1,
     
-    ImageShowNormalType = 2,
-};
-
-/// 图片内容显示模式，默认ImageContentAspectFillType
-typedef NS_ENUM(NSInteger, ImageContentType)
-{
-    ImageContentAspectFitType = 1,
-    
-    ImageContentAspectFillType = 2,
+    /// 非循环
+    ImageScrollNormal = 2,
 };
 
 @interface SYImageBrowser : UIView
@@ -60,10 +54,10 @@ typedef NS_ENUM(NSInteger, ImageContentType)
 @property (nonatomic, assign) BOOL isAutoPlay;
 @property (nonatomic, assign) NSTimeInterval animationTime;
 
-/// 默认ImageShowNormalType
-@property (nonatomic, assign) ImageShowType showType;
-/// 默认ImageContentAspectFillType
-@property (nonatomic, assign) ImageContentType contentMode;
+/// 默认ImageScrollNormal
+@property (nonatomic, assign) ImageScrollMode scrollMode;
+/// 默认UIViewContentModeScaleAspectFill
+@property (nonatomic, assign) UIViewContentMode contentMode;
 
 /// 点击回调
 @property (nonatomic, copy) void (^imageClick)(NSInteger index);
