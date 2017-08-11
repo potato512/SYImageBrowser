@@ -48,9 +48,8 @@
     imageView.backgroundColor = [UIColor whiteColor];
     imageView.images = images;
     imageView.contentMode = UIViewContentModeScaleAspectFit;
-    imageView.pageType = UILabelControlType;
+    imageView.pageControlType = UIImagePageLabel;
     imageView.pageIndex = 3;
-    imageView.pageType = UILabelControlType;
     [imageView reloadData];
 }
 

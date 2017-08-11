@@ -10,23 +10,23 @@
 #import <UIKit/UIKit.h>
 
 /// 页码控制器样式，默认UIPageControlType
-typedef NS_ENUM(NSInteger, PageControlType)
+typedef NS_ENUM(NSInteger, UIImagePageControlType)
 {
-    UIHiddenControlType = 0,
+    UIImagePageControlHidden = 0,
     
-    UIPageControlType = 1,
+    UIImagePageControl = 1,
     
-    UILabelControlType = 2,
+    UIImagePageLabel = 2,
 };
 
 /// 图片轮播方式，默认ImageScrollNormal
-typedef NS_ENUM(NSInteger, ImageScrollMode)
+typedef NS_ENUM(NSInteger, UIImageScrollMode)
 {
     /// 循环
-    ImageScrollLoop = 1,
+    UIImageScrollLoop = 1,
     
     /// 非循环
-    ImageScrollNormal = 2,
+    UIImageScrollNormal = 2,
 };
 
 @interface SYImageBrowser : UIView
@@ -43,32 +43,40 @@ typedef NS_ENUM(NSInteger, ImageScrollMode)
 /// 默认显示顶端居中
 @property (nonatomic, strong) UILabel *titleLabel;
 
-/// 默认UIPageControlType
-@property (nonatomic, assign) PageControlType pageType;
+/// 默认UIImagePageControl
+@property (nonatomic, assign) UIImagePageControlType pageControlType;
 /// 默认显示底端居中
 @property (nonatomic, strong) UIPageControl *pageControl;
 /// 默认显示底端居右
 @property (nonatomic, strong) UILabel *pageLabel;
 
-/// 自动播放（默认非自动播放；自动播放时在ImageShowRunloopType模式下有效；默认3.0秒）
-@property (nonatomic, assign) BOOL isAutoPlay;
-@property (nonatomic, assign) NSTimeInterval animationTime;
+@property (nonatomic, assign) CGPoint pagePoint;
+@property (nonatomic, assign) CGSize pageSize;
 
-/// 默认ImageScrollNormal
-@property (nonatomic, assign) ImageScrollMode scrollMode;
+
+/// 自动播放（默认非自动播放；且在UIImageScrollLoop模式下有效）
+@property (nonatomic, assign) BOOL autoAnimation;
+/// 自动播放时间间隔（默认3秒）
+@property (nonatomic, assign) NSTimeInterval autoDuration;
+
+/// 默认UIImageScrollNormal
+@property (nonatomic, assign) UIImageScrollMode scrollMode;
 /// 默认UIViewContentModeScaleAspectFill
 @property (nonatomic, assign) UIViewContentMode contentMode;
 
-/// 点击回调
-@property (nonatomic, copy) void (^imageClick)(NSInteger index);
-/// 滚动结束回调
-@property (nonatomic, copy) void (^imageScroll)(NSInteger index);
+
+/// 图片点击响应
+@property (nonatomic, copy) void (^imageSelected)(NSInteger index);
+/// 图片滚动响应（contentOffX滚动距离；direction表示方向，1向左，2向右；isEnd表示最左或最右边）
+@property (nonatomic, copy) void (^scrollComplete)(CGFloat contentOffX, NSInteger direction, BOOL isEnd);
+
 
 /// 切换按钮
 /// 是否显示（默认不显示）
 @property (nonatomic, assign) BOOL showSwitch;
 @property (nonatomic, strong) UIButton *previousButton;
 @property (nonatomic, strong) UIButton *nextButton;
+
 
 /// 默认图标（默认无）
 @property (nonatomic, strong) UIImage *defaultImage;

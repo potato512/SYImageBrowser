@@ -40,7 +40,7 @@
     // 图片源
     imageView.images = images;
     // 图片轮播模式
-    imageView.scrollMode = ImageScrollLoop;
+    imageView.scrollMode = UIImageScrollLoop;
     // 图片显示模式
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     // 标题标签
@@ -51,16 +51,16 @@
     imageView.pageControl.pageIndicatorTintColor = [UIColor redColor];
     imageView.pageControl.currentPageIndicatorTintColor = [UIColor orangeColor];
     // 页签-label UILabelControlType
-    imageView.pageType = UIPageControlType;
+    imageView.pageControlType = UIImagePageControl;
     imageView.pageLabel.backgroundColor = [UIColor yellowColor];
     imageView.pageLabel.textColor = [UIColor redColor];
     // 切换按钮
     imageView.showSwitch = YES;
     // 自动播放
-    imageView.isAutoPlay = YES;
-    imageView.animationTime = 2.0;
+    imageView.autoAnimation = YES;
+    imageView.autoDuration = 2.0;
     // 图片点击
-    imageView.imageClick = ^(NSInteger index){
+    imageView.imageSelected = ^(NSInteger index){
         [[[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"你点击了第 %@ 张图片", @(index)] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil] show];
     };
     // 数据刷新
