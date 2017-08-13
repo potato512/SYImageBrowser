@@ -14,7 +14,10 @@
 #import "SYImageBrowser.h"
 #import "AppDelegate.h"
 
-@interface ViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface ViewController () <UITableViewDataSource, UITableViewDelegate, SYImageBrowserDelegate>
+
+@property (nonatomic, strong) NSArray *images;
+@property (nonatomic, strong) SYImageBrowser *imageModalView;
 
 @end
 
@@ -110,20 +113,46 @@
     }
     else if (4 == indexPath.row)
     {
-        NSArray *images = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
-        
-        UIWindow *window = ((AppDelegate *)[UIApplication sharedApplication].delegate).window;
-        SYImageBrowser *imageView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 0.0, window.frame.size.width, window.frame.size.height)];
-        [window addSubview:imageView];
-        imageView.backgroundColor = [UIColor whiteColor];
-        imageView.images = images;
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
-        imageView.pageControlType = UIImagePageLabel;
-        imageView.pageIndex = 3;
-        imageView.show = YES;
-        imageView.hidden = YES;
-        [imageView reloadData];
+        self.imageModalView.images = self.images;
+        self.imageModalView.deletage = self;
+        [self.imageModalView reloadData];
     }
+}
+
+- (NSArray *)images
+{
+    if (_images == nil)
+    {
+        _images = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
+    }
+    return _images;
+}
+
+- (SYImageBrowser *)imageModalView
+{
+    if (_imageModalView == nil)
+    {
+        UIWindow *window = ((AppDelegate *)[UIApplication sharedApplication].delegate).window;
+        
+        _imageModalView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 0.0, window.frame.size.width, window.frame.size.height)];
+        _imageModalView.backgroundColor = [UIColor whiteColor];
+        _imageModalView.contentMode = UIViewContentModeScaleAspectFit;
+        _imageModalView.pageControlType = UIImagePageLabel;
+        _imageModalView.pageIndex = 3;
+        _imageModalView.show = YES;
+        _imageModalView.hidden = YES;
+        _imageModalView.imageBrowserDidScroll = ^(NSInteger index) {
+            NSLog(@"block index = %@", @(index));
+        };
+        
+        [window addSubview:_imageModalView];
+    }
+    return _imageModalView;
+}
+
+- (void)imageBrowserDidScroll:(NSInteger)index
+{
+    NSLog(@"delegate index = %@", @(index));
 }
 
 @end

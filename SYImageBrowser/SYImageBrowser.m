@@ -9,7 +9,7 @@
 #import "SYImageBrowser.h"
 #import "NSTimer+SYImageBrowser.h"
 #import "UIImageView+SYImageBrowser.h"
-#import "SYImageScrollViewCell.h"
+#import "SYImageBrowserCell.h"
 
 #define widthSelf self.frame.size.width
 #define heightSelf self.frame.size.height
@@ -78,7 +78,7 @@ static NSTimeInterval const durationTime = 0.3;
     [self addSubview:self.collectionView];
     self.collectionView.backgroundColor = [UIColor clearColor];
     self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.collectionView registerClass:[SYImageScrollViewCell class] forCellWithReuseIdentifier:identifierSYImageScrollViewCell];
+    [self.collectionView registerClass:[SYImageBrowserCell class] forCellWithReuseIdentifier:identifierSYImageBrowserCell];
     self.collectionView.pagingEnabled = YES;
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.delegate = self;
@@ -323,7 +323,7 @@ static NSTimeInterval const durationTime = 0.3;
 // 每个UICollectionView展示的内容
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    SYImageScrollViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifierSYImageScrollViewCell forIndexPath:indexPath];
+    SYImageBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifierSYImageBrowserCell forIndexPath:indexPath];
     
     CGRect rect = cell.imageview.frame;
     rect.size.width = self.frame.size.width;
@@ -407,7 +407,7 @@ static NSTimeInterval const durationTime = 0.3;
     {
         if (self.isScroll)
         {
-            if (self.scrollComplete)
+            if (self.imageScrolled)
             {
                 self.offx = offX - self.previousOffX;
                 if (self.offx < 0.0)
@@ -416,7 +416,7 @@ static NSTimeInterval const durationTime = 0.3;
                 }
                 self.direction = (offX > self.previousOffX ? 1 : 2);
                 self.isEnd = ((offX <= 0.0 || (offX >= widthSelf * (self.imageArray.count - 1))) ? YES : NO);
-                self.scrollComplete(self.offx, self.direction, self.isEnd);
+                self.imageScrolled(self.offx, self.direction, self.isEnd);
                 
                 self.previousOffX = offX;
             }
@@ -449,6 +449,24 @@ static NSTimeInterval const durationTime = 0.3;
 {
     [self setPageUIWithPage:self.currentPage];
     [self setTitleUIWithPage:self.currentPage];
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    NSInteger index = _currentPage;
+    if (self.scrollMode == UIImageScrollLoop)
+    {
+        index = _currentPage - 1;
+    }
+    
+    if (self.imageBrowserDidScroll)
+    {
+        self.imageBrowserDidScroll(index);
+    }
+    if (self.deletage && [self.deletage respondsToSelector:@selector(imageBrowserDidScroll:)])
+    {
+        [self.deletage imageBrowserDidScroll:index];
+    }
 }
 
 #pragma mark - timer

@@ -61,7 +61,7 @@
     // 页签-pageControl
     imageView.pageControl.pageIndicatorTintColor = [UIColor redColor];
     imageView.pageControl.currentPageIndicatorTintColor = [UIColor orangeColor];
-    // 页签-label UILabelControlType
+    // 页签-label 
     imageView.pageControlType = UIImagePageControl;
     imageView.pageLabel.backgroundColor = [UIColor yellowColor];
     imageView.pageLabel.textColor = [UIColor redColor];
@@ -74,7 +74,7 @@
     imageView.show = NO;
     imageView.hidden = NO;
     // 滚动回调
-    imageView.scrollComplete = ^(CGFloat contentOffX, NSInteger direction, BOOL isEnd){
+    imageView.imageScrolled = ^(CGFloat contentOffX, NSInteger direction, BOOL isEnd){
         NSLog(@"contentOffX = %@, direction = %@, isEnd = %@", @(contentOffX), @(direction), @(isEnd));
     };
     // 图片点击

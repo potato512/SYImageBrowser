@@ -42,39 +42,121 @@ NSArray *titles = @[@"01.png", @"02.png", @"03.png", @"04.png", @"05.png", @"06.
 SYImageBrowser *imageView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 160.0)];
 [self.view addSubview:imageView];
 imageView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3];
+
+~~~ 
+
+~~~ javascript
+
 // 图片源
 imageView.images = images;
-// 图片浏览模式 ImageShowRunloopType ImageShowNormalType
-imageView.showType = ImageShowNormalType;
-// 图片显示模式 ImageContentAspectFillType ImageContentAspectFitType
-imageView.contentMode = ImageContentAspectFitType;
+
+~~~ 
+
+~~~ javascript
+
+// 图片轮播模式
+imageView.scrollMode = UIImageScrollNormal;
+
+~~~ 
+
+~~~ javascript
+
+// 图片显示模式
+imageView.contentMode = UIViewContentModeScaleAspectFit;
+
+~~~ 
+
+~~~ javascript
+
 // 标题标签
 imageView.titles = titles;
 imageView.showTitle = YES;
 imageView.titleLabel.textColor = [UIColor redColor];
+
+~~~ 
+
+~~~ javascript
+
 // 页签-pageControl
+imageView.pageControlType = UIImagePageControl;
 imageView.pageControl.pageIndicatorTintColor = [UIColor redColor];
 imageView.pageControl.currentPageIndicatorTintColor = [UIColor orangeColor];
-// 页签-label UILabelControlType
-imageView.pageType = UIPageControlType;
+
+// 页签-label 
+imageView.pageControlType = UIImagePageLabel;
 imageView.pageLabel.backgroundColor = [UIColor yellowColor];
 imageView.pageLabel.textColor = [UIColor redColor];
+
+~~~ 
+
+~~~ javascript
+
 // 切换按钮
 imageView.showSwitch = YES;
+
+~~~ 
+
+~~~ javascript
+
 // 自动播放
-imageView.isAutoPlay = NO;
-imageView.animationTime = 1.2;
+imageView.autoAnimation = NO;
+imageView.autoDuration = 1.2;
+
+~~~ 
+
+~~~ javascript
+
 // 图片浏览时才使用
 imageView.show = NO;
 imageView.hidden = NO;
+
+~~~ 
+
+~~~ javascript
+
 // 滚动回调
-imageView.imageScroll = ^(NSInteger index){
-    NSLog(@"scroll = %@", @(index + 1));
+imageView.imageScrolled = ^(CGFloat contentOffX, NSInteger direction, BOOL isEnd){
+    NSLog(@"contentOffX = %@, direction = %@, isEnd = %@", @(contentOffX), @(direction), @(isEnd));
 };
+
+~~~ 
+
+~~~ javascript
+
 // 图片点击
-imageView.imageClick = ^(NSInteger index){
+imageView.imageSelected = ^(NSInteger index){
     [[[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"你点击了第 %@ 张图片", @(index + 1)] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil] show];
 };
+
+~~~ 
+
+~~~ javascript
+
+// 滚动时的索引
+
+// block回调 滚动时的索引
+imageView.imageBrowserDidScroll = ^(NSInteger index) {
+    NSLog(@"block index = %@", @(index));
+};
+
+// delegate代理
+
+// 代理协议
+SYImageBrowserDelegate
+
+// 代理对象
+imageView.deletage = self;
+
+// 代理方法
+- (void)imageBrowserDidScroll:(NSInteger)index
+{
+    NSLog(@"delegate index = %@", @(index));
+}
+
+~~~ 
+
+~~~ javascript
+
 // 数据刷新
 [imageView reloadData];
 
@@ -82,6 +164,16 @@ imageView.imageClick = ^(NSInteger index){
 
 
 #### 修改完善
+* 20170813
+  * 版本号：2.1.0
+  * 添加滚动结束后的索引
+    * block回调
+    * delegate代理
+
+* 20170811
+  * 版本号：2.0.0
+  * 代码优化（UIScrollView改成UICollectionView）  
+
 * 20170605
   * 删除弃用图片浏览视图控制器
 

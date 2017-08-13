@@ -1,14 +1,14 @@
 //
-//  SYImageScrollViewCell.m
-//  DemoImageScrollView
+//  SYImageBrowserCell.m
+//  zhangshaoyu
 //
 //  Created by zhangshaoyu on 2017/8/10.
 //  Copyright © 2017年 zhangshaoyu. All rights reserved.
 //
 
-#import "SYImageScrollViewCell.h"
+#import "SYImageBrowserCell.h"
 
-@implementation SYImageScrollViewCell
+@implementation SYImageBrowserCell
 
 - (instancetype)initWithFrame:(CGRect)frame
 {

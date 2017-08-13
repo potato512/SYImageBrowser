@@ -8,6 +8,7 @@
 
 
 #import <UIKit/UIKit.h>
+#import "SYImageBrowserDelegate.h"
 
 /// 页码控制器样式，默认UIPageControlType
 typedef NS_ENUM(NSInteger, UIImagePageControlType)
@@ -68,7 +69,7 @@ typedef NS_ENUM(NSInteger, UIImageScrollMode)
 /// 图片点击响应
 @property (nonatomic, copy) void (^imageSelected)(NSInteger index);
 /// 图片滚动响应（contentOffX滚动距离；direction表示方向，1向左，2向右；isEnd表示最左或最右边）
-@property (nonatomic, copy) void (^scrollComplete)(CGFloat contentOffX, NSInteger direction, BOOL isEnd);
+@property (nonatomic, copy) void (^imageScrolled)(CGFloat contentOffX, NSInteger direction, BOOL isEnd);
 
 
 /// 切换按钮
@@ -89,6 +90,14 @@ typedef NS_ENUM(NSInteger, UIImageScrollMode)
 @property (nonatomic, assign) BOOL show;
 /// 默认淡出动画
 @property (nonatomic, assign) BOOL hidden;
+
+
+/// 滚动时的索引
+/// block索引
+@property (nonatomic, copy) void (^imageBrowserDidScroll)(NSInteger index);
+/// 代理
+@property (nonatomic, assign) id<SYImageBrowserDelegate>deletage;
+/// 代理索引
 
 /// 数据刷新
 - (void)reloadData;

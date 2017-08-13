@@ -50,7 +50,7 @@
     // 页签-pageControl
     imageView.pageControl.pageIndicatorTintColor = [UIColor redColor];
     imageView.pageControl.currentPageIndicatorTintColor = [UIColor orangeColor];
-    // 页签-label UILabelControlType
+    // 页签-label
     imageView.pageControlType = UIImagePageControl;
     imageView.pageLabel.backgroundColor = [UIColor yellowColor];
     imageView.pageLabel.textColor = [UIColor redColor];
