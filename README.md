@@ -172,13 +172,11 @@ imageView.deletage = self;
     * 变更为：
       * @property (nonatomic, assign) BOOL isBrowser;
   * 新增属性参数
-
-~~~ javascript
-
-/// 当且仅当只有一张图片时，是否显示页签（默认NO，即显示）
-@property (nonatomic, assign) BOOL hiddenWhileSinglePage;
-
-~~~ 
+    * @property (nonatomic, assign) BOOL hiddenWhileSinglePage;
+  * 新增功能：图片浏览模式下 isBrowser = YES 时，图片的放大缩小、显示隐藏
+    * 双击放大，或缩小
+    * 两个手指捏合放大，或缩小
+    * 单击隐藏
 
 * 20170813
   * 版本号：2.1.0

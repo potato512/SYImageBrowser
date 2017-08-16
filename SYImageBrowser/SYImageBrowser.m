@@ -8,7 +8,6 @@
 
 #import "SYImageBrowser.h"
 #import "NSTimer+SYImageBrowser.h"
-#import "UIImageView+SYImageBrowser.h"
 #import "SYImageBrowserCell.h"
 
 #define widthSelf self.frame.size.width
@@ -334,15 +333,22 @@ static NSTimeInterval const durationTime = 0.3;
 {
     SYImageBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifierSYImageBrowserCell forIndexPath:indexPath];
     
-    CGRect rect = cell.imageview.frame;
-    rect.size.width = self.frame.size.width;
-    rect.size.height = self.frame.size.height;
-    cell.imageview.frame = rect;
-    
-    cell.imageview.contentMode = _contentMode;
+    cell.sizeItem = CGSizeMake(self.frame.size.width, self.frame.size.height);
     
     id imageObject = self.imageArray[indexPath.row];
-    [cell.imageview setImage:imageObject defaultImage:self.defaultImage];
+    cell.objectItem = imageObject;
+    
+    cell.defaultImage = self.defaultImage;
+    cell.contentMode = self.contentMode;
+    cell.isImageBrowser = self.isBrowser;
+    
+    // 单击隐藏回调
+    typeof(self) __weak weakSelf = self;
+    cell.hiddenClick = ^(){
+        [weakSelf setHiddenAnimationUI];
+    };
+    
+    [cell reloadItem];
     
     return cell;
 }
@@ -477,6 +483,9 @@ static NSTimeInterval const durationTime = 0.3;
         [self.deletage imageBrowserDidScroll:index];
     }
 }
+
+#pragma mark - 
+
 
 #pragma mark - timer
 
