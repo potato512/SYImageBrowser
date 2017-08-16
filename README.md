@@ -164,7 +164,7 @@ imageView.deletage = self;
 
 #### 修改完善
 * 20170816
-  * 版本号：2.1.1
+  * 版本号：2.2.0
   * 放大浏览属性修改
     * 弃用：
       * @property (nonatomic, assign) BOOL show;
