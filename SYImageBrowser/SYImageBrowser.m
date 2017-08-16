@@ -47,6 +47,7 @@ static NSTimeInterval const durationTime = 0.3;
     {
         self.backgroundColor = [UIColor clearColor];
         
+        _hiddenWhileSinglePage = NO;
         _pageControlType = UIImagePageControl;
         _scrollMode = UIImageScrollNormal;
         _contentMode = UIViewContentModeScaleAspectFill;
@@ -55,6 +56,7 @@ static NSTimeInterval const durationTime = 0.3;
         _autoAnimation = NO;
         _autoDuration = 3.0;
         _pageIndex = 0;
+        _isBrowser = NO;
         
         [self setUI];
     }
@@ -99,6 +101,13 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)setPageUIWithPage:(NSInteger)page
 {
+    if (self.hiddenWhileSinglePage && 1 == self.totalPage)
+    {
+        self.pageControl.hidden = YES;
+        self.pageLabel.hidden = YES;
+        return;
+    }
+    
     if (self.scrollMode == UIImageScrollLoop)
     {
         page -= 1;
@@ -210,7 +219,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)setShowAnimationUI
 {
-    if (self.show)
+    if (self.isBrowser)
     {
         // 设置了该属性表示图片浏览
         self.alpha = 0.0;
@@ -222,7 +231,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)setHiddenAnimationUI
 {
-    if (self.hidden)
+    if (self.isBrowser)
     {
         // 设置了该属性表示图片浏览
         [UIView animateWithDuration:durationTime animations:^{

@@ -107,8 +107,7 @@ imageView.autoDuration = 1.2;
 ~~~ javascript
 
 // 图片浏览时才使用
-imageView.show = NO;
-imageView.hidden = NO;
+imageView.isBrowser = NO;
 
 ~~~ 
 
@@ -164,6 +163,23 @@ imageView.deletage = self;
 
 
 #### 修改完善
+* 20170816
+  * 版本号：2.1.1
+  * 放大浏览属性修改
+    * 弃用：
+      * @property (nonatomic, assign) BOOL show;
+      * @property (nonatomic, assign) BOOL hidden;
+    * 变更为：
+      * @property (nonatomic, assign) BOOL isBrowser;
+  * 新增属性参数
+
+~~~ javascript
+
+/// 当且仅当只有一张图片时，是否显示页签（默认NO，即显示）
+@property (nonatomic, assign) BOOL hiddenWhileSinglePage;
+
+~~~ 
+
 * 20170813
   * 版本号：2.1.0
   * 添加滚动结束后的索引

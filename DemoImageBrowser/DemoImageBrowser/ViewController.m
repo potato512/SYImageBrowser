@@ -114,6 +114,7 @@
     else if (4 == indexPath.row)
     {
         self.imageModalView.images = self.images;
+//        self.imageModalView.images = @[@"01.jpeg"];
         self.imageModalView.deletage = self;
         [self.imageModalView reloadData];
     }
@@ -139,8 +140,8 @@
         _imageModalView.contentMode = UIViewContentModeScaleAspectFit;
         _imageModalView.pageControlType = UIImagePageLabel;
         _imageModalView.pageIndex = 3;
-        _imageModalView.show = YES;
-        _imageModalView.hidden = YES;
+        _imageModalView.isBrowser = YES;
+        _imageModalView.hiddenWhileSinglePage = YES;
         _imageModalView.imageBrowserDidScroll = ^(NSInteger index) {
             NSLog(@"block index = %@", @(index));
         };

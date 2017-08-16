@@ -71,8 +71,7 @@
     imageView.autoAnimation = NO;
     imageView.autoDuration = 1.2;
     // 图片浏览时才使用
-    imageView.show = NO;
-    imageView.hidden = NO;
+    imageView.isBrowser = NO;
     // 滚动回调
     imageView.imageScrolled = ^(CGFloat contentOffX, NSInteger direction, BOOL isEnd){
         NSLog(@"contentOffX = %@, direction = %@, isEnd = %@", @(contentOffX), @(direction), @(isEnd));

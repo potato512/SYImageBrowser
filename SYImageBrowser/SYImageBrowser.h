@@ -44,6 +44,8 @@ typedef NS_ENUM(NSInteger, UIImageScrollMode)
 /// 默认显示顶端居中
 @property (nonatomic, strong) UILabel *titleLabel;
 
+/// 当且仅当只有一张图片时，是否显示页签（默认NO，即显示）
+@property (nonatomic, assign) BOOL hiddenWhileSinglePage;
 /// 默认UIImagePageControl
 @property (nonatomic, assign) UIImagePageControlType pageControlType;
 /// 默认显示底端居中
@@ -85,11 +87,10 @@ typedef NS_ENUM(NSInteger, UIImageScrollMode)
 /// 图片浏览定位（即当前显示第N张，默认第一张）
 @property (nonatomic, assign) NSInteger pageIndex;
 
+
 /// 调用这些方法，属性时，表示图片被浏览
-/// 默认淡入动画
-@property (nonatomic, assign) BOOL show;
-/// 默认淡出动画
-@property (nonatomic, assign) BOOL hidden;
+/// 默认淡入动画（默认NO）
+@property (nonatomic, assign) BOOL isBrowser;
 
 
 /// 滚动时的索引
