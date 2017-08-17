@@ -67,7 +67,7 @@
         self.imageview.hidden = YES;
     }
     
-    if (self.imageScrollView.hidden)
+    if (!self.imageview.hidden)
     {
         // 大小
         if (!CGSizeEqualToSize(self.sizeItem, CGSizeZero))
