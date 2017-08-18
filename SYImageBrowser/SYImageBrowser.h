@@ -71,7 +71,7 @@ typedef NS_ENUM(NSInteger, UIImageScrollMode)
 /// 图片点击响应
 @property (nonatomic, copy) void (^imageSelected)(NSInteger index);
 /// 图片滚动响应（contentOffX滚动距离；direction表示方向，1向左，2向右；isEnd表示最左或最右边）
-@property (nonatomic, copy) void (^imageScrolled)(CGFloat contentOffX, NSInteger direction, BOOL isEnd);
+@property (nonatomic, copy) void (^imageScrolled)(float contentOffX, NSInteger direction, BOOL isEnd);
 
 
 /// 切换按钮

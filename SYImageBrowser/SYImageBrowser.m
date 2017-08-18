@@ -28,8 +28,8 @@ static NSTimeInterval const durationTime = 0.3;
 @property (nonatomic, strong) UICollectionView *collectionView;
 
 @property (nonatomic, assign) BOOL isScroll;
-@property (nonatomic, assign) CGFloat previousOffX;
-@property (nonatomic, assign) CGFloat offx;
+@property (nonatomic, assign) float previousOffX;
+@property (nonatomic, assign) float offx;
 @property (nonatomic, assign) NSInteger direction;
 @property (nonatomic, assign) BOOL isEnd;
 
@@ -424,13 +424,19 @@ static NSTimeInterval const durationTime = 0.3;
         {
             if (self.imageScrolled)
             {
-                self.offx = offX - self.previousOffX;
-                if (self.offx < 0.0)
-                {
-                    self.offx *= -1;
-                }
-                self.direction = (offX > self.previousOffX ? 1 : 2);
                 self.isEnd = ((offX <= 0.0 || (offX >= widthSelf * (self.imageArray.count - 1))) ? YES : NO);
+                if (offX > self.previousOffX)
+                {
+                    self.direction = 1;
+                    self.offx = (offX + self.collectionView.frame.size.width - self.collectionView.contentSize.width);
+                }
+                else
+                {
+                    self.direction = 2;
+                    self.offx = offX;
+                }
+                self.offx = fabsf(self.offx);
+                
                 self.imageScrolled(self.offx, self.direction, self.isEnd);
                 
                 self.previousOffX = offX;

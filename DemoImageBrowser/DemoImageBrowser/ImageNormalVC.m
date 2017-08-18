@@ -73,7 +73,7 @@
     // 图片浏览时才使用
     imageView.isBrowser = NO;
     // 滚动回调
-    imageView.imageScrolled = ^(CGFloat contentOffX, NSInteger direction, BOOL isEnd){
+    imageView.imageScrolled = ^(float contentOffX, NSInteger direction, BOOL isEnd){
         NSLog(@"contentOffX = %@, direction = %@, isEnd = %@", @(contentOffX), @(direction), @(isEnd));
     };
     // 图片点击
