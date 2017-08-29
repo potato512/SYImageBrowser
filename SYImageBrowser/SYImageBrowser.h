@@ -46,6 +46,9 @@ typedef NS_ENUM(NSInteger, UIImageScrollMode)
 
 /// 当且仅当只有一张图片时，是否显示页签（默认NO，即显示）
 @property (nonatomic, assign) BOOL hiddenWhileSinglePage;
+/// 当且仅当只有一张图片时，禁止拖动响应（默认YES，即可拖动响应）
+@property (nonatomic, assign) BOOL enableWhileSinglePage;
+
 /// 默认UIImagePageControl
 @property (nonatomic, assign) UIImagePageControlType pageControlType;
 /// 默认显示底端居中

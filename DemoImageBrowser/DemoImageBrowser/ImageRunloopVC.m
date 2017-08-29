@@ -81,7 +81,8 @@
 - (void)runloopAutoUI
 {
     // 网络图片
-    NSArray *images = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
+//    NSArray *images = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
+    NSArray *images = @[@"01.jpeg"];
     // 标题
     NSArray *titles = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
     
@@ -90,6 +91,8 @@
     imageView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3];
     // 图片源
     imageView.images = images;
+    //
+    imageView.enableWhileSinglePage = NO;
     // 图片轮播模式
     imageView.scrollMode = UIImageScrollLoop;
     // 图片显示模式

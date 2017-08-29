@@ -47,6 +47,8 @@ static NSTimeInterval const durationTime = 0.3;
         self.backgroundColor = [UIColor clearColor];
         
         _hiddenWhileSinglePage = NO;
+        _enableWhileSinglePage = YES;
+        
         _pageControlType = UIImagePageControl;
         _scrollMode = UIImageScrollNormal;
         _contentMode = UIViewContentModeScaleAspectFill;
@@ -212,6 +214,12 @@ static NSTimeInterval const durationTime = 0.3;
         self.pageControl.hidden = YES;
         self.pageLabel.hidden = YES;
     }
+    
+    self.pageControl.hidesForSinglePage = (self.pageControl.hidden ? YES : _hiddenWhileSinglePage);
+    if (_hiddenWhileSinglePage)
+    {
+        self.pageLabel.hidden = YES;
+    }
 }
 
 #pragma mark 图片动画显示，或隐藏
@@ -264,6 +272,11 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)previousClick
 {
+    if (!self.enableWhileSinglePage)
+    {
+        return;
+    }
+    
     self.currentPage--;
     
     BOOL isAnimation = YES;
@@ -288,6 +301,11 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)nextClick
 {
+    if (!self.enableWhileSinglePage)
+    {
+        return;
+    }
+    
     self.currentPage++;
     
     BOOL isAnimation = YES;
@@ -715,6 +733,12 @@ static NSTimeInterval const durationTime = 0.3;
         
         // 自动显示
         [self setShowAnimationUI];
+        
+        // 只有一张图时不能拖动
+        if (!self.enableWhileSinglePage)
+        {
+            self.collectionView.scrollEnabled = NO;
+        }
     }
 }
 
