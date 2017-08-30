@@ -216,7 +216,7 @@ static NSTimeInterval const durationTime = 0.3;
     }
     
     self.pageControl.hidesForSinglePage = (self.pageControl.hidden ? YES : _hiddenWhileSinglePage);
-    if (_hiddenWhileSinglePage)
+    if (_hiddenWhileSinglePage  && 1 == self.totalPage)
     {
         self.pageLabel.hidden = YES;
     }
@@ -272,7 +272,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)previousClick
 {
-    if (!self.enableWhileSinglePage)
+    if (!self.enableWhileSinglePage && 1 == self.totalPage)
     {
         return;
     }
@@ -301,7 +301,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)nextClick
 {
-    if (!self.enableWhileSinglePage)
+    if (!self.enableWhileSinglePage && 1 == self.totalPage)
     {
         return;
     }
@@ -746,7 +746,7 @@ static NSTimeInterval const durationTime = 0.3;
         [self setShowAnimationUI];
         
         // 只有一张图时不能拖动
-        if (!self.enableWhileSinglePage)
+        if (!self.enableWhileSinglePage && 1 == self.totalPage)
         {
             self.collectionView.scrollEnabled = NO;
         }

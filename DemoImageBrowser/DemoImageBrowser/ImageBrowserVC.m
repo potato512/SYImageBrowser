@@ -42,7 +42,7 @@
 - (void)setUI
 {
     NSArray *images = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
-    
+//    images = @[@"01.jpeg"];
     SYImageBrowser *imageView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, (self.view.frame.size.height - 64.0))];
     [self.view addSubview:imageView];
     imageView.backgroundColor = [UIColor whiteColor];
@@ -50,6 +50,8 @@
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.pageControlType = UIImagePageLabel;
     imageView.pageIndex = 3;
+    imageView.hiddenWhileSinglePage = YES;
+    imageView.enableWhileSinglePage = NO;
     [imageView reloadData];
 }
 
