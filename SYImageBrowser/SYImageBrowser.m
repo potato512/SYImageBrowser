@@ -488,6 +488,17 @@ static NSTimeInterval const durationTime = 0.3;
 {
     [self setPageUIWithPage:self.currentPage];
     [self setTitleUIWithPage:self.currentPage];
+    
+    NSInteger index = _currentPage;
+    if (self.scrollMode == UIImageScrollLoop)
+    {
+        index = _currentPage - 1;
+    }
+    
+    if (self.imageBrowserDidScroll)
+    {
+        self.imageBrowserDidScroll(index);
+    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
