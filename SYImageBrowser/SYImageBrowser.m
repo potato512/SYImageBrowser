@@ -26,6 +26,7 @@ static NSTimeInterval const durationTime = 0.3;
 @property (nonatomic, assign) NSInteger currentPage;
 
 @property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) UIImageView *defaultImageView;
 
 @property (nonatomic, assign) BOOL isScroll;
 @property (nonatomic, assign) float previousOffX;
@@ -75,6 +76,12 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)setUI
 {
+    self.defaultImageView = [[UIImageView alloc] initWithFrame:self.bounds];
+    [self addSubview:self.defaultImageView];
+    self.defaultImageView.backgroundColor = [UIColor clearColor];
+    self.defaultImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.defaultImageView.hidden = YES;
+    
     UICollectionViewFlowLayout *collectionLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:collectionLayout];
@@ -579,6 +586,33 @@ static NSTimeInterval const durationTime = 0.3;
 
 #pragma mark - setter
 
+- (void)setHiddenWhileSinglePage:(BOOL)hiddenWhileSinglePage
+{
+    _hiddenWhileSinglePage = hiddenWhileSinglePage;
+    if (_hiddenWhileSinglePage)
+    {
+        self.pageControl.hidden = YES;
+        self.pageLabel.hidden = YES;
+    }
+    else
+    {
+        self.pageControl.hidden = NO;
+        self.pageLabel.hidden = NO;
+    }
+}
+
+- (void)setDefaultImage:(UIImage *)defaultImage
+{
+    _defaultImage = defaultImage;
+    if (_defaultImage)
+    {
+        self.defaultImageView.hidden = NO;
+        self.defaultImageView.image = _defaultImage;
+        
+        self.collectionView.hidden = YES;
+    }
+}
+
 #pragma mark - getter
 
 - (NSMutableArray *)titleArray
@@ -690,6 +724,9 @@ static NSTimeInterval const durationTime = 0.3;
 {
     if (_images && 0 < self.totalPage)
     {
+        self.defaultImageView.hidden = YES;
+        self.collectionView.hidden = NO;
+        
         [self setTitleUI];
         [self setSwitchUI];
         [self setPagePointAndSize];
