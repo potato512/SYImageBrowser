@@ -11,12 +11,17 @@
   * 左右滑动显示
   * 浏览形式时，可以进行删除操作
 
+# pod管理
+~~~ javascript
+pod 'SYImageBrowser'
+~~~ 
+
 # 广告图片轮播
 
 ~~~ javascript
 
 // 导入头文件
-#import "SYImageBrowse.h"
+#import "SYImageBrowser.h"
 
 ~~~ 
 
