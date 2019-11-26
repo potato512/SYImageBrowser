@@ -18,32 +18,23 @@
     self.clipsToBounds = YES;
     self.layer.masksToBounds = YES;
     
-    if ([object isKindOfClass:[NSString class]])
-    {
-        if ([object hasPrefix:@"http://"] || [object hasPrefix:@"https://"])
-        {
+    if ([object isKindOfClass:[NSString class]]) {
+        if ([object hasPrefix:@"http://"] || [object hasPrefix:@"https://"]) {
             // 图片网络地址，即http://，或https://
             NSURL *imageUrl = [NSURL URLWithString:object];
-            if (image)
-            {
+            if (image) {
                 if ([self respondsToSelector:@selector(sd_setImageWithURL:placeholderImage:)])
                 {
                     [self sd_setImageWithURL:imageUrl placeholderImage:image];
                 }
-            }
-            else
-            {
+            } else {
                 [self sd_setImageWithURL:imageUrl];
             }
-        }
-        else
-        {
+        } else {
             // 图片名称，即NSString类型
             self.image = [UIImage imageNamed:object];
         }
-    }
-    else if ([object isKindOfClass:[UIImage class]])
-    {
+    } else if ([object isKindOfClass:[UIImage class]]) {
         // 图片，即UIImage类型
         self.image = object;
     }

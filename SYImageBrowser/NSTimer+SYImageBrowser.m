@@ -15,8 +15,7 @@
     TimerBlock timerBlock = [handle copy];
     NSMutableArray *array = [NSMutableArray array];
     [array addObject:timerBlock];
-    if (userInfo)
-    {
+    if (userInfo) {
         [array addObject:userInfo];
     }
     
@@ -33,8 +32,7 @@
 {
     NSArray *array = timer.userInfo;
     TimerBlock timerBlock = array.firstObject;
-    if (timerBlock)
-    {
+    if (timerBlock) {
         timerBlock(timer);
     }
 }

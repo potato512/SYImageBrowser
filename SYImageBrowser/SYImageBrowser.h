@@ -10,24 +10,24 @@
 #import <UIKit/UIKit.h>
 #import "SYImageBrowserDelegate.h"
 
-/// 页码控制器样式，默认UIPageControlType
+/// 页码控制器样式（默认UIPageControlType）
 typedef NS_ENUM(NSInteger, UIImagePageControlType)
 {
+    /// 页码控制器样式 隐藏
     UIImagePageControlHidden = 0,
-    
+    /// 页码控制器样式 页码
     UIImagePageControl = 1,
-    
-    UIImagePageLabel = 2,
+    /// 页码控制器样式 标签
+    UIImagePageLabel = 2
 };
 
-/// 图片轮播方式，默认ImageScrollNormal
+/// 图片轮播方式（默认ImageScrollNormal）
 typedef NS_ENUM(NSInteger, UIImageScrollMode)
 {
-    /// 循环
+    /// 图片轮播方式 循环
     UIImageScrollLoop = 1,
-    
-    /// 非循环
-    UIImageScrollNormal = 2,
+    /// 图片轮播方式 非循环
+    UIImageScrollNormal = 2
 };
 
 @interface SYImageBrowser : UIView

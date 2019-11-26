@@ -23,8 +23,7 @@ static CGFloat const scaleMax = 2.0;
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self)
-    {
+    if (self) {
         self.imageView = [[UIImageView alloc] initWithFrame:self.bounds];
         [self addSubview:self.imageView];
         self.imageView.backgroundColor = [UIColor clearColor];
@@ -51,7 +50,6 @@ static CGFloat const scaleMax = 2.0;
         // 区分单双击
         [singleTap requireGestureRecognizerToFail:doubleTap];
         
-        
         isScaleBig = NO;
     }
     return self;
@@ -76,13 +74,11 @@ static CGFloat const scaleMax = 2.0;
 {
     // 缩放效果
     // 放大或缩小
-    if (scrollView.minimumZoomScale >= scale)
-    {
+    if (scrollView.minimumZoomScale >= scale) {
         [scrollView setZoomScale:scaleMin animated:YES];
         isScaleBig = NO;
     }
-    if (scrollView.maximumZoomScale <= scale)
-    {
+    if (scrollView.maximumZoomScale <= scale) {
         [scrollView setZoomScale:scaleMax animated:YES];
         isScaleBig = YES;
     }
@@ -93,13 +89,10 @@ static CGFloat const scaleMax = 2.0;
 - (void)doubleClick:(UITapGestureRecognizer *)gestureRecognizer
 {
     // 先放大，后缩小
-    if (isScaleBig)
-    {
+    if (isScaleBig) {
         [self setZoomScale:scaleMin animated:YES];
         isScaleBig = NO;
-    }
-    else
-    {
+    } else {
         [self setZoomScale:scaleMax animated:YES];
         isScaleBig = YES;
     }
@@ -107,8 +100,7 @@ static CGFloat const scaleMax = 2.0;
 
 - (void)singleClick:(UITapGestureRecognizer *)gestureRecognizer
 {
-    if (self.hiddenClick)
-    {
+    if (self.hiddenClick) {
         self.hiddenClick();
     }
 }
@@ -129,8 +121,7 @@ static CGFloat const scaleMax = 2.0;
 - (void)setIsInitialize:(BOOL)isInitialize
 {
     _isInitialize = isInitialize;
-    if (_isInitialize)
-    {
+    if (_isInitialize) {
         isScaleBig = NO;
         [self setZoomScale:scaleMin animated:NO];
         [self centerShow:self imageview:self.imageView];

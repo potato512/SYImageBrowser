@@ -43,8 +43,7 @@ static NSTimeInterval const durationTime = 0.3;
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self)
-    {
+    if (self) {
         self.backgroundColor = [UIColor clearColor];
         
         _hiddenWhileSinglePage = NO;
@@ -109,35 +108,28 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)setPageUIWithPage:(NSInteger)page
 {
-    if (self.hiddenWhileSinglePage && 1 == self.totalPage)
-    {
+    if (self.hiddenWhileSinglePage && 1 == self.totalPage) {
         self.pageControl.hidden = YES;
         self.pageLabel.hidden = YES;
         return;
     }
     
-    if (self.scrollMode == UIImageScrollLoop)
-    {
+    if (self.scrollMode == UIImageScrollLoop) {
         page -= 1;
     }
     
-    if (self.pageControlType == UIImagePageControl)
-    {
+    if (self.pageControlType == UIImagePageControl) {
         self.pageControl.hidden = NO;
         self.pageLabel.hidden = YES;
         
         self.pageControl.currentPage = page;
-    }
-    else if (self.pageControlType == UIImagePageLabel)
-    {
+    } else if (self.pageControlType == UIImagePageLabel) {
         self.pageControl.hidden = YES;
         self.pageLabel.hidden = NO;
         
         NSString *pageStr = [NSString stringWithFormat:@"%@/%@", @(page + 1), @(self.totalPage)];
         self.pageLabel.text = pageStr;
-    }
-    else if (self.pageControlType == UIImagePageControlHidden)
-    {
+    } else if (self.pageControlType == UIImagePageControlHidden) {
         self.pageControl.hidden = YES;
         self.pageLabel.hidden = YES;
     }
@@ -148,8 +140,7 @@ static NSTimeInterval const durationTime = 0.3;
 - (void)setTitleUI
 {
     self.titleLabel.hidden = YES;
-    if (_showTitle)
-    {
+    if (_showTitle) {
         self.titleLabel.hidden = NO;
         [self addSubview:self.titleLabel];
     }
@@ -157,8 +148,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)setTitleUIWithPage:(NSInteger)page
 {
-    if (self.showTitle)
-    {
+    if (self.showTitle) {
         NSString *title = self.titleArray[page];
         self.titleLabel.text = title;
     }
@@ -170,8 +160,7 @@ static NSTimeInterval const durationTime = 0.3;
 {
     self.previousButton.hidden = YES;
     self.nextButton.hidden = YES;
-    if (_showSwitch)
-    {
+    if (_showSwitch) {
         self.previousButton.hidden = NO;
         [self addSubview:self.previousButton];
         
@@ -184,47 +173,37 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)setPagePointAndSize
 {
-    if (self.pageControlType == UIImagePageControl)
-    {
+    if (self.pageControlType == UIImagePageControl) {
         self.pageControl.hidden = NO;
         self.pageLabel.hidden = YES;
         
         CGRect rect = self.pageControl.frame;
-        if (!CGPointEqualToPoint(_pagePoint, CGPointZero))
-        {
+        if (!CGPointEqualToPoint(_pagePoint, CGPointZero)) {
             rect.origin = _pagePoint;
         }
-        if (!CGSizeEqualToSize(_pageSize, CGSizeZero))
-        {
+        if (!CGSizeEqualToSize(_pageSize, CGSizeZero)) {
             rect.size = _pageSize;
         }
         self.pageControl.frame = rect;
-    }
-    else if (self.pageControlType == UIImagePageLabel)
-    {
+    } else if (self.pageControlType == UIImagePageLabel) {
         self.pageControl.hidden = YES;
         self.pageLabel.hidden = NO;
         
         CGRect rect = self.pageLabel.frame;
-        if (!CGPointEqualToPoint(_pagePoint, CGPointZero))
-        {
+        if (!CGPointEqualToPoint(_pagePoint, CGPointZero)) {
             rect.origin = _pagePoint;
         }
-        if (!CGSizeEqualToSize(_pageSize, CGSizeZero))
-        {
+        if (!CGSizeEqualToSize(_pageSize, CGSizeZero)) {
             rect.size = _pageSize;
         }
         self.pageLabel.frame = rect;
-    }
-    else if (self.pageControlType == UIImagePageControlHidden)
-    {
+    } else if (self.pageControlType == UIImagePageControlHidden) {
         self.pageControl.hidden = YES;
         self.pageLabel.hidden = YES;
     }
     
     self.pageControl.hidesForSinglePage = (self.pageControl.hidden ? YES : _hiddenWhileSinglePage);
-    if (_hiddenWhileSinglePage  && 1 == self.totalPage)
-    {
+    if (_hiddenWhileSinglePage  && 1 == self.totalPage) {
         self.pageLabel.hidden = YES;
     }
 }
@@ -233,8 +212,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)setShowAnimationUI
 {
-    if (self.isBrowser)
-    {
+    if (self.isBrowser)  {
         // 设置了该属性表示图片浏览
         self.alpha = 0.0;
         [UIView animateWithDuration:durationTime animations:^{
@@ -245,14 +223,12 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)setHiddenAnimationUI
 {
-    if (self.isBrowser)
-    {
+    if (self.isBrowser) {
         // 设置了该属性表示图片浏览
         [UIView animateWithDuration:durationTime animations:^{
             self.alpha = 0.0;
         } completion:^(BOOL finished) {
-            if (self.superview == nil)
-            {
+            if (self.superview == nil) {
                 [self removeFromSuperview];
             }
         }];
@@ -267,10 +243,8 @@ static NSTimeInterval const durationTime = 0.3;
 {
     [self setHiddenAnimationUI];
     
-    if (self.imageSelected)
-    {
-        if (self.scrollMode == UIImageScrollLoop)
-        {
+    if (self.imageSelected) {
+        if (self.scrollMode == UIImageScrollLoop) {
             index -= 1;
         }
         self.imageSelected(index);
@@ -279,26 +253,20 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)previousClick
 {
-    if (!self.enableWhileSinglePage && 1 == self.totalPage)
-    {
+    if (!self.enableWhileSinglePage && 1 == self.totalPage) {
         return;
     }
     
     self.currentPage--;
     
     BOOL isAnimation = YES;
-    if (UIImageScrollLoop == self.scrollMode)
-    {
-        if (self.currentPage < 1)
-        {
+    if (UIImageScrollLoop == self.scrollMode) {
+        if (self.currentPage < 1) {
             self.currentPage = self.imageArray.count - 2;
             isAnimation = NO;
         }
-    }
-    else if (UIImageScrollNormal == self.scrollMode)
-    {
-        if (self.currentPage < 0)
-        {
+    } else if (UIImageScrollNormal == self.scrollMode) {
+        if (self.currentPage < 0) {
             self.currentPage = 0;
             return;
         }
@@ -308,26 +276,20 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)nextClick
 {
-    if (!self.enableWhileSinglePage && 1 == self.totalPage)
-    {
+    if (!self.enableWhileSinglePage && 1 == self.totalPage) {
         return;
     }
     
     self.currentPage++;
     
     BOOL isAnimation = YES;
-    if (UIImageScrollLoop == self.scrollMode)
-    {
-        if (self.currentPage >= self.imageArray.count - 1)
-        {
+    if (UIImageScrollLoop == self.scrollMode) {
+        if (self.currentPage >= self.imageArray.count - 1) {
             self.currentPage = 1;
             isAnimation = NO;
         }
-    }
-    else if (UIImageScrollNormal == self.scrollMode)
-    {
-        if (self.currentPage >= self.totalPage)
-        {
+    } else if (UIImageScrollNormal == self.scrollMode) {
+        if (self.currentPage >= self.totalPage) {
             self.currentPage = self.totalPage - 1;
             return;
         }
@@ -427,15 +389,11 @@ static NSTimeInterval const durationTime = 0.3;
     CGFloat offX = scrollView.contentOffset.x;
     
     self.currentPage = offX / widthSelf;
-    if (self.scrollMode == UIImageScrollLoop)
-    {
-        if (self.currentPage <= 0 && offX < (widthSelf * 0.5))
-        {
+    if (self.scrollMode == UIImageScrollLoop) {
+        if (self.currentPage <= 0 && offX < (widthSelf * 0.5)) {
             self.currentPage = self.imageArray.count - 2;
             [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:_currentPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
-        }
-        else if (self.currentPage >= self.imageArray.count - 1)
-        {
+        } else if (self.currentPage >= self.imageArray.count - 1) {
             self.currentPage = 1;
             [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:_currentPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
         }
@@ -443,20 +401,14 @@ static NSTimeInterval const durationTime = 0.3;
     [self setPageUIWithPage:self.currentPage];
     [self setTitleUIWithPage:self.currentPage];
     
-    if (self.scrollMode == UIImageScrollNormal)
-    {
-        if (self.isScroll)
-        {
-            if (self.imageScrolled)
-            {
+    if (self.scrollMode == UIImageScrollNormal) {
+        if (self.isScroll) {
+            if (self.imageScrolled) {
                 self.isEnd = ((offX <= 0.0 || (offX >= widthSelf * (self.imageArray.count - 1))) ? YES : NO);
-                if (offX > self.previousOffX)
-                {
+                if (offX > self.previousOffX) {
                     self.direction = 1;
                     self.offx = (offX + self.collectionView.frame.size.width - self.collectionView.contentSize.width);
-                }
-                else
-                {
+                } else {
                     self.direction = 2;
                     self.offx = offX;
                 }
@@ -475,17 +427,14 @@ static NSTimeInterval const durationTime = 0.3;
     if (self.scrollMode == UIImageScrollNormal)
     {
         self.isScroll = YES;
-    }
-    else if (self.scrollMode == UIImageScrollLoop)
-    {
+    } else if (self.scrollMode == UIImageScrollLoop) {
         [self stopTimer];
     }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if (self.scrollMode == UIImageScrollLoop)
-    {
+    if (self.scrollMode == UIImageScrollLoop) {
         [self startTimer];
     }
 }
@@ -497,13 +446,11 @@ static NSTimeInterval const durationTime = 0.3;
     [self setTitleUIWithPage:self.currentPage];
     
     NSInteger index = _currentPage;
-    if (self.scrollMode == UIImageScrollLoop)
-    {
+    if (self.scrollMode == UIImageScrollLoop) {
         index = _currentPage - 1;
     }
     
-    if (self.imageBrowserDidScroll)
-    {
+    if (self.imageBrowserDidScroll) {
         self.imageBrowserDidScroll(index);
     }
 }
@@ -511,17 +458,14 @@ static NSTimeInterval const durationTime = 0.3;
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     NSInteger index = _currentPage;
-    if (self.scrollMode == UIImageScrollLoop)
-    {
+    if (self.scrollMode == UIImageScrollLoop) {
         index = _currentPage - 1;
     }
     
-    if (self.imageBrowserDidScroll)
-    {
+    if (self.imageBrowserDidScroll) {
         self.imageBrowserDidScroll(index);
     }
-    if (self.deletage && [self.deletage respondsToSelector:@selector(imageBrowserDidScroll:)])
-    {
+    if (self.deletage && [self.deletage respondsToSelector:@selector(imageBrowserDidScroll:)]) {
         [self.deletage imageBrowserDidScroll:index];
     }
 }
@@ -533,11 +477,9 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)stopTimer
 {
-    if (self.autoAnimation && UIImageScrollLoop == self.scrollMode)
-    {
+    if (self.autoAnimation && UIImageScrollLoop == self.scrollMode) {
         [NSThread cancelPreviousPerformRequestsWithTarget:self];
-        if (self.timer)
-        {
+        if (self.timer) {
             [self.timer timerStop];
             self.timer = nil;
         }
@@ -547,14 +489,12 @@ static NSTimeInterval const durationTime = 0.3;
 - (void)startTimer
 {
     // 只有一张图片时不进行自动播放
-    if (self.totalPage <= 1)
-    {
+    if (self.totalPage <= 1) {
         return;
     }
     
     // 自动播放模式，循环显示模式
-    if (self.scrollMode == UIImageScrollLoop && self.autoAnimation)
-    {
+    if (self.scrollMode == UIImageScrollLoop && self.autoAnimation) {
         typeof(self) __weak weakSelf = self;
         [weakSelf performSelector:@selector(startTimerScroll) withObject:nil afterDelay:_autoDuration];
     }
@@ -562,8 +502,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)startTimerScroll
 {
-    if (self.timer == nil)
-    {
+    if (self.timer == nil) {
         __weak typeof(self) weakSelf = self;
         self.timer = [NSTimer timerWithTimeInterval:_autoDuration userInfo:nil repeats:YES handle:^(NSTimer *timer) {
             [weakSelf autoAnimationScroll];
@@ -576,8 +515,7 @@ static NSTimeInterval const durationTime = 0.3;
 {
     self.currentPage++;
     BOOL isAnimation = YES;
-    if (self.currentPage >= self.imageArray.count - 1)
-    {
+    if (self.currentPage >= self.imageArray.count - 1) {
         self.currentPage = 1;
         isAnimation = NO;
     }
@@ -589,13 +527,10 @@ static NSTimeInterval const durationTime = 0.3;
 - (void)setHiddenWhileSinglePage:(BOOL)hiddenWhileSinglePage
 {
     _hiddenWhileSinglePage = hiddenWhileSinglePage;
-    if (_hiddenWhileSinglePage)
-    {
+    if (_hiddenWhileSinglePage) {
         self.pageControl.hidden = YES;
         self.pageLabel.hidden = YES;
-    }
-    else
-    {
+    } else {
         self.pageControl.hidden = NO;
         self.pageLabel.hidden = NO;
     }
@@ -604,8 +539,7 @@ static NSTimeInterval const durationTime = 0.3;
 - (void)setDefaultImage:(UIImage *)defaultImage
 {
     _defaultImage = defaultImage;
-    if (_defaultImage)
-    {
+    if (_defaultImage) {
         self.defaultImageView.hidden = NO;
         self.defaultImageView.image = _defaultImage;
         
@@ -617,8 +551,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (NSMutableArray *)titleArray
 {
-    if (_titleArray == nil)
-    {
+    if (_titleArray == nil) {
         _titleArray = [[NSMutableArray alloc] init];
     }
     return _titleArray;
@@ -626,8 +559,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (NSMutableArray *)imageArray
 {
-    if (_imageArray == nil)
-    {
+    if (_imageArray == nil) {
         _imageArray = [[NSMutableArray alloc] init];
     }
     return _imageArray;
@@ -640,8 +572,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (UILabel *)titleLabel
 {
-    if (_titleLabel == nil)
-    {
+    if (_titleLabel == nil) {
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(originXY, originXY, (widthSelf - originXY * 2), sizeLabel)];
         _titleLabel.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.2];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -653,8 +584,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (UIPageControl *)pageControl
 {
-    if (_pageControl == nil)
-    {
+    if (_pageControl == nil) {
         _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake((widthSelf - (sizeLabel * self.totalPage)) / 2, (heightSelf - sizeLabel), (sizeLabel * self.totalPage), sizeLabel)];
         _pageControl.backgroundColor = [UIColor clearColor];
     }
@@ -663,8 +593,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (UILabel *)pageLabel
 {
-    if (_pageLabel == nil)
-    {
+    if (_pageLabel == nil) {
         _pageLabel = [[UILabel alloc] initWithFrame:CGRectMake((widthSelf - sizeLabel - originXY), (heightSelf - sizeLabel - originXY), sizeLabel, sizeLabel)];
         _pageLabel.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.5];
         _pageLabel.textAlignment = NSTextAlignmentCenter;
@@ -680,8 +609,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (UIButton *)previousButton
 {
-    if (_previousButton == nil)
-    {
+    if (_previousButton == nil) {
         _previousButton = [[UIButton alloc] initWithFrame:CGRectMake(originXY, (heightSelf - sizeLabel) / 2, sizeLabel, sizeLabel)];
         _previousButton.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.5];
         _previousButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
@@ -700,8 +628,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (UIButton *)nextButton
 {
-    if (_nextButton == nil)
-    {
+    if (_nextButton == nil) {
         _nextButton = [[UIButton alloc] initWithFrame:CGRectMake((widthSelf - sizeLabel - originXY), (heightSelf - sizeLabel) / 2, sizeLabel, sizeLabel)];
         _nextButton.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.5];
         _nextButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
@@ -722,8 +649,7 @@ static NSTimeInterval const durationTime = 0.3;
 
 - (void)reloadData
 {
-    if (_images && 0 < self.totalPage)
-    {
+    if (_images && 0 < self.totalPage) {
         self.defaultImageView.hidden = YES;
         self.collectionView.hidden = NO;
         
@@ -733,33 +659,27 @@ static NSTimeInterval const durationTime = 0.3;
         
         // 当前有页码
         self.currentPage = _pageIndex;
-        if (self.currentPage < 0)
-        {
+        if (self.currentPage < 0) {
             self.currentPage = 0;
-        }
-        else if (self.currentPage >= self.totalPage)
-        {
+        } else if (self.currentPage >= self.totalPage) {
             self.currentPage = self.totalPage - 1;
         }
         
         // 数据源
-        if (self.showTitle)
-        {
+        if (self.showTitle) {
             [self.titleArray removeAllObjects];
             [self.titleArray addObjectsFromArray:_titles];
         }
         [self.imageArray removeAllObjects];
         [self.imageArray addObjectsFromArray:_images];
         // 循环时
-        if (self.scrollMode == UIImageScrollLoop)
-        {
+        if (self.scrollMode == UIImageScrollLoop) {
             [self.imageArray addObject:_images.firstObject];
             [self.imageArray insertObject:_images.lastObject atIndex:0];
             
             self.currentPage += 1;
             
-            if (self.showTitle)
-            {
+            if (self.showTitle) {
                 [self.titleArray addObject:_titles.firstObject];
                 [self.titleArray insertObject:_titles.lastObject atIndex:0];
             }
@@ -769,8 +689,7 @@ static NSTimeInterval const durationTime = 0.3;
         [self setPageUIWithPage:_currentPage];
         [self setTitleUIWithPage:_currentPage];
         
-        if (_currentPage != 0)
-        {
+        if (_currentPage != 0) {
             [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:_currentPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
         }
         
@@ -783,8 +702,7 @@ static NSTimeInterval const durationTime = 0.3;
         [self setShowAnimationUI];
         
         // 只有一张图时不能拖动
-        if (!self.enableWhileSinglePage && 1 == self.totalPage)
-        {
+        if (!self.enableWhileSinglePage && 1 == self.totalPage) {
             self.collectionView.scrollEnabled = NO;
         }
     }

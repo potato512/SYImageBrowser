@@ -412,6 +412,8 @@
 				TargetAttributes = {
 					A7C295601DDDA16C004C5457 = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = 9YWJ3PZHZG;
+						ProvisioningStyle = Manual;
 					};
 					A7C295791DDDA16C004C5457 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -428,6 +430,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -658,11 +661,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 9YWJ3PZHZG;
 				INFOPLIST_FILE = DemoImageBrowser/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zsy.DemoImageBrowser;
+				PRODUCT_BUNDLE_IDENTIFIER = com.byd.DemoImageBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = DevelopmentProfileWildcard;
 			};
 			name = Debug;
 		};
@@ -670,11 +676,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 9YWJ3PZHZG;
 				INFOPLIST_FILE = DemoImageBrowser/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.zsy.DemoImageBrowser;
+				PRODUCT_BUNDLE_IDENTIFIER = com.byd.DemoImageBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = DevelopmentProfileWildcard;
 			};
 			name = Release;
 		};
