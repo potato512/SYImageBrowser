@@ -9,7 +9,10 @@
 #import "ImageRunloopTableVC.h"
 #import "SYImageBrowser.h"
 
-@interface ImageRunloopTableVC ()
+@interface ImageRunloopTableVC () <SYImageBrowserDelegate>
+
+@property (nonatomic, strong) NSArray *images;
+@property (nonatomic, strong) NSArray *titles;
 
 @end
 
@@ -30,21 +33,13 @@
 
 - (void)setUI
 {
-    // 网络图片
-    NSArray *images = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
-    // 标题
-    NSArray *titles = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
-    
     SYImageBrowser *imageView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 200.0, self.view.frame.size.width, 160.0)];
     imageView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3];
-    // 图片源
-    imageView.images = images;
     // 图片轮播模式
     imageView.scrollMode = UIImageScrollLoop;
     // 图片显示模式
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     // 标题标签
-    imageView.titles = titles;
     imageView.showTitle = YES;
     imageView.titleLabel.textColor = [UIColor redColor];
     // 页签-pageControl
@@ -59,11 +54,8 @@
     // 自动播放
     imageView.autoAnimation = YES;
     imageView.autoDuration = 2.0;
-    // 图片点击
-    imageView.imageSelected = ^(NSInteger index){
-        [[[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"你点击了第 %@ 张图片", @(index)] delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil] show];
-    };
     // 数据刷新
+    imageView.deletage = self;
     [imageView reloadData];
 
     
@@ -73,6 +65,38 @@
     table.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     table.tableHeaderView = imageView;
     table.tableFooterView = [[UIView alloc] init];
+}
+
+- (NSArray *)images
+{
+    if (_images == nil) {
+        _images = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
+        
+    }
+    return _images;
+}
+
+- (NSArray *)titles
+{
+    if (_titles == nil) {
+        _titles = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
+    }
+    return _titles;
+}
+
+- (NSInteger)imageBrowserNumberOfImages:(SYImageBrowser *)browser
+{
+    return self.images.count;
+}
+- (NSString *)imageBrowser:(SYImageBrowser *)browser titleAtIndex:(NSInteger)index
+{
+    return self.titles[index];
+}
+- (UIImageView *)imageBrowser:(SYImageBrowser *)browser imageAtIndex:(NSInteger)index
+{
+    UIImageView *imageview = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.images[index]]];
+    imageview.contentMode = UIViewContentModeScaleAspectFit;
+    return imageview;
 }
 
 @end

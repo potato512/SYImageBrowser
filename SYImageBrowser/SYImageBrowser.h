@@ -11,8 +11,7 @@
 #import "SYImageBrowserDelegate.h"
 
 /// 页码控制器样式（默认UIPageControlType）
-typedef NS_ENUM(NSInteger, UIImagePageControlType)
-{
+typedef NS_ENUM(NSInteger, UIImagePageControlType) {
     /// 页码控制器样式 隐藏
     UIImagePageControlHidden = 0,
     /// 页码控制器样式 页码
@@ -22,8 +21,7 @@ typedef NS_ENUM(NSInteger, UIImagePageControlType)
 };
 
 /// 图片轮播方式（默认ImageScrollNormal）
-typedef NS_ENUM(NSInteger, UIImageScrollMode)
-{
+typedef NS_ENUM(NSInteger, UIImageScrollMode) {
     /// 图片轮播方式 循环
     UIImageScrollLoop = 1,
     /// 图片轮播方式 非循环
@@ -34,10 +32,6 @@ typedef NS_ENUM(NSInteger, UIImageScrollMode)
 
 /// 限制使用init方法
 - (instancetype)init __attribute__((unavailable("init 方法不可用，请用 initWithFrame:")));
-
-/// 数据源
-@property (nonatomic, strong) NSArray *images;
-@property (nonatomic, strong) NSArray *titles;
 
 /// 默认不显示标题
 @property (nonatomic, assign) BOOL showTitle;
@@ -67,14 +61,6 @@ typedef NS_ENUM(NSInteger, UIImageScrollMode)
 
 /// 默认UIImageScrollNormal
 @property (nonatomic, assign) UIImageScrollMode scrollMode;
-/// 默认UIViewContentModeScaleAspectFill
-@property (nonatomic, assign) UIViewContentMode contentMode;
-
-
-/// 图片点击响应
-@property (nonatomic, copy) void (^imageSelected)(NSInteger index);
-/// 图片滚动响应（contentOffX滚动距离；direction表示方向，1向左，2向右；isEnd表示最左或最右边）
-@property (nonatomic, copy) void (^imageScrolled)(float contentOffX, NSInteger direction, BOOL isEnd);
 
 
 /// 切换按钮
@@ -83,25 +69,15 @@ typedef NS_ENUM(NSInteger, UIImageScrollMode)
 @property (nonatomic, strong) UIButton *previousButton;
 @property (nonatomic, strong) UIButton *nextButton;
 
-
-/// 默认图标（默认无）
-@property (nonatomic, strong) UIImage *defaultImage;
-
 /// 图片浏览定位（即当前显示第N张，默认第一张）
 @property (nonatomic, assign) NSInteger pageIndex;
-
 
 /// 调用这些方法，属性时，表示图片被浏览
 /// 默认淡入动画（默认NO）
 @property (nonatomic, assign) BOOL isBrowser;
 
-
-/// 滚动时的索引
-/// block索引
-@property (nonatomic, copy) void (^imageBrowserDidScroll)(NSInteger index);
 /// 代理
-@property (nonatomic, assign) id<SYImageBrowserDelegate>deletage;
-/// 代理索引
+@property (nonatomic, weak) id<SYImageBrowserDelegate> deletage;
 
 /// 数据刷新
 - (void)reloadData;
@@ -120,10 +96,10 @@ typedef NS_ENUM(NSInteger, UIImageScrollMode)
  imageView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3];
  // 图片源
  imageView.images = images;
- // 图片浏览模式 ImageShowRunloopType ImageShowNormalType
- imageView.showType = ImageShowNormalType;
- // 图片显示模式 ImageContentAspectFillType ImageContentAspectFitType
- imageView.contentMode = ImageContentAspectFitType;
+ // 图片浏览模式 UIImageScrollLoop UIImageScrollNormal
+ imageView.scrollMode = UIImageScrollNormal;
+ // 图片显示模式
+ imageView.contentMode = UIViewContentModeScaleAspectFit;
  // 标题标签
  imageView.titles = titles;
  imageView.showTitle = YES;
@@ -131,8 +107,8 @@ typedef NS_ENUM(NSInteger, UIImageScrollMode)
  // 页签-pageControl
  imageView.pageControl.pageIndicatorTintColor = [UIColor redColor];
  imageView.pageControl.currentPageIndicatorTintColor = [UIColor orangeColor];
- // 页签-label UILabelControlType
- imageView.pageType = UIPageControlType;
+ // 页签-label UIImagePageControlHidden UIImagePageControl UIImagePageLabel
+ imageView.pageControlType = UIImagePageControl;
  imageView.pageLabel.backgroundColor = [UIColor yellowColor];
  imageView.pageLabel.textColor = [UIColor redColor];
  // 切换按钮
@@ -140,9 +116,8 @@ typedef NS_ENUM(NSInteger, UIImageScrollMode)
  // 自动播放
  imageView.isAutoPlay = NO;
  imageView.animationTime = 1.2;
- // 图片浏览时才使用
- imageView.show = NO;
- imageView.hidden = NO;
+ // 图片浏览
+ imageView.isBrowser = YES;
  // 滚动回调
  imageView.imageScroll = ^(NSInteger index){
      NSLog(@"scroll = %@", @(index + 1));

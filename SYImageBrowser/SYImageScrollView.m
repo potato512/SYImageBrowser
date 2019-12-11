@@ -24,31 +24,10 @@ static CGFloat const scaleMax = 2.0;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.imageView = [[UIImageView alloc] initWithFrame:self.bounds];
-        [self addSubview:self.imageView];
-        self.imageView.backgroundColor = [UIColor clearColor];
-        self.imageView.clipsToBounds = YES;
-        self.imageView.layer.masksToBounds = YES;
-        self.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
         // 两个手指拿捏缩放
         self.minimumZoomScale = scaleMin;
         self.maximumZoomScale = scaleMax;
         self.delegate = self;
-        
-        // 双击缩放
-        UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleClick:)];
-        doubleTap.numberOfTapsRequired = 2;
-        self.imageView.userInteractionEnabled = YES;
-        [self.imageView addGestureRecognizer:doubleTap];
-       
-        // 单击隐藏
-        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleClick:)];
-        singleTap.numberOfTapsRequired = 1;
-        [self.imageView addGestureRecognizer:singleTap];
-        
-        // 区分单双击
-        [singleTap requireGestureRecognizerToFail:doubleTap];
         
         isScaleBig = NO;
     }
@@ -84,7 +63,24 @@ static CGFloat const scaleMax = 2.0;
     }
 }
 
-#pragma mark - click
+#pragma mark - 手势
+
+- (void)addGesture
+{
+    // 双击缩放
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleClick:)];
+    doubleTap.numberOfTapsRequired = 2;
+    self.imageView.userInteractionEnabled = YES;
+    [self.imageView addGestureRecognizer:doubleTap];
+    
+    // 单击隐藏
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleClick:)];
+    singleTap.numberOfTapsRequired = 1;
+    [self.imageView addGestureRecognizer:singleTap];
+    
+    // 区分单双击
+    [singleTap requireGestureRecognizerToFail:doubleTap];
+}
 
 - (void)doubleClick:(UITapGestureRecognizer *)gestureRecognizer
 {
@@ -125,6 +121,23 @@ static CGFloat const scaleMax = 2.0;
         isScaleBig = NO;
         [self setZoomScale:scaleMin animated:NO];
         [self centerShow:self imageview:self.imageView];
+    }
+}
+
+- (void)setImageView:(UIImageView *)imageView
+{
+    if (_imageView == imageView) {
+        return;
+    }
+    _imageView = imageView;
+    if (_imageView) {
+        [self addSubview:_imageView];
+        _imageView.frame = self.bounds;
+        _imageView.backgroundColor = UIColor.clearColor;
+        _imageView.clipsToBounds = YES;
+        _imageView.layer.masksToBounds = YES;
+        _imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self addGesture];
     }
 }
 

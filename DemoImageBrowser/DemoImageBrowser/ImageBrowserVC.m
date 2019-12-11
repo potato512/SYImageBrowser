@@ -9,7 +9,9 @@
 #import "ImageBrowserVC.h"
 #import "SYImageBrowser.h"
 
-@interface ImageBrowserVC ()
+@interface ImageBrowserVC () <SYImageBrowserDelegate>
+
+@property (nonatomic, strong) NSArray *images;
 
 @end
 
@@ -33,26 +35,45 @@
 {
     [super loadView];
     self.view.backgroundColor = [UIColor whiteColor];
-    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)])
-    {
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
     }
 }
 
 - (void)setUI
 {
-    NSArray *images = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
-//    images = @[@"01.jpeg"];
     SYImageBrowser *imageView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, (self.view.frame.size.height - 64.0))];
     [self.view addSubview:imageView];
     imageView.backgroundColor = [UIColor whiteColor];
-    imageView.images = images;
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.pageControlType = UIImagePageLabel;
+    imageView.isBrowser = YES;
     imageView.pageIndex = 3;
     imageView.hiddenWhileSinglePage = YES;
     imageView.enableWhileSinglePage = NO;
+    imageView.scrollMode = UIImageScrollLoop;
+    imageView.deletage = self;
     [imageView reloadData];
+}
+
+- (NSArray *)images
+{
+    if (_images == nil) {
+        _images = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
+    }
+    return _images;
+}
+
+- (NSInteger)imageBrowserNumberOfImages:(SYImageBrowser *)browser
+{
+    return self.images.count;
+}
+- (UIImageView *)imageBrowser:(SYImageBrowser *)browser imageAtIndex:(NSInteger)index
+{
+    NSString *image = self.images[index];
+    UIImageView *imageview = [[UIImageView alloc] initWithImage:[UIImage imageNamed:image]];
+    imageview.contentMode = UIViewContentModeScaleAspectFit;
+    return imageview;
 }
 
 @end

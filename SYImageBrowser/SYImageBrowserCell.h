@@ -12,16 +12,12 @@ static NSString *const identifierSYImageBrowserCell = @"SYImageBrowserCell";
 
 @interface SYImageBrowserCell : UICollectionViewCell
 
+@property (nonatomic, strong) UIImageView *imageview;
+
 /// 重置大小
 @property (nonatomic, assign) CGSize sizeItem;
-/// 图片对象
-@property (nonatomic, strong) id objectItem;
-/// 默认图标
-@property (nonatomic, strong) UIImage *defaultImage;
-/// 图片显示模式
-@property (nonatomic, assign) UIViewContentMode contentMode;
 /// 浏览时缩放模式图片
-@property (nonatomic, assign) BOOL isImageBrowser;
+@property (nonatomic, assign) BOOL isBrowser;
 /// 单击隐藏回调
 @property (nonatomic, copy) void (^hiddenClick)(void);
 

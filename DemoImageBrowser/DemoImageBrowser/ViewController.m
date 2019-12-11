@@ -13,6 +13,7 @@
 #import "ImageBrowserVC.h"
 #import "SYImageBrowser.h"
 #import "AppDelegate.h"
+#import "SDWebImage/UIImageView+WebCache.h"
 
 @interface ViewController () <UITableViewDataSource, UITableViewDelegate, SYImageBrowserDelegate>
 
@@ -113,17 +114,26 @@
     }
     else if (4 == indexPath.row)
     {
-        self.imageModalView.images = self.images;
-//        self.imageModalView.images = @[@"01.jpeg"];
         self.imageModalView.deletage = self;
         [self.imageModalView reloadData];
     }
 }
 
+- (NSInteger)imageBrowserNumberOfImages:(SYImageBrowser *)browser
+{
+    return self.images.count;
+}
+- (UIImageView *)imageBrowser:(SYImageBrowser *)browser imageAtIndex:(NSInteger)index
+{
+    NSString *image = self.images[index];
+    UIImageView *imageview = [[UIImageView alloc] init];
+    imageview.image = [UIImage imageNamed:image];
+    return imageview;
+}
+
 - (NSArray *)images
 {
-    if (_images == nil)
-    {
+    if (_images == nil) {
         _images = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
     }
     return _images;
@@ -131,8 +141,7 @@
 
 - (SYImageBrowser *)imageModalView
 {
-    if (_imageModalView == nil)
-    {
+    if (_imageModalView == nil) {
         UIWindow *window = ((AppDelegate *)[UIApplication sharedApplication].delegate).window;
         
         _imageModalView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 0.0, window.frame.size.width, window.frame.size.height)];
@@ -141,19 +150,9 @@
         _imageModalView.pageControlType = UIImagePageLabel;
         _imageModalView.pageIndex = 3;
         _imageModalView.isBrowser = YES;
-        _imageModalView.hiddenWhileSinglePage = YES;
-        _imageModalView.imageBrowserDidScroll = ^(NSInteger index) {
-            NSLog(@"block index = %@", @(index));
-        };
-        
         [window addSubview:_imageModalView];
     }
     return _imageModalView;
-}
-
-- (void)imageBrowserDidScroll:(NSInteger)index
-{
-    NSLog(@"delegate index = %@", @(index));
 }
 
 @end
