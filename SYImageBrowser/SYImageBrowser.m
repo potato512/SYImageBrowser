@@ -106,9 +106,7 @@ static NSTimeInterval const durationTime = 0.3;
         return;
     }
     
-    if (self.scrollMode == UIImageScrollLoop) {
-//        page -= 1;
-    }
+    page = [self pageWhileRunloop:page];
     
     if (self.pageControlType == UIImagePageControl) {
         self.pageControl.hidden = NO;
@@ -239,7 +237,9 @@ static NSTimeInterval const durationTime = 0.3;
 
     if (self.deletage && [self.deletage respondsToSelector:@selector(imageBrowser:didSelecteAtIndex:)]) {
         if (self.scrollMode == UIImageScrollLoop) {
-//            index -= 1;
+            if (index) {
+                
+            }
         }
         [self.deletage imageBrowser:self didSelecteAtIndex:index];
     }
@@ -278,8 +278,8 @@ static NSTimeInterval const durationTime = 0.3;
     
     BOOL isAnimation = YES;
     if (UIImageScrollLoop == self.scrollMode) {
-        if (self.currentPage >= self.numberImage - 1) {
-            self.currentPage = 1;
+        if (self.currentPage > (self.numberImage - 2)) {
+            self.currentPage = 0;
             isAnimation = NO;
         }
     } else if (UIImageScrollNormal == self.scrollMode) {
@@ -318,7 +318,8 @@ static NSTimeInterval const durationTime = 0.3;
     cell.isBrowser = self.isBrowser;
     
     if (self.deletage && [self.deletage respondsToSelector:@selector(imageBrowser:imageAtIndex:)]) {
-        UIImageView *imageview = [self.deletage imageBrowser:self imageAtIndex:indexPath.row];
+        NSInteger index = [self pageWhileRunloop:indexPath.row];
+        UIImageView *imageview = [self.deletage imageBrowser:self imageAtIndex:index];
         cell.imageview = imageview;
     }
     
@@ -383,11 +384,11 @@ static NSTimeInterval const durationTime = 0.3;
     
     self.currentPage = offX / widthSelf;
     if (self.scrollMode == UIImageScrollLoop) {
-        if (self.currentPage <= 0 && offX < (widthSelf * 0.5)) {
-//            self.currentPage = self.numberImage - 2;
+        if (self.currentPage < 1 && offX < (widthSelf * 0.5)) {
+            self.currentPage = self.numberImage - 2;
             [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:_currentPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
-        } else if (self.currentPage >= self.numberImage - 1) {
-//            self.currentPage = 1;
+        } else if (self.currentPage > self.numberImage - 1) {
+            self.currentPage = 1;
             [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:_currentPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
         }
     }
@@ -438,10 +439,7 @@ static NSTimeInterval const durationTime = 0.3;
     [self setPageUIWithPage:self.currentPage];
     [self setTitleUIWithPage:self.currentPage];
     
-    NSInteger index = _currentPage;
-    if (self.scrollMode == UIImageScrollLoop) {
-//        index = _currentPage - 1;
-    }
+    NSInteger index = [self pageWhileRunloop:_currentPage];
 
     if (self.deletage && [self.deletage respondsToSelector:@selector(imageBrowser:didScrollAtIndex:)]) {
         [self.deletage imageBrowser:self didScrollAtIndex:index];
@@ -451,9 +449,6 @@ static NSTimeInterval const durationTime = 0.3;
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     NSInteger index = _currentPage;
-    if (self.scrollMode == UIImageScrollLoop) {
-//        index = _currentPage - 1;
-    }
     
     if (self.deletage && [self.deletage respondsToSelector:@selector(imageBrowser:didScrollAtIndex:)]) {
         [self.deletage imageBrowser:self didScrollAtIndex:index];
@@ -502,10 +497,18 @@ static NSTimeInterval const durationTime = 0.3;
 {
     self.currentPage++;
     BOOL isAnimation = YES;
-    if (self.currentPage >= self.numberImage - 1) {
-        self.currentPage = 1;
-        isAnimation = NO;
+    if (self.scrollMode == UIImageScrollLoop) {
+        if (self.currentPage >= self.numberImage - 3) {
+            self.currentPage = 0;
+            isAnimation = NO;
+        }
+    } else {
+        if (self.currentPage >= self.numberImage - 1) {
+            self.currentPage = 0;
+            isAnimation = NO;
+        }
     }
+    
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:self.currentPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:isAnimation];
 }
 
@@ -606,29 +609,30 @@ static NSTimeInterval const durationTime = 0.3;
 {
     if (self.deletage && [self.deletage respondsToSelector:@selector(imageBrowserNumberOfImages:)]) {
         self.numberImage = [self.deletage imageBrowserNumberOfImages:self];
+        if (self.scrollMode == UIImageScrollLoop) {
+            self.numberImage += 2;// 添加前后两个视图，第一个为原最后一个；最后一个为原第一个
+        }
     }
     
     if (0 < self.numberImage) {
         self.collectionView.hidden = NO;
-        
+        //
         [self setTitleUI];
         [self setSwitchUI];
         [self setPagePointAndSize];
-        
         // 当前有页码
         self.currentPage = _pageIndex;
         if (self.currentPage < 0) {
             self.currentPage = 0;
         } else if (self.currentPage >= self.numberImage) {
-            self.currentPage = self.numberImage - 1;
+            self.currentPage = (self.numberImage - 1);
         }
         
-        // 循环时
+        NSInteger numberPage = self.numberImage;
         if (self.scrollMode == UIImageScrollLoop) {
-//            self.currentPage += 1;
+            numberPage -= 2;
         }
-        
-        self.pageControl.numberOfPages = self.numberImage;
+        self.pageControl.numberOfPages = numberPage;
         [self setPageUIWithPage:self.currentPage];
         [self setTitleUIWithPage:self.currentPage];
         

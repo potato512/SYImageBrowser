@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../SYImageBrowser/SYImageBrowser.m"
-            timestampString = "597758055.777673"
+            timestampString = "597814757.757182"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "273"
-            endingLineNumber = "273"
-            landmarkName = "-nextClick"
+            startingLineNumber = "269"
+            endingLineNumber = "269"
+            landmarkName = "-previousClick"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
