@@ -11,7 +11,6 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/potato512/SYImageBrowser.git", :tag => s.version.to_s }
   s.source_files  = "SYImageBrowser/*.{h,m}"
   s.public_header_files = "SYImageBrowser/*.h"
-  s.resources = "SYImageBrowser/ImageSources/*.png"
   s.requires_arc = true
 
   s.dependency "SDWebImage"
