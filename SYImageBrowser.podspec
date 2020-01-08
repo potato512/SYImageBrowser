@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "SYImageBrowser"
-  s.version      = "2.2.6"
+  s.version      = "2.3.0"
   s.summary      = "图片广告与浏览控件SYImageBrowser."
   s.homepage     = "https://github.com/potato512/SYImageBrowser"
   s.license      = { :type => "MIT", :file => "LICENSE" }

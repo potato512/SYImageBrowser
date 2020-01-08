@@ -42,15 +42,14 @@
 
 - (void)setUI
 {
-    SYImageBrowser *imageView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, (self.view.frame.size.height - 64.0))];
+    SYImageBrowser *imageView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, (self.view.frame.size.height - 64.0)) scrollDirection:UIImageScrollDirectionHorizontal];
     [self.view addSubview:imageView];
     imageView.backgroundColor = [UIColor whiteColor];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.pageControlType = UIImagePageLabel;
     imageView.isBrowser = YES;
-    imageView.pageIndex = 3;
+    imageView.currentPage = 3;
     imageView.hiddenWhileSinglePage = YES;
-    imageView.enableWhileSinglePage = NO;
     imageView.scrollMode = UIImageScrollLoop;
     imageView.deletage = self;
     [imageView reloadData];
@@ -68,11 +67,16 @@
 {
     return self.images.count;
 }
-- (UIImageView *)imageBrowser:(SYImageBrowser *)browser imageAtIndex:(NSInteger)index
+- (UIView *)imageBrowser:(SYImageBrowser *)browser view:(UIView *)view viewAtIndex:(NSInteger)index
 {
     NSString *image = self.images[index];
-    UIImageView *imageview = [[UIImageView alloc] initWithImage:[UIImage imageNamed:image]];
-    imageview.contentMode = UIViewContentModeScaleAspectFit;
+    UIImageView *imageview = view;
+    if (imageview == nil) {
+        imageview = [[UIImageView alloc] init];
+        imageview.contentMode = UIViewContentModeScaleAspectFit;
+    }
+    imageview.image = [UIImage imageNamed:image];
+    
     return imageview;
 }
 

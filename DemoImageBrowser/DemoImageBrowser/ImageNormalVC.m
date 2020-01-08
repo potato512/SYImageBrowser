@@ -34,45 +34,61 @@
 
 - (void)setUI
 {
-    SYImageBrowser *imageView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 160.0)];
+    SYImageBrowser *imageView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 10.0, self.view.frame.size.width, 240) scrollDirection:UIImageScrollDirectionHorizontal];
     [self.view addSubview:imageView];
     imageView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3];
     // 图片轮播模式
     imageView.scrollMode = UIImageScrollNormal;
-    // 图片显示模式
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
-    // 标题标签
-    imageView.showTitle = YES;
-    imageView.titleLabel.textColor = [UIColor redColor];
     // 页签-pageControl
     imageView.pageControl.pageIndicatorTintColor = [UIColor redColor];
-    imageView.pageControl.currentPageIndicatorTintColor = [UIColor orangeColor];
+    imageView.pageControl.currentPageIndicatorTintColor = [UIColor yellowColor];
     // 页签-label 
     imageView.pageControlType = UIImagePageControl;
-    imageView.pageLabel.backgroundColor = [UIColor yellowColor];
-    imageView.pageLabel.textColor = [UIColor redColor];
-    // 切换按钮
-    imageView.showSwitch = YES;
-    // 自动播放
-    imageView.autoAnimation = NO;
-    imageView.autoDuration = 1.2;
-    // 图片浏览时才使用
-    imageView.isBrowser = NO;
     // 数据刷新
     imageView.deletage = self;
+
+    //
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, imageView.frame.size.width - 40, 30)];
+    [imageView addSubview:titleLabel];
+    titleLabel.textColor = [UIColor redColor];
+    titleLabel.font = [UIFont systemFontOfSize:13];
+    titleLabel.tag = 1000;
+    titleLabel.backgroundColor = UIColor.lightGrayColor;
+    
+    imageView.tag = 1;
     [imageView reloadData];
+    
+    
+    //
+    SYImageBrowser *imageView2 = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 260, self.view.frame.size.width, 240) scrollDirection:UIImageScrollDirectionVertical];
+    [self.view addSubview:imageView2];
+    imageView2.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3];
+    // 图片轮播模式
+    imageView2.scrollMode = UIImageScrollNormal;
+    // 页签-label
+    imageView2.pageControlType = UIImagePageLabel;
+    imageView2.pageLabel.backgroundColor = [UIColor yellowColor];
+    imageView2.pageLabel.textColor = [UIColor redColor];
+    // 数据刷新
+    imageView2.deletage = self;
+
+    //
+    UILabel *titleLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, imageView2.frame.size.width - 40, 30)];
+    [imageView2 addSubview:titleLabel2];
+    titleLabel2.textColor = [UIColor redColor];
+    titleLabel2.font = [UIFont systemFontOfSize:13];
+    titleLabel2.tag = 1000;
+    titleLabel2.backgroundColor = UIColor.lightGrayColor;
+    imageView2.currentPage = 3;
+    imageView2.tag = 2;
+    [imageView2 reloadData];
 }
 
 - (NSArray *)images
 {
     if (_images == nil) {
-        _images = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
-//        _images = @[@"http://img0.bdstatic.com/img/image/6946388bef89760a5a2316f888602a721440491660.jpg",
-//                    @"http://img0.bdstatic.com/img/image/6446027056db8afa73b23eaf953dadde1410240902.jpg",
-//                    @"http://img0.bdstatic.com/img/image/379ee5880ae642e12c24b731501d01d91409804208.jpg",
-//                    @"http://img0.bdstatic.com/img/image/c9e2596284f50ce95cbed0d756fdd22b1409207983.jpg",
-//                    @"http://img0.bdstatic.com/img/image/5bb565bd8c11b67a46bcfb36cc506f6c1409130294.jpg",
-//                    @"http://d.hiphotos.baidu.com/image/w%3D230/sign=3941c09f0ef431adbcd2443a7b37ac0f/bd315c6034a85edf0647db2e4b540923dc5475f7.jpg"];
+//        _images = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
+        _images = @[@"http://img0.bdstatic.com/img/image/6946388bef89760a5a2316f888602a721440491660.jpg", @"http://img0.bdstatic.com/img/image/6446027056db8afa73b23eaf953dadde1410240902.jpg", @"http://img0.bdstatic.com/img/image/379ee5880ae642e12c24b731501d01d91409804208.jpg", @"http://img0.bdstatic.com/img/image/c9e2596284f50ce95cbed0d756fdd22b1409207983.jpg", @"http://img0.bdstatic.com/img/image/5bb565bd8c11b67a46bcfb36cc506f6c1409130294.jpg", @"http://d.hiphotos.baidu.com/image/w%3D230/sign=3941c09f0ef431adbcd2443a7b37ac0f/bd315c6034a85edf0647db2e4b540923dc5475f7.jpg"];
     }
     return _images;
 }
@@ -88,33 +104,72 @@
 
 - (NSInteger)imageBrowserNumberOfImages:(SYImageBrowser *)browser
 {
+    if (browser.tag == 1) {
+        return self.images.count;
+    }
+    
+    
     return self.images.count;
 }
-- (NSString *)imageBrowser:(SYImageBrowser *)browser titleAtIndex:(NSInteger)index
+- (UIView *)imageBrowser:(SYImageBrowser *)browser view:(UIView *)view viewAtIndex:(NSInteger)index
 {
-    NSString *title = self.titles[index];
-    return title;
-}
-- (UIImageView *)imageBrowser:(SYImageBrowser *)browser imageAtIndex:(NSInteger)index
-{
+    if (browser.tag == 1) {
+        if (view == nil) {
+            NSString *imageurl = self.images[index];
+            UIImageView *imageview = [[UIImageView alloc] init];
+                imageview.contentMode = UIViewContentModeScaleAspectFit;
+            [imageview sd_setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"DefaultImage"]];
+    //        imageview.image = [UIImage imageNamed:imageurl];
+            return imageview;
+        }
+        return view;
+    }
+    
+//    UIView *imageview = [[UIView alloc] init];
     NSString *imageurl = self.images[index];
     UIImageView *imageview = [[UIImageView alloc] init];
     imageview.contentMode = UIViewContentModeScaleAspectFit;
-//    [imageview sd_setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"DefaultImage"]];
-    imageview.image = [UIImage imageNamed:imageurl];
+    [imageview sd_setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"DefaultImage"]];
+//    imageview.image = [UIImage imageNamed:imageurl];
     return imageview;
 }
 - (void)imageBrowser:(SYImageBrowser *)browser didScrollAtIndex:(NSInteger)index
 {
-    NSLog(@"scroll %@", @(index));
+    UILabel *label = [browser viewWithTag:1000];
+    NSString *title = self.titles[index];
+    
+    if (browser.tag == 1) {
+        NSLog(@"水平滑动：scroll %@", @(index));
+        label.text = [NSString stringWithFormat:@"左右滑动：%@", title];
+        label.textColor = UIColor.redColor;
+        if (index == 3) {
+            label.textColor = UIColor.greenColor;
+        }
+        return;
+    }
+    NSLog(@"上下滑动：scroll %@", @(index));
+    
+    label.text = [NSString stringWithFormat:@"上下滑动：%@", title];
+    label.textColor = UIColor.orangeColor;
+    if (index == 3) {
+        label.textColor = UIColor.blueColor;
+    }
 }
 - (void)imageBrowser:(SYImageBrowser *)browser didSelecteAtIndex:(NSInteger)index
 {
-    NSLog(@"click %@", @(index));
+    if (browser.tag == 1) {
+        NSLog(@"左右滑动：click %@", @(index));
+        return;
+    }
+    NSLog(@"上下滑动：click %@", @(index));
 }
-- (void)imageBrowser:(SYImageBrowser *)browser direction:(NSInteger)direction contentOffX:(CGFloat)offX end:(BOOL)isEnd
+- (void)imageBrowser:(SYImageBrowser *)browser direction:(UIImageSlideDirection)direction contentOffX:(CGFloat)offX end:(BOOL)isEnd
 {
-    NSLog(@"direction %@, offx %@, end %@", @(direction), @(offX), @(isEnd));
+    if (browser.tag == 1) {
+        NSLog(@"左右滑动：direction %@, offx %@, end %@", @(direction), @(offX), @(isEnd));
+        return;
+    }
+    NSLog(@"上下滑动：direction %@, offx %@, end %@", @(direction), @(offX), @(isEnd));
 }
 
 @end

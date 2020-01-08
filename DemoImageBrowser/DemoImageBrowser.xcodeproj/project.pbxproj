@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		58E5E76B23B72DAD00D51808 /* ImageAutonRunloopVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E5E76A23B72DAD00D51808 /* ImageAutonRunloopVC.m */; };
 		A73FA7591E89010B008259A0 /* DefaultImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A73FA7571E89010B008259A0 /* DefaultImage@2x.png */; };
 		A73FA75A1E89010B008259A0 /* DefaultImage_failure@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A73FA7581E89010B008259A0 /* DefaultImage_failure@2x.jpg */; };
 		A7642D411DDEE60600A73CA7 /* ImageBrowserVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A7642D401DDEE60600A73CA7 /* ImageBrowserVC.m */; };
@@ -41,14 +42,6 @@
 		A7ED65131ED974B700CD0AC9 /* 05.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A7ED650D1ED974B700CD0AC9 /* 05.jpeg */; };
 		A7ED65141ED974B700CD0AC9 /* 06.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A7ED650E1ED974B700CD0AC9 /* 06.jpeg */; };
 		A7EFE2351F3D9AA400781C9F /* SYImageBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EFE2341F3D9AA400781C9F /* SYImageBrowserCell.m */; };
-		A7EFE23E1F3D9ADB00781C9F /* next_highlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7EFE2361F3D9ADB00781C9F /* next_highlight@2x.png */; };
-		A7EFE23F1F3D9ADB00781C9F /* next_highlight@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7EFE2371F3D9ADB00781C9F /* next_highlight@3x.png */; };
-		A7EFE2401F3D9ADB00781C9F /* next_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7EFE2381F3D9ADB00781C9F /* next_normal@2x.png */; };
-		A7EFE2411F3D9ADB00781C9F /* next_normal@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7EFE2391F3D9ADB00781C9F /* next_normal@3x.png */; };
-		A7EFE2421F3D9ADB00781C9F /* previous_highlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7EFE23A1F3D9ADB00781C9F /* previous_highlight@2x.png */; };
-		A7EFE2431F3D9ADB00781C9F /* previous_highlight@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7EFE23B1F3D9ADB00781C9F /* previous_highlight@3x.png */; };
-		A7EFE2441F3D9ADB00781C9F /* previous_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7EFE23C1F3D9ADB00781C9F /* previous_normal@2x.png */; };
-		A7EFE2451F3D9ADB00781C9F /* previous_normal@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7EFE23D1F3D9ADB00781C9F /* previous_normal@3x.png */; };
 		A7F6D36C1EB347FE001EC533 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6D36B1EB347FE001EC533 /* BaseViewController.m */; };
 		A7F6D36F1EB3486A001EC533 /* ImageRunloopVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6D36E1EB3486A001EC533 /* ImageRunloopVC.m */; };
 		A7F6D3721EB3487A001EC533 /* ImageRunloopTableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6D3711EB3487A001EC533 /* ImageRunloopTableVC.m */; };
@@ -74,6 +67,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		58E5E76923B72DAD00D51808 /* ImageAutonRunloopVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageAutonRunloopVC.h; sourceTree = "<group>"; };
+		58E5E76A23B72DAD00D51808 /* ImageAutonRunloopVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageAutonRunloopVC.m; sourceTree = "<group>"; };
 		A73FA7571E89010B008259A0 /* DefaultImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DefaultImage@2x.png"; sourceTree = "<group>"; };
 		A73FA7581E89010B008259A0 /* DefaultImage_failure@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "DefaultImage_failure@2x.jpg"; sourceTree = "<group>"; };
 		A7642D3F1DDEE60600A73CA7 /* ImageBrowserVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBrowserVC.h; sourceTree = "<group>"; };
@@ -135,14 +130,6 @@
 		A7ED650E1ED974B700CD0AC9 /* 06.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 06.jpeg; sourceTree = "<group>"; };
 		A7EFE2331F3D9AA400781C9F /* SYImageBrowserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYImageBrowserCell.h; sourceTree = "<group>"; };
 		A7EFE2341F3D9AA400781C9F /* SYImageBrowserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYImageBrowserCell.m; sourceTree = "<group>"; };
-		A7EFE2361F3D9ADB00781C9F /* next_highlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "next_highlight@2x.png"; sourceTree = "<group>"; };
-		A7EFE2371F3D9ADB00781C9F /* next_highlight@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "next_highlight@3x.png"; sourceTree = "<group>"; };
-		A7EFE2381F3D9ADB00781C9F /* next_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "next_normal@2x.png"; sourceTree = "<group>"; };
-		A7EFE2391F3D9ADB00781C9F /* next_normal@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "next_normal@3x.png"; sourceTree = "<group>"; };
-		A7EFE23A1F3D9ADB00781C9F /* previous_highlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "previous_highlight@2x.png"; sourceTree = "<group>"; };
-		A7EFE23B1F3D9ADB00781C9F /* previous_highlight@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "previous_highlight@3x.png"; sourceTree = "<group>"; };
-		A7EFE23C1F3D9ADB00781C9F /* previous_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "previous_normal@2x.png"; sourceTree = "<group>"; };
-		A7EFE23D1F3D9ADB00781C9F /* previous_normal@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "previous_normal@3x.png"; sourceTree = "<group>"; };
 		A7F6D36A1EB347FE001EC533 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		A7F6D36B1EB347FE001EC533 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		A7F6D36D1EB3486A001EC533 /* ImageRunloopVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageRunloopVC.h; sourceTree = "<group>"; };
@@ -214,6 +201,8 @@
 				A7F6D3741EB34918001EC533 /* ImageNormalVC.m */,
 				A7F6D36D1EB3486A001EC533 /* ImageRunloopVC.h */,
 				A7F6D36E1EB3486A001EC533 /* ImageRunloopVC.m */,
+				58E5E76923B72DAD00D51808 /* ImageAutonRunloopVC.h */,
+				58E5E76A23B72DAD00D51808 /* ImageAutonRunloopVC.m */,
 				A7F6D3701EB3487A001EC533 /* ImageRunloopTableVC.h */,
 				A7F6D3711EB3487A001EC533 /* ImageRunloopTableVC.m */,
 				A7642D3F1DDEE60600A73CA7 /* ImageBrowserVC.h */,
@@ -310,7 +299,6 @@
 		A7C8CEFC1ED3DA0C001C2FD8 /* SYImageBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				A7C8CEFD1ED3DA0C001C2FD8 /* ImageSources */,
 				DF614EE91F445E47004BC654 /* SYImageScrollView.h */,
 				DF614EEA1F445E47004BC654 /* SYImageScrollView.m */,
 				A7ED65061ED96F1800CD0AC9 /* NSTimer+SYImageBrowser.h */,
@@ -323,21 +311,6 @@
 			);
 			name = SYImageBrowser;
 			path = ../../SYImageBrowser;
-			sourceTree = "<group>";
-		};
-		A7C8CEFD1ED3DA0C001C2FD8 /* ImageSources */ = {
-			isa = PBXGroup;
-			children = (
-				A7EFE2361F3D9ADB00781C9F /* next_highlight@2x.png */,
-				A7EFE2371F3D9ADB00781C9F /* next_highlight@3x.png */,
-				A7EFE2381F3D9ADB00781C9F /* next_normal@2x.png */,
-				A7EFE2391F3D9ADB00781C9F /* next_normal@3x.png */,
-				A7EFE23A1F3D9ADB00781C9F /* previous_highlight@2x.png */,
-				A7EFE23B1F3D9ADB00781C9F /* previous_highlight@3x.png */,
-				A7EFE23C1F3D9ADB00781C9F /* previous_normal@2x.png */,
-				A7EFE23D1F3D9ADB00781C9F /* previous_normal@3x.png */,
-			);
-			path = ImageSources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -446,25 +419,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7EFE23E1F3D9ADB00781C9F /* next_highlight@2x.png in Resources */,
 				A7ED65141ED974B700CD0AC9 /* 06.jpeg in Resources */,
-				A7EFE2451F3D9ADB00781C9F /* previous_normal@3x.png in Resources */,
 				A7ED65131ED974B700CD0AC9 /* 05.jpeg in Resources */,
 				A73FA7591E89010B008259A0 /* DefaultImage@2x.png in Resources */,
 				A7C295741DDDA16C004C5457 /* LaunchScreen.storyboard in Resources */,
 				A7C295711DDDA16C004C5457 /* Assets.xcassets in Resources */,
 				A7C2956F1DDDA16C004C5457 /* Main.storyboard in Resources */,
 				A7ED65111ED974B700CD0AC9 /* 03.jpeg in Resources */,
-				A7EFE2411F3D9ADB00781C9F /* next_normal@3x.png in Resources */,
-				A7EFE2401F3D9ADB00781C9F /* next_normal@2x.png in Resources */,
-				A7EFE2421F3D9ADB00781C9F /* previous_highlight@2x.png in Resources */,
 				A7ED65101ED974B700CD0AC9 /* 02.jpeg in Resources */,
 				A7ED650F1ED974B700CD0AC9 /* 01.jpeg in Resources */,
 				A7ED65121ED974B700CD0AC9 /* 04.jpeg in Resources */,
-				A7EFE2441F3D9ADB00781C9F /* previous_normal@2x.png in Resources */,
-				A7EFE23F1F3D9ADB00781C9F /* next_highlight@3x.png in Resources */,
 				A73FA75A1E89010B008259A0 /* DefaultImage_failure@2x.jpg in Resources */,
-				A7EFE2431F3D9ADB00781C9F /* previous_highlight@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,6 +477,7 @@
 				A7C295661DDDA16C004C5457 /* main.m in Sources */,
 				A7F6D36F1EB3486A001EC533 /* ImageRunloopVC.m in Sources */,
 				A7C8CEF41ED3D9CA001C2FD8 /* SDWebImageManager.m in Sources */,
+				58E5E76B23B72DAD00D51808 /* ImageAutonRunloopVC.m in Sources */,
 				A7642D411DDEE60600A73CA7 /* ImageBrowserVC.m in Sources */,
 				A7C8CEF91ED3D9CA001C2FD8 /* UIImageView+HighlightedWebCache.m in Sources */,
 				A7C8CEEF1ED3D9CA001C2FD8 /* SDImageCache.m in Sources */,
@@ -655,6 +621,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: xie pingsheng (JWZ9Q83YVK)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 9YWJ3PZHZG;
 				INFOPLIST_FILE = DemoImageBrowser/Info.plist;
@@ -670,6 +637,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: xie pingsheng (JWZ9Q83YVK)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 9YWJ3PZHZG;
 				INFOPLIST_FILE = DemoImageBrowser/Info.plist;

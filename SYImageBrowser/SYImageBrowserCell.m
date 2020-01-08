@@ -31,14 +31,16 @@
 
 #pragma mark - setter/getter
 
-- (void)setImageview:(UIImageView *)imageview
+- (void)setShowView:(UIView *)showView
 {
-    _imageview = imageview;
-    _imageview.frame = CGRectZero;
-    _imageview.backgroundColor = UIColor.clearColor;
-    _imageview.clipsToBounds = YES;
-    _imageview.layer.masksToBounds = YES;
-    _imageview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _showView = showView;
+    if (_showView) {
+        _showView.frame = CGRectZero;
+        _showView.backgroundColor = UIColor.clearColor;
+        _showView.clipsToBounds = YES;
+        _showView.layer.masksToBounds = YES;
+        _showView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    }
 }
 
 - (SYImageScrollView *)imageScrollView
@@ -49,6 +51,8 @@
         _imageScrollView.clipsToBounds = YES;
         _imageScrollView.layer.masksToBounds = YES;
         _imageScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        [self.contentView addSubview:self.imageScrollView];
     }
     return _imageScrollView;
 }
@@ -59,9 +63,8 @@
 {
     // 隐藏或显示的子视图
     if (self.isBrowser) {
-        [self.contentView addSubview:self.imageScrollView];
+        self.imageScrollView.showView = self.showView;
         self.imageScrollView.hidden = NO;
-        self.imageScrollView.imageView = self.imageview;
         // 初始化
         self.imageScrollView.isInitialize = YES;
         // 大小
@@ -71,10 +74,10 @@
             rect.size.height = self.sizeItem.height;
             self.imageScrollView.frame = rect;
             
-            CGRect rectSubView = self.imageScrollView.imageView.frame;
+            CGRect rectSubView = self.imageScrollView.showView.frame;
             rectSubView.size.width = self.sizeItem.width;
             rectSubView.size.height = self.sizeItem.height;
-            self.imageScrollView.imageView.frame = rectSubView;
+            self.imageScrollView.showView.frame = rectSubView;
         }
         
         // 单击隐藏回调
@@ -85,13 +88,16 @@
             }
         };
     } else {
-        [self.contentView addSubview:self.imageview];
+        [self.contentView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [obj removeFromSuperview];
+        }];
+        [self.contentView addSubview:self.showView];
         // 大小
         if (!CGSizeEqualToSize(self.sizeItem, CGSizeZero)) {
-            CGRect rect = self.imageview.frame;
+            CGRect rect = self.showView.frame;
             rect.size.width = self.sizeItem.width;
             rect.size.height = self.sizeItem.height;
-            self.imageview.frame = rect;
+            self.showView.frame = rect;
         }
     }
 }

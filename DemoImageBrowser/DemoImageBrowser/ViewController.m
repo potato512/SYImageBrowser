@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "ImageRunloopVC.h"
+#import "ImageAutonRunloopVC.h"
 #import "ImageNormalVC.h"
 #import "ImageRunloopTableVC.h"
 #import "ImageBrowserVC.h"
@@ -65,7 +66,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return 6;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -76,10 +77,11 @@
     switch (indexPath.row)
     {
         case 0: text = @"非循环广告轮播"; break;
-        case 1: text = @"循环广告轮播"; break;
-        case 2: text = @"循环广告轮播结合table使用"; break;
-        case 3: text = @"图片浏览"; break;
-        case 4: text = @"图片浏览弹窗"; break;
+        case 1: text = @"手动循环广告轮播"; break;
+        case 2: text = @"自动循环广告轮播"; break;
+        case 3: text = @"循环广告轮播结合table使用"; break;
+        case 4: text = @"图片浏览"; break;
+        case 5: text = @"图片浏览弹窗"; break;
             
         default: break;
     }
@@ -92,44 +94,29 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (0 == indexPath.row)
-    {
+    if (0 == indexPath.row) {
         ImageNormalVC *nextVC = [[ImageNormalVC alloc] init];
         [self.navigationController pushViewController:nextVC animated:YES];
-    }
-    else if (1 == indexPath.row)
-    {
+    } else if (1 == indexPath.row) {
         ImageRunloopVC *nextVC = [[ImageRunloopVC alloc] init];
         [self.navigationController pushViewController:nextVC animated:YES];
-    }
-    else if (2 == indexPath.row)
-    {
+    } else if (2 == indexPath.row) {
+        ImageAutonRunloopVC *nextVC = [[ImageAutonRunloopVC alloc] init];
+        [self.navigationController pushViewController:nextVC animated:YES];
+    } else if (3 == indexPath.row) {
         ImageRunloopTableVC *nextVC = [[ImageRunloopTableVC alloc] init];
         [self.navigationController pushViewController:nextVC animated:YES];
-    }
-    else if (3 == indexPath.row)
-    {
+    } else if (4 == indexPath.row) {
         ImageBrowserVC *nextVC = [[ImageBrowserVC alloc] init];
         [self.navigationController pushViewController:nextVC animated:YES];
-    }
-    else if (4 == indexPath.row)
-    {
+    } else if (5 == indexPath.row) {
         self.imageModalView.deletage = self;
         [self.imageModalView reloadData];
     }
 }
 
-- (NSInteger)imageBrowserNumberOfImages:(SYImageBrowser *)browser
-{
-    return self.images.count;
-}
-- (UIImageView *)imageBrowser:(SYImageBrowser *)browser imageAtIndex:(NSInteger)index
-{
-    NSString *image = self.images[index];
-    UIImageView *imageview = [[UIImageView alloc] init];
-    imageview.image = [UIImage imageNamed:image];
-    return imageview;
-}
+
+
 
 - (NSArray *)images
 {
@@ -144,15 +131,37 @@
     if (_imageModalView == nil) {
         UIWindow *window = ((AppDelegate *)[UIApplication sharedApplication].delegate).window;
         
-        _imageModalView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 0.0, window.frame.size.width, window.frame.size.height)];
+        _imageModalView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 0.0, window.frame.size.width, window.frame.size.height) scrollDirection:UIImageScrollDirectionHorizontal];
         _imageModalView.backgroundColor = [UIColor whiteColor];
         _imageModalView.contentMode = UIViewContentModeScaleAspectFit;
         _imageModalView.pageControlType = UIImagePageLabel;
-        _imageModalView.pageIndex = 3;
+        _imageModalView.currentPage = 3;
         _imageModalView.isBrowser = YES;
         [window addSubview:_imageModalView];
     }
     return _imageModalView;
 }
+
+- (NSInteger)imageBrowserNumberOfImages:(SYImageBrowser *)browser
+{
+    return self.images.count;
+}
+- (UIView *)imageBrowser:(SYImageBrowser *)browser view:(UIView *)view viewAtIndex:(NSInteger)index
+{
+    UIImageView *imageview = view;
+    if (imageview == nil) {
+        imageview = [[UIImageView alloc] init];
+        imageview.contentMode = UIViewContentModeScaleAspectFit;
+    }
+    NSString *image = self.images[index];
+    imageview.image = [UIImage imageNamed:image];
+    
+    return imageview;
+}
+- (void)imageBrowser:(SYImageBrowser *)browser didScrollAtIndex:(NSInteger)index
+{
+    NSLog(@"index %@", @(index));
+}
+
 
 @end

@@ -34,19 +34,18 @@ static CGFloat const scaleMax = 2.0;
     return self;
 }
 
-
 #pragma mark - UIScrollViewDelegate
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     // 设置被缩放的对应视图
-    return self.imageView;
+    return self.showView;
 }
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView
 {
     // 居中显示
-    [self centerShow:scrollView imageview:self.imageView];
+    [self centerShow:scrollView imageview:self.showView];
 }
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
@@ -70,13 +69,13 @@ static CGFloat const scaleMax = 2.0;
     // 双击缩放
     UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleClick:)];
     doubleTap.numberOfTapsRequired = 2;
-    self.imageView.userInteractionEnabled = YES;
-    [self.imageView addGestureRecognizer:doubleTap];
+    self.showView.userInteractionEnabled = YES;
+    [self.showView addGestureRecognizer:doubleTap];
     
     // 单击隐藏
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleClick:)];
     singleTap.numberOfTapsRequired = 1;
-    [self.imageView addGestureRecognizer:singleTap];
+    [self.showView addGestureRecognizer:singleTap];
     
     // 区分单双击
     [singleTap requireGestureRecognizerToFail:doubleTap];
@@ -103,16 +102,16 @@ static CGFloat const scaleMax = 2.0;
 
 #pragma mark -
 
-- (void)centerShow:(UIScrollView *)scrollview imageview:(UIImageView *)imageview
+- (void)centerShow:(UIScrollView *)scrollview imageview:(UIView *)view
 {
     // 居中显示
     CGFloat offsetX = (scrollview.bounds.size.width > scrollview.contentSize.width) ? (scrollview.bounds.size.width - scrollview.contentSize.width) * 0.5 : 0.0;
     CGFloat offsetY = (scrollview.bounds.size.height > scrollview.contentSize.height) ?
     (scrollview.bounds.size.height - scrollview.contentSize.height) * 0.5 : 0.0;
-    imageview.center = CGPointMake(scrollview.contentSize.width * 0.5 + offsetX, scrollview.contentSize.height * 0.5 + offsetY);
+    view.center = CGPointMake(scrollview.contentSize.width * 0.5 + offsetX, scrollview.contentSize.height * 0.5 + offsetY);
 }
 
-#pragma mark - setter
+#pragma mark - setter/getter
 
 - (void)setIsInitialize:(BOOL)isInitialize
 {
@@ -120,23 +119,24 @@ static CGFloat const scaleMax = 2.0;
     if (_isInitialize) {
         isScaleBig = NO;
         [self setZoomScale:scaleMin animated:NO];
-        [self centerShow:self imageview:self.imageView];
+        [self centerShow:self imageview:self.showView];
     }
 }
 
-- (void)setImageView:(UIImageView *)imageView
+- (void)setShowView:(UIView *)showView
 {
-    if (_imageView == imageView) {
-        return;
-    }
-    _imageView = imageView;
-    if (_imageView) {
-        [self addSubview:_imageView];
-        _imageView.frame = self.bounds;
-        _imageView.backgroundColor = UIColor.clearColor;
-        _imageView.clipsToBounds = YES;
-        _imageView.layer.masksToBounds = YES;
-        _imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _showView = showView;
+    if (_showView) {
+        _showView.frame = self.bounds;
+        _showView.backgroundColor = UIColor.clearColor;
+        _showView.clipsToBounds = YES;
+        _showView.layer.masksToBounds = YES;
+        _showView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        [self.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [obj removeFromSuperview];
+        }];
+        [self addSubview:_showView];
         [self addGesture];
     }
 }

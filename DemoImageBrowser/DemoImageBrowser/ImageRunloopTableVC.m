@@ -9,7 +9,7 @@
 #import "ImageRunloopTableVC.h"
 #import "SYImageBrowser.h"
 
-@interface ImageRunloopTableVC () <SYImageBrowserDelegate>
+@interface ImageRunloopTableVC () <SYImageBrowserDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NSArray *images;
 @property (nonatomic, strong) NSArray *titles;
@@ -33,15 +33,12 @@
 
 - (void)setUI
 {
-    SYImageBrowser *imageView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 200.0, self.view.frame.size.width, 160.0)];
+    SYImageBrowser *imageView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 0, self.view.frame.size.width, 300) scrollDirection:UIImageScrollDirectionHorizontal];
     imageView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3];
     // 图片轮播模式
     imageView.scrollMode = UIImageScrollLoop;
     // 图片显示模式
     imageView.contentMode = UIViewContentModeScaleAspectFit;
-    // 标题标签
-    imageView.showTitle = YES;
-    imageView.titleLabel.textColor = [UIColor redColor];
     // 页签-pageControl
     imageView.pageControl.pageIndicatorTintColor = [UIColor redColor];
     imageView.pageControl.currentPageIndicatorTintColor = [UIColor orangeColor];
@@ -49,8 +46,6 @@
     imageView.pageControlType = UIImagePageControl;
     imageView.pageLabel.backgroundColor = [UIColor yellowColor];
     imageView.pageLabel.textColor = [UIColor redColor];
-    // 切换按钮
-    imageView.showSwitch = YES;
     // 自动播放
     imageView.autoAnimation = YES;
     imageView.autoDuration = 2.0;
@@ -65,7 +60,29 @@
     table.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     table.tableHeaderView = imageView;
     table.tableFooterView = [[UIView alloc] init];
+    table.delegate = self;
+    table.dataSource = self;
 }
+
+
+#pragma mark - table
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 20;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"UITableViewCell"];
+    }
+    cell.textLabel.text = [NSString stringWithFormat:@"row %@", indexPath];
+    return cell;
+}
+
+#pragma mark - browser
 
 - (NSArray *)images
 {
@@ -88,14 +105,16 @@
 {
     return self.images.count;
 }
-- (NSString *)imageBrowser:(SYImageBrowser *)browser titleAtIndex:(NSInteger)index
+- (UIView *)imageBrowser:(SYImageBrowser *)browser view:(UIView *)view viewAtIndex:(NSInteger)index
 {
-    return self.titles[index];
-}
-- (UIImageView *)imageBrowser:(SYImageBrowser *)browser imageAtIndex:(NSInteger)index
-{
-    UIImageView *imageview = [[UIImageView alloc] initWithImage:[UIImage imageNamed:self.images[index]]];
-    imageview.contentMode = UIViewContentModeScaleAspectFit;
+    UIImageView *imageview = view;
+    if (imageview == nil) {
+        imageview = [[UIImageView alloc] init];
+        imageview.contentMode = UIViewContentModeScaleAspectFit;
+    }
+    NSString *url = self.images[index];
+    imageview.image = [UIImage imageNamed:url];
+    NSLog(@"index %@, url %@", @(index), url);
     return imageview;
 }
 

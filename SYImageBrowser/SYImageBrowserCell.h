@@ -12,7 +12,7 @@ static NSString *const identifierSYImageBrowserCell = @"SYImageBrowserCell";
 
 @interface SYImageBrowserCell : UICollectionViewCell
 
-@property (nonatomic, strong) UIImageView *imageview;
+@property (nonatomic, strong) UIView *showView;
 
 /// 重置大小
 @property (nonatomic, assign) CGSize sizeItem;
