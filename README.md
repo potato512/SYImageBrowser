@@ -104,6 +104,17 @@ imageView.deletage = self;
 
 ~~~ 
 
+~~~ 
+
+// 暂停自动播放
+[imageView animationStopWhileAuto:YES];
+
+// 继续自动播放
+[imageView animationStopWhileAuto:NO];
+
+~~~ 
+
+
 ### 代理方法实现
 
 ~~~ javascript
@@ -159,6 +170,11 @@ imageView.deletage = self;
 
 
 #### 修改完善
+* 20200825
+  * 版本号：2.3.1
+  * 优化修改
+    * 自动播放时的暂停与继续
+
 * 20200108
   * 版本号：2.3.0
   * 优化修改

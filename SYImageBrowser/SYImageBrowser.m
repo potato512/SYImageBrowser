@@ -501,6 +501,18 @@ static NSTimeInterval const durationTime = 0.3;
     return MAX(0, index);
 }
 
+/// 自动播放时，停止播放，或继续播放
+- (void)animationStopWhileAuto:(BOOL)isPause
+{
+    if (self.autoAnimation) {
+        if (isPause) {
+            [self stopTimer];
+        } else {
+            [self startTimer];
+        }
+    }
+}
+
 - (void)reloadData
 {
     if (self.deletage && [self.deletage respondsToSelector:@selector(imageBrowserNumberOfImages:)]) {

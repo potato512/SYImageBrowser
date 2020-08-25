@@ -23,7 +23,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = @"非循环广告轮播";
+    self.navigationItem.title = @"非循环广告轮播";
     [self setUI];
 }
 

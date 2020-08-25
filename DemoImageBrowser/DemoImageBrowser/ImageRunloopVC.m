@@ -23,7 +23,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = @"手动循环广告轮播";
+    self.navigationItem.title = @"手动循环广告轮播";
     [self setUI];
 }
 
@@ -50,9 +50,9 @@
     // 图片轮播模式
     imageView.scrollMode = UIImageScrollLoop;
     // 页签-pageControl
-    imageView.currentPage = 2;
+//    imageView.currentPage = 2;
     imageView.pageControl.pageIndicatorTintColor = [UIColor redColor];
-    imageView.pageControl.currentPageIndicatorTintColor = [UIColor orangeColor];
+    imageView.pageControl.currentPageIndicatorTintColor = [UIColor blueColor];
     // 
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, imageView.frame.size.width, 40)];
     [imageView addSubview:label];
@@ -102,6 +102,7 @@
 {
     if (_images == nil) {
         _images = @[@"01.jpeg", @"02.jpeg", @"03.jpeg", @"04.jpeg", @"05.jpeg", @"06.jpeg"];
+//        _images = @[];
     }
     return _images;
 }
@@ -117,34 +118,34 @@
 
 - (NSInteger)imageBrowserNumberOfImages:(SYImageBrowser *)browser
 {
-    if (browser.tag == 2) {
-        return 1;
-    } else if (browser.tag == 3) {
-        return 2;
-    }
+//    if (browser.tag == 2) {
+//        return 1;
+//    } else if (browser.tag == 3) {
+//        return 2;
+//    }
     return self.images.count;
 }
 - (UIView *)imageBrowser:(SYImageBrowser *)browser view:(UIView *)view viewAtIndex:(NSInteger)index
 {
-    if (browser.tag == 2) {
-        UIImageView *imageview = view;
-        if (imageview == nil) {
-            imageview = [[UIImageView alloc] init];
-            imageview.contentMode = UIViewContentModeScaleAspectFit;
-        }
-        NSString *imageurl = self.images[index];
-        imageview.image = [UIImage imageNamed:imageurl];
-        return imageview;
-    } else if (browser.tag == 3) {
-        UIImageView *imageview = view;
-        if (imageview == nil) {
-            imageview = [[UIImageView alloc] init];
-            imageview.contentMode = UIViewContentModeScaleAspectFit;
-        }
-        NSString *imageurl = self.images[index];
-        imageview.image = [UIImage imageNamed:imageurl];
-        return imageview;
-    }
+//    if (browser.tag == 2) {
+//        UIImageView *imageview = view;
+//        if (imageview == nil) {
+//            imageview = [[UIImageView alloc] init];
+//            imageview.contentMode = UIViewContentModeScaleAspectFit;
+//        }
+//        NSString *imageurl = self.images[index];
+//        imageview.image = [UIImage imageNamed:imageurl];
+//        return imageview;
+//    } else if (browser.tag == 3) {
+//        UIImageView *imageview = view;
+//        if (imageview == nil) {
+//            imageview = [[UIImageView alloc] init];
+//            imageview.contentMode = UIViewContentModeScaleAspectFit;
+//        }
+//        NSString *imageurl = self.images[index];
+//        imageview.image = [UIImage imageNamed:imageurl];
+//        return imageview;
+//    }
     
     UIImageView *imageview = view;
     if (imageview == nil) {

@@ -13,6 +13,8 @@
 
 @property (nonatomic, strong) NSArray *images;
 @property (nonatomic, strong) NSArray *titles;
+//
+@property (nonatomic, strong) SYImageBrowser *imageView;
 
 @end
 
@@ -24,6 +26,9 @@
     
     self.title = @"自动循环广告轮播";
     [self setUI];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(animationStop) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(animationStart) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
 }
 
 - (void)loadView
@@ -32,36 +37,61 @@
     [self setEdgesForExtendedLayout:UIRectEdgeNone];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self animationStart];
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self animationStop];
+}
+
+- (void)animationStop
+{
+    if (self.imageView) {
+        [self.imageView animationStopWhileAuto:YES];
+    }
+}
+- (void)animationStart
+{
+    if (self.imageView) {
+        [self.imageView animationStopWhileAuto:NO];
+    }
+}
+
+
 - (void)setUI
 {
     CGFloat height = 160;
     
-    SYImageBrowser *imageView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 0, self.view.frame.size.width, height) scrollDirection:UIImageScrollDirectionHorizontal];
-    [self.view addSubview:imageView];
-    imageView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3];
-    imageView.tag = 1;
+    self.imageView = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, 0, self.view.frame.size.width, height) scrollDirection:UIImageScrollDirectionHorizontal];
+    [self.view addSubview:self.imageView];
+    self.imageView.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3];
+    self.imageView.tag = 1;
     // 图片轮播模式
-    imageView.scrollMode = UIImageScrollLoop;
-    imageView.autoAnimation = YES;
-    imageView.autoDuration = 3;
+    self.imageView.scrollMode = UIImageScrollLoop;
+    self.imageView.autoAnimation = YES;
+    self.imageView.autoDuration = 3;
     // 页签-pageControl
 //    imageView.currentPage = 2;
-    imageView.pageControl.pageIndicatorTintColor = [UIColor redColor];
-    imageView.pageControl.currentPageIndicatorTintColor = [UIColor orangeColor];
+    self.imageView.pageControl.pageIndicatorTintColor = [UIColor redColor];
+    self.imageView.pageControl.currentPageIndicatorTintColor = [UIColor orangeColor];
     //
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, imageView.frame.size.width, 40)];
-    [imageView addSubview:label];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.imageView.frame.size.width, 40)];
+    [self.imageView addSubview:label];
     label.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
     label.textAlignment = NSTextAlignmentCenter;
     label.textColor = UIColor.redColor;
     label.tag = 1000;
     
     // 数据刷新
-    imageView.deletage = self;
-    [imageView reloadData];
+    self.imageView.deletage = self;
+    [self.imageView reloadData];
     
     
-    UIView *currentView = imageView;
+    UIView *currentView = self.imageView;
     
     SYImageBrowser *imageView2 = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, (currentView.frame.origin.y + currentView.frame.size.height + 10), self.view.frame.size.width, height) scrollDirection:UIImageScrollDirectionHorizontal];
     [self.view addSubview:imageView2];
@@ -83,17 +113,17 @@
     
     
     //
-    SYImageBrowser *imageView3 = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, (currentView.frame.origin.y + currentView.frame.size.height + 10), self.view.frame.size.width, height) scrollDirection:UIImageScrollDirectionHorizontal];
-    [self.view addSubview:imageView3];
-    imageView3.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3];
-    imageView3.tag = 3;
-    // 图片轮播模式
-    imageView3.scrollMode = UIImageScrollLoop;
-    imageView3.autoAnimation = YES;
-    imageView3.autoDuration = 3;
-    // 数据刷新
-    imageView3.deletage = self;
-    [imageView3 reloadData];
+//    SYImageBrowser *imageView3 = [[SYImageBrowser alloc] initWithFrame:CGRectMake(0.0, (currentView.frame.origin.y + currentView.frame.size.height + 10), self.view.frame.size.width, height) scrollDirection:UIImageScrollDirectionHorizontal];
+//    [self.view addSubview:imageView3];
+//    imageView3.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3];
+//    imageView3.tag = 3;
+//    // 图片轮播模式
+//    imageView3.scrollMode = UIImageScrollLoop;
+//    imageView3.autoAnimation = YES;
+//    imageView3.autoDuration = 3;
+//    // 数据刷新
+//    imageView3.deletage = self;
+//    [imageView3 reloadData];
 }
 
 - (NSArray *)images

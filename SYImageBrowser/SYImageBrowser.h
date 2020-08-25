@@ -56,6 +56,9 @@
 /// 数据刷新
 - (void)reloadData;
 
+/// 自动播放时，停止播放，或继续播放
+- (void)animationStopWhileAuto:(BOOL)isPause;
+
 @end
 
 /*
